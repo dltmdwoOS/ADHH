@@ -19,6 +19,7 @@
 # limitations under the License.
 """ PyTorch LLaMA model."""
 import math
+import json
 import warnings
 from typing import List, Optional, Tuple, Union, Literal
 
@@ -422,6 +423,261 @@ def repeat_kv(hidden_states: torch.Tensor, n_rep: int) -> torch.Tensor:
     hidden_states = hidden_states[:, :, None, :, :].expand(batch, num_key_value_heads, n_rep, slen, head_dim)
     return hidden_states.reshape(batch, num_key_value_heads * n_rep, slen, head_dim)
 
+def _lookup_head_score(score_map, layer_idx, head_idx):
+    if score_map is None:
+        return 1.0
+    if f"{layer_idx}-{head_idx}" in score_map:
+        return float(score_map[f"{layer_idx}-{head_idx}"])
+    if (layer_idx, head_idx) in score_map:
+        return float(score_map[(layer_idx, head_idx)])
+    return 1.0
+
+def _heads_for_layer(config, layer_idx):
+    heads = getattr(config, "intervention_heads", None)
+    if heads is None:
+        heads = getattr(config, "hal_attention_heads", None)
+
+    if not heads:
+        return []
+
+    out = []
+    score_map = getattr(config, "intervention_scores", None)
+    for item in heads:
+        if isinstance(item, (list, tuple)) and len(item) == 2:
+            layer, head = int(item[0]), int(item[1])
+            if layer == int(layer_idx):
+                out.append((head, _lookup_head_score(score_map, layer, head)))
+    return out
+
+
+def _maybe_reset_dynamic_trace(config, layer_idx):
+    if getattr(config, "intervention", "none") != "dynamic":
+        return
+    if not bool(getattr(config, "log_dynamic_trace", False)):
+        return
+    if int(layer_idx or 0) == 0:
+        config._dynamic_trace_buffer = []
+
+
+def _append_dynamic_trace(
+    config, layer_idx, head_idx, head_score, score_prior, text_mass, img_mass,
+    ratio, context_source, context_prior, suppression, scale
+):
+    if not bool(getattr(config, "log_dynamic_trace", False)):
+        return
+
+    buffer = getattr(config, "_dynamic_trace_buffer", None)
+    if buffer is None:
+        buffer = []
+        config._dynamic_trace_buffer = buffer
+
+    text_f = text_mass.detach().float().reshape(-1)
+    img_f = img_mass.detach().float().reshape(-1)
+    ratio_f = ratio.detach().float().reshape(-1)
+    context_f = context_source.detach().float().reshape(-1)
+    prior_f = context_prior.detach().float().reshape(-1)
+    suppression_f = suppression.detach().float().reshape(-1)
+    scale_f = scale.detach().float().reshape(-1)
+
+    for batch_idx in range(suppression_f.numel()):
+        buffer.append({
+            "layer": int(layer_idx),
+            "head": int(head_idx),
+            "batch_idx": int(batch_idx),
+            "suppression": float(suppression_f[batch_idx].item()),
+            "scale": float(scale_f[batch_idx].item()),
+            "ratio": float(ratio_f[batch_idx].item()),
+            "text_mass": float(text_f[batch_idx].item()),
+            "img_mass": float(img_f[batch_idx].item()),
+            "context_source": float(context_f[batch_idx].item()),
+            "context_prior": float(prior_f[batch_idx].item()),
+            "head_score": float(head_score),
+            "score_prior": float(score_prior),
+        })
+
+
+def _maybe_print_dynamic_trace(config, layer_idx):
+    if getattr(config, "intervention", "none") != "dynamic":
+        return
+    if not bool(getattr(config, "log_dynamic_trace", False)):
+        return
+
+    num_layers = getattr(config, "num_hidden_layers", None)
+    if num_layers is not None and int(layer_idx) != int(num_layers) - 1:
+        return
+
+    step = int(getattr(config, "_dynamic_trace_step", 0))
+    every = max(int(getattr(config, "dynamic_trace_every", 1)), 1)
+    buffer = list(getattr(config, "_dynamic_trace_buffer", []) or [])
+
+    if step % every == 0 and buffer:
+        topn = max(int(getattr(config, "dynamic_trace_topn", 10)), 1)
+        active = [x for x in buffer if x["suppression"] >= 0.05]
+        strong = [x for x in buffer if x["suppression"] >= 0.5]
+        near_zero = [x for x in buffer if x["scale"] <= 0.05]
+        top = sorted(buffer, key=lambda x: x["suppression"], reverse=True)[:topn]
+        mean = lambda key, rows: sum(x[key] for x in rows) / max(len(rows), 1)
+        payload = {
+            "sample_id": getattr(config, "dynamic_trace_sample_id", None),
+            "step": step,
+            "candidate_heads": len(buffer),
+            "active_heads": len(active),
+            "strong_heads": len(strong),
+            "near_zero_heads": len(near_zero),
+            "context_mode": getattr(config, "dynamic_context_mode", None),
+            "strength": float(getattr(config, "dynamic_strength", 1.0)),
+            "tau": float(getattr(config, "dynamic_tau", 0.5)),
+            "exp_sharpness": float(getattr(config, "dynamic_exp_sharpness", 6.0)),
+            "mean_suppression": mean("suppression", buffer),
+            "mean_scale": mean("scale", buffer),
+            "mean_ratio": mean("ratio", buffer),
+            "mean_text_mass": mean("text_mass", buffer),
+            "mean_img_mass": mean("img_mass", buffer),
+            "mean_context_prior": mean("context_prior", buffer),
+            "top": top,
+        }
+        print("[DYNAMIC_TRACE] " + json.dumps(payload, ensure_ascii=False), flush=True)
+
+    config._dynamic_trace_step = step + 1
+    config._dynamic_trace_buffer = []
+
+
+def _update_intervention_stats(config, layer_idx, head_idx, mode, scale, text_mass, head_score, extra=None):
+    if not bool(getattr(config, "log_intervention_stats", False)):
+        return
+
+    stats = getattr(config, "_intervention_stats", None)
+    if stats is None:
+        stats = {"overall": {}, "by_head": {}}
+        config._intervention_stats = stats
+
+    def update_bucket(bucket, values):
+        n = int(scale.numel())
+        scale_f = scale.detach().float()
+        text_f = text_mass.detach().float()
+        suppression_f = 1.0 - scale_f
+
+        bucket["count"] = bucket.get("count", 0) + n
+        bucket["scaled_count"] = bucket.get("scaled_count", 0) + int((scale_f < 0.999).sum().item())
+        bucket["near_zero_count"] = bucket.get("near_zero_count", 0) + int((scale_f <= 0.05).sum().item())
+        bucket["sum_scale"] = bucket.get("sum_scale", 0.0) + float(scale_f.sum().item())
+        bucket["sum_suppression"] = bucket.get("sum_suppression", 0.0) + float(suppression_f.sum().item())
+        bucket["sum_text_mass"] = bucket.get("sum_text_mass", 0.0) + float(text_f.sum().item())
+        bucket["min_scale"] = min(bucket.get("min_scale", float("inf")), float(scale_f.min().item()))
+        bucket["max_scale"] = max(bucket.get("max_scale", float("-inf")), float(scale_f.max().item()))
+
+        if extra:
+            for name, tensor in extra.items():
+                value_f = tensor.detach().float()
+                bucket[f"sum_{name}"] = bucket.get(f"sum_{name}", 0.0) + float(value_f.sum().item())
+
+    overall = stats["overall"].setdefault(mode, {})
+    key = f"{int(layer_idx)}-{int(head_idx)}"
+    by_head = stats["by_head"].setdefault(key, {
+        "layer": int(layer_idx),
+        "head": int(head_idx),
+        "mode": mode,
+        "head_score": float(head_score),
+    })
+
+    update_bucket(overall, extra)
+    update_bucket(by_head, extra)
+
+
+def _apply_text_intervention(attn_weights, config, layer_idx):
+    mode = getattr(config, "intervention", "none")
+    if mode == "none":
+        return attn_weights
+
+    _maybe_reset_dynamic_trace(config, layer_idx)
+
+    selected = _heads_for_layer(config, layer_idx)
+    if not selected:
+        _maybe_print_dynamic_trace(config, layer_idx)
+        return attn_weights
+
+    img_start = getattr(config, "img_start_pos", None)
+    img_length = getattr(config, "img_length", None)
+    if img_start is None or img_length is None:
+        _maybe_print_dynamic_trace(config, layer_idx)
+        return attn_weights
+
+    img_end = img_start + img_length
+    text_start = img_end
+    if text_start >= attn_weights.size(-1):
+        _maybe_print_dynamic_trace(config, layer_idx)
+        return attn_weights
+
+    threshold = float(getattr(config, "text_threshold", getattr(config, "adhh_threshold", 0.4)))
+    text_scale = float(getattr(config, "text_scale", 0.5))
+    dynamic_strength = float(getattr(config, "dynamic_strength", 1.0))
+    dynamic_ratio_power = float(getattr(config, "dynamic_ratio_power", 1.0))
+    dynamic_score_power = float(getattr(config, "dynamic_score_power", 1.0))
+    dynamic_tau = float(getattr(config, "dynamic_tau", 0.5))
+    dynamic_exp_sharpness = float(getattr(config, "dynamic_exp_sharpness", 6.0))
+    dynamic_context_mode = getattr(config, "dynamic_context_mode", "text_exp")
+    use_head_scores = bool(getattr(config, "use_head_scores", False))
+
+    eps = 1e-6
+
+    for head, head_score in selected:
+        text_slice = attn_weights[:, head, -1, text_start:]
+        text_mass = text_slice.sum(dim=-1)
+
+        if mode == "adhh":
+            scale = (text_mass < threshold).to(attn_weights.dtype)
+            stat_extra = None
+
+        elif mode == "soft":
+            trigger = (text_mass >= threshold).to(attn_weights.dtype)
+            scale = 1.0 - trigger * (1.0 - text_scale)
+            stat_extra = None
+
+        elif mode == "dynamic":
+            img_mass = attn_weights[:, head, -1, img_start:img_end].sum(dim=-1)
+            ratio = (text_mass / (text_mass + img_mass + eps)).clamp(0, 1)
+            text_context = text_mass.clamp(0, 1)
+
+            score_prior = head_score if use_head_scores else 1.0
+            score_prior = max(float(score_prior), 0.0) ** max(dynamic_score_power, 0.0)
+
+            if dynamic_context_mode == "ratio_power":
+                context_source = ratio
+                context_prior = ratio.pow(max(dynamic_ratio_power, 0.0))
+            elif dynamic_context_mode == "ratio_exp":
+                context_source = ratio
+                context_prior = torch.exp(max(dynamic_exp_sharpness, 0.0) * (ratio - dynamic_tau)) 
+            elif dynamic_context_mode == "text_exp":
+                context_source = text_context
+                context_prior = torch.exp(max(dynamic_exp_sharpness, 0.0) * (text_context - dynamic_tau))
+            else:
+                context_source = text_context
+                context_prior = text_context.pow(max(dynamic_ratio_power, 0.0))
+
+            suppression = (dynamic_strength * score_prior * context_prior).clamp(0, 1)
+            scale = 1.0 - suppression
+            stat_extra = {
+                "img_mass": img_mass,
+                "ratio": ratio,
+                "context_source": context_source,
+                "context_prior": context_prior,
+                "dynamic_suppression": suppression,
+            }
+            _append_dynamic_trace(
+                config, layer_idx, head, head_score, score_prior, text_mass, img_mass,
+                ratio, context_source, context_prior, suppression, scale
+            )
+
+        else:
+            continue
+
+        _update_intervention_stats(config, layer_idx, head, mode, scale, text_mass, head_score, stat_extra)
+        attn_weights[:, head, -1, text_start:] = text_slice * scale.unsqueeze(-1)
+
+    denom = attn_weights[:, :, -1, :].sum(dim=-1, keepdim=True).clamp_min(eps)
+    attn_weights[:, :, -1, :] = attn_weights[:, :, -1, :] / denom
+    _maybe_print_dynamic_trace(config, layer_idx)
+    return attn_weights
 
 class LlamaAttention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
@@ -571,26 +827,8 @@ class LlamaAttention(nn.Module):
 
         # upcast attention to fp32
         attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
-        
-        # TODO: adaptive deactivate of hallucination heads
-        if getattr(self.config, "adaptive_deactivate", False):
-            if head_list is not None:
-                for head in head_list:
-                    aggre_attention = torch.sum(attn_weights[:, head, -1, self.config.img_start_pos+self.config.img_length:])
-                    if aggre_attention >= self.config.adhh_threshold:
-                        attn_weights[:, head, -1, self.config.img_start_pos+self.config.img_length:] = 0
-
-        # TODO: add attention reweighting code here
-        if getattr(self.config, "reweight_text", False) and head_list is not None:
-            text_start_idx = self.config.img_start_pos + self.config.img_length
-            for head in head_list:
-                attn_weights[:, head, :, text_start_idx:] *= self.config.reweight_alpha
-
-        # TODO: add attention reweighting code here
-        if getattr(self.config, "reweight_img", False) and head_list is not None:
-            img_slice = slice(self.config.img_start_pos, self.config.img_start_pos + self.config.img_length)
-            for head in head_list:
-                attn_weights[:, head, :, img_slice] *= self.config.reweight_alpha
+        # unified intervention: none | adhh | soft | dynamic
+        attn_weights = _apply_text_intervention(attn_weights, self.config, self.layer_idx)
 
         attn_weights = nn.functional.dropout(attn_weights, p=self.attention_dropout, training=self.training)
         attn_output = torch.matmul(attn_weights, value_states)
@@ -1666,4 +1904,3 @@ class LlamaForSequenceClassification(LlamaPreTrainedModel):
             hidden_states=transformer_outputs.hidden_states,
             attentions=transformer_outputs.attentions,
         )
-

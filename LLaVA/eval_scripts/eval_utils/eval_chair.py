@@ -58,7 +58,11 @@ if __name__ == "__main__":
     evaluator.do_the_thing(golden_reference, candidate_reference)
 
     results = evaluator.evaluation_report
-    cap_dict['overall_metrics']['Bleu'] = results['Bleu']
+    for metric_name in ['Bleu', 'CIDEr', 'METEOR']:
+        if metric_name in results:
+            cap_dict['overall_metrics'][metric_name] = results[metric_name]
+    if evaluator.metric_errors:
+        cap_dict['quality_metric_errors'] = evaluator.metric_errors
 
     # save to json pretty print
     chair_json_path = args.answers_file.replace('.jsonl', '_eval_results.json')

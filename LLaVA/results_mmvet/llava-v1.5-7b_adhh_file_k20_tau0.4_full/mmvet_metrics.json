@@ -1,0 +1,66 @@
+{
+  "official_command": [
+    "python",
+    "mm-vet_evaluator.py",
+    "--mmvet_path",
+    "/workspace/Hallucination-Attribution/dataset/mm-vet",
+    "--result_file",
+    "/workspace/Hallucination-Attribution/LLaVA/results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full/mmvet_responses.json",
+    "--result_path",
+    "/workspace/Hallucination-Attribution/LLaVA/results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full",
+    "--gpt_model",
+    "gpt-4-0613",
+    "--num_run",
+    "1"
+  ],
+  "official_cwd": "/workspace/Hallucination-Attribution/third_party/MM-Vet",
+  "returncode": 0,
+  "stdout_file": "./results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full/mmvet_official_eval_stdout.txt",
+  "stderr_file": "./results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full/mmvet_official_eval_stderr.txt",
+  "metrics_file": "./results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full/mmvet_metrics.json",
+  "official_outputs": {
+    "grade_file": "./results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full/mmvet_responses_gpt-4-0613-grade-1runs.json",
+    "cap_score_file": "./results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full/mmvet_responses_gpt-4-0613-cap-score-1runs.csv",
+    "cap_int_score_file": "./results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full/mmvet_responses_gpt-4-0613-cap-int-score-1runs.csv"
+  },
+  "score_tables": {
+    "cap_score_file": [
+      {
+        "": "mmvet_responses",
+        "rec": "35.4",
+        "ocr": "22.5",
+        "know": "17.1",
+        "gen": "19.5",
+        "spat": "28.0",
+        "math": "7.7",
+        "total": "30.9",
+        "std": "0.0",
+        "runs": "[30.9]"
+      }
+    ],
+    "cap_int_score_file": [
+      {
+        "": "mmvet_responses",
+        "know_rec_gen": "17.1",
+        "rec": "68.9",
+        "spat_ocr": "20.0",
+        "spat_math_ocr": "14.3",
+        "spat_rec": "66.7",
+        "ocr": "45.0",
+        "math_ocr": "0.0",
+        "know_rec": "17.8",
+        "spat_rec_gen_ocr": "40.0",
+        "know_rec_gen_ocr": "15.0",
+        "spat_rec_ocr": "14.3",
+        "rec_ocr": "50.0",
+        "spat_know_ocr": "33.3",
+        "spat_know_rec": "0.0",
+        "spat_gen_ocr": "30.0",
+        "spat_rec_math_ocr": "0.0",
+        "total": "30.9",
+        "std": "0.0",
+        "runs": "[30.9]"
+      }
+    ]
+  }
+}

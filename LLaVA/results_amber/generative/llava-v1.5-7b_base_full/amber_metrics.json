@@ -1,0 +1,20 @@
+{
+  "official_command": [
+    "/venv/ha/bin/python",
+    "inference.py",
+    "--inference_data",
+    "/workspace/Hallucination-Attribution/LLaVA/results_amber/generative/llava-v1.5-7b_base_full/amber_responses.json",
+    "--evaluation_type",
+    "g"
+  ],
+  "official_cwd": "/workspace/Hallucination-Attribution/third_party/AMBER",
+  "returncode": 0,
+  "stdout_file": "./results_amber/generative/llava-v1.5-7b_base_full/amber_official_eval_stdout.txt",
+  "stderr_file": "./results_amber/generative/llava-v1.5-7b_base_full/amber_official_eval_stderr.txt",
+  "metrics": {
+    "CHAIR": 7.8,
+    "Cover": 51.8,
+    "Hal": 35.7,
+    "Cog": 4.3
+  }
+}

@@ -3,10 +3,7 @@ from pycocoevalcap.bleu.bleu import Bleu
 from pycocoevalcap.meteor.meteor import Meteor
 from pycocoevalcap.rouge.rouge import Rouge
 from pycocoevalcap.cider.cider import Cider
-from pycocoevalcap.spice.spice import Spice
-import pandas as pd
 import json
-import sys
 import argparse
 
 class Evaluator:
@@ -14,9 +11,11 @@ class Evaluator:
         self.tokenizer = PTBTokenizer()
         self.scorer_list = [
             (Cider(), "CIDEr"),
-            (Bleu(), "Bleu")
+            (Meteor(), "METEOR"),
+            (Bleu(), "Bleu"),
         ]
         self.evaluation_report = {}
+        self.metric_errors = {}
 
     def do_the_thing(self, golden_reference, candidate_reference):
         golden_reference = self.tokenizer.tokenize(golden_reference)
@@ -26,7 +25,12 @@ class Evaluator:
         # I have no idea why they name like these
         # The original code: https://github.com/salaniz/pycocoevalcap/blob/a24f74c408c918f1f4ec34e9514bc8a76ce41ffd/eval.py#L51-L63
         for scorer, method in self.scorer_list:
-            score, scores = scorer.compute_score(golden_reference, candidate_reference)
+            try:
+                score, scores = scorer.compute_score(golden_reference, candidate_reference)
+            except Exception as exc:
+                key = "/".join(method) if isinstance(method, list) else method
+                self.metric_errors[key] = f"{type(exc).__name__}: {exc}"
+                continue
             if isinstance(method, list):
                 for sc, scs, m in zip(score, scores, method):
                     self.evaluation_report[m] = sc

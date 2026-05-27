@@ -1,0 +1,142 @@
+{
+  "model_path": "liuhaotian/llava-v1.5-7b",
+  "model_base": null,
+  "image_folder": "../dataset/mm-vet/images",
+  "mmvet_root": "../third_party/MM-Vet",
+  "mmvet_data_root": "../dataset/mm-vet",
+  "question_file": "../dataset/mm-vet/mm-vet.json",
+  "answers_file": "./results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full/answers.jsonl",
+  "response_file": "./results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full/mmvet_responses.json",
+  "eval_payload_file": "./results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full/mmvet_eval_payload.json",
+  "local_summary_file": "",
+  "metrics_file": "./results_mmvet/llava-v1.5-7b_adhh_file_k20_tau0.4_full/mmvet_metrics.json",
+  "official_stdout_file": "",
+  "official_stderr_file": "",
+  "run_official_eval": true,
+  "strict_official_eval": false,
+  "official_eval_command": "",
+  "official_gpt_model": "gpt-4-0613",
+  "official_num_run": 1,
+  "skip_generation": false,
+  "conv_mode": "vicuna_v1",
+  "system_prompt": "You are a helpful assistant. Generate a short and concise response to the following image text pair.",
+  "temperature": 0.0,
+  "top_p": null,
+  "num_beams": 1,
+  "max_new_tokens": 256,
+  "seed": 42,
+  "num_workers": 4,
+  "max_samples": 0,
+  "prompt_template": "{question}",
+  "prompt_style": "exact",
+  "resume": false,
+  "infer_image_start": true,
+  "intervention": "adhh",
+  "topk": 20,
+  "head_source": "file",
+  "head_file": "./results/coco/llava-v1.5-7b_base_original_qa_n3000/identify_attention_head/attribution_result.json",
+  "head_score_key": "score",
+  "head_score_normalize": "minmax",
+  "use_head_scores": false,
+  "text_threshold": 0.4,
+  "text_scale": 0.5,
+  "gate_floor": 0.0,
+  "gate_midpoint": 0.35,
+  "gate_sharpness": 12.0,
+  "gate_score_power": 1.0,
+  "gate_hard_threshold": 0.65,
+  "proto_strength": 1.0,
+  "proto_ratio_power": 1.0,
+  "proto_score_power": 1.0,
+  "proto_context_mode": "ratio_exp",
+  "proto_tau": 0.9,
+  "proto_exp_sharpness": 6.0,
+  "log_intervention_stats": true,
+  "intervention_stats_file": "",
+  "selected_heads": [
+    [
+      31,
+      27
+    ],
+    [
+      31,
+      4
+    ],
+    [
+      15,
+      11
+    ],
+    [
+      29,
+      15
+    ],
+    [
+      31,
+      0
+    ],
+    [
+      13,
+      8
+    ],
+    [
+      14,
+      20
+    ],
+    [
+      31,
+      13
+    ],
+    [
+      16,
+      9
+    ],
+    [
+      28,
+      25
+    ],
+    [
+      29,
+      10
+    ],
+    [
+      19,
+      16
+    ],
+    [
+      16,
+      3
+    ],
+    [
+      23,
+      18
+    ],
+    [
+      17,
+      28
+    ],
+    [
+      26,
+      4
+    ],
+    [
+      15,
+      25
+    ],
+    [
+      19,
+      18
+    ],
+    [
+      19,
+      27
+    ],
+    [
+      20,
+      20
+    ]
+  ],
+  "num_questions": 218,
+  "num_pending_questions": 218,
+  "resumed_records": 0,
+  "resume_info": {}
+}

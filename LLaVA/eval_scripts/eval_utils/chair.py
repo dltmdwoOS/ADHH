@@ -459,6 +459,9 @@ class CHAIR(object):
         num_hallucinated_caps = 0.0
         hallucinated_word_count = 0.0
         coco_word_count = 0.0
+        object_tp_total = 0.0
+        object_pred_total = 0.0
+        object_gt_total = 0.0
 
         output = {"sentences": []}
 
@@ -505,21 +508,44 @@ class CHAIR(object):
             if hallucinated:
                 num_hallucinated_caps += 1
 
+            generated_objects = set(node_words)
+            correct_objects = generated_objects.intersection(gt_objects)
+            object_precision = len(correct_objects) / float(len(generated_objects)) if generated_objects else 0.0
+            object_recall = len(correct_objects) / float(len(gt_objects)) if gt_objects else 0.0
+            object_f1 = 0.0
+            if object_precision + object_recall > 0:
+                object_f1 = 2 * object_precision * object_recall / (object_precision + object_recall)
+
+            object_tp_total += len(correct_objects)
+            object_pred_total += len(generated_objects)
+            object_gt_total += len(gt_objects)
+
             cap_dict["metrics"]["CHAIRs"] = int(hallucinated)
             cap_dict["metrics"]["CHAIRi"] = 0.0
             if len(words) > 0:
                 cap_dict["metrics"]["CHAIRi"] = len(
                     cap_dict["mscoco_hallucinated_words"]
                 ) / float(len(words))
+            cap_dict["metrics"]["ObjectPrecision"] = object_precision
+            cap_dict["metrics"]["ObjectRecall"] = object_recall
+            cap_dict["metrics"]["ObjectF1"] = object_f1
 
             output["sentences"].append(cap_dict)
 
         chair_s = num_hallucinated_caps / num_caps
         chair_i = hallucinated_word_count / coco_word_count
+        object_precision = object_tp_total / object_pred_total if object_pred_total > 0 else 0.0
+        object_recall = object_tp_total / object_gt_total if object_gt_total > 0 else 0.0
+        object_f1 = 0.0
+        if object_precision + object_recall > 0:
+            object_f1 = 2 * object_precision * object_recall / (object_precision + object_recall)
 
         output["overall_metrics"] = {
             "CHAIRs": chair_s,
             "CHAIRi": chair_i,
+            "ObjectPrecision": object_precision,
+            "ObjectRecall": object_recall,
+            "ObjectF1": object_f1,
         }
 
         return output
