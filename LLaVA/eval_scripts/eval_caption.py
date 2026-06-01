@@ -162,6 +162,58 @@ class TxtAttnTraceStats:
             },
         }
 
+
+def load_completed_question_ids(answers_file):
+    completed = set()
+    if not answers_file or not os.path.exists(answers_file):
+        return completed
+    with open(answers_file, "r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                item = json.loads(line)
+            except json.JSONDecodeError:
+                print(f"[resume] ignoring malformed answer line {line_no} in {answers_file}")
+                continue
+            question_id = item.get("question_id")
+            if question_id is not None:
+                completed.add(int(question_id))
+    return completed
+
+
+def buckets_from_txtattn_record(record):
+    buckets = ["all"]
+    if record.get("is_object"):
+        buckets.append("object")
+    if record.get("is_hallucinated"):
+        buckets.append("hallucinated")
+    if record.get("is_non_hallucinated"):
+        buckets.append("non_hallucinated")
+    return buckets
+
+
+def replay_txtattn_trace(trace_file, stats):
+    if not trace_file or not os.path.exists(trace_file):
+        return 0
+    num_records = 0
+    with open(trace_file, "r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                print(f"[resume] ignoring malformed trace line {line_no} in {trace_file}")
+                continue
+            head_values = record.get("head_values", [])
+            if head_values:
+                stats.update(buckets_from_txtattn_record(record), head_values)
+                num_records += 1
+    return num_records
+
 def split_list(lst, n):
     chunk_size = math.ceil(len(lst) / n)
     return [lst[i : i + chunk_size] for i in range(0, len(lst), chunk_size)]
@@ -876,7 +928,16 @@ def eval_model(args):
 
     answers_file = os.path.expanduser(args.answers_file)
     os.makedirs(os.path.dirname(answers_file), exist_ok=True)
-    ans_file = open(answers_file, "w", encoding="utf-8")
+    total_chunk_questions = len(questions)
+    completed_question_ids = load_completed_question_ids(answers_file) if args.resume else set()
+    if completed_question_ids:
+        questions = [q for q in questions if int(q["question_id"]) not in completed_question_ids]
+        print(
+            f"[resume] {len(completed_question_ids)} completed answers found in {answers_file}; "
+            f"running {len(questions)}/{total_chunk_questions} remaining questions for chunk {args.chunk_idx}."
+        )
+    ans_mode = "a" if args.resume else "w"
+    ans_file = open(answers_file, ans_mode, encoding="utf-8")
 
     if "plain" in model_name and "finetune" not in model_name.lower() and "mmtag" not in args.conv_mode:
         args.conv_mode = args.conv_mode + "_mmtag"
@@ -906,9 +967,15 @@ def eval_model(args):
         txtattn_output_file = args.txtattn_output_file or os.path.join(
             os.path.dirname(answers_file), "txtattn_trace.jsonl"
         )
-        os.makedirs(os.path.dirname(os.path.expanduser(txtattn_output_file)), exist_ok=True)
-        txtattn_writer = open(os.path.expanduser(txtattn_output_file), "w", encoding="utf-8")
+        txtattn_output_file = os.path.expanduser(txtattn_output_file)
+        os.makedirs(os.path.dirname(txtattn_output_file), exist_ok=True)
         txtattn_stats = TxtAttnTraceStats(txtattn_heads)
+        if args.resume:
+            replayed_records = replay_txtattn_trace(txtattn_output_file, txtattn_stats)
+            if replayed_records:
+                print(f"[resume] replayed {replayed_records} existing txt-attn trace records from {txtattn_output_file}")
+        txtattn_mode = "a" if args.resume else "w"
+        txtattn_writer = open(txtattn_output_file, txtattn_mode, encoding="utf-8")
         print(f"[txtattn] tracing {len(txtattn_heads)} heads -> {txtattn_output_file}")
 
     sample_dir = None
@@ -1079,6 +1146,7 @@ if __name__ == "__main__":
     parser.add_argument("--annotation-dir", type=str, default="")
     parser.add_argument("--question-file", type=str, default="question.jsonl")
     parser.add_argument("--answers-file", type=str, default="answers.jsonl")
+    parser.add_argument("--resume", action="store_true", help="Append to existing outputs and skip question_ids already present in --answers-file.")
     parser.add_argument("--dataset", type=str, default="coco")
     parser.add_argument("--output-path", type=str, default="")
     parser.add_argument("--conv-mode", type=str, default="llava_v1")
@@ -1088,7 +1156,7 @@ if __name__ == "__main__":
     parser.add_argument("--top_p", type=float, default=None)
     parser.add_argument("--num_beams", type=int, default=1)
     parser.add_argument("--num_samples", type=int, default=500)
-    parser.add_argument("--max_new_tokens", type=int, default=256)
+    parser.add_argument("--max_new_tokens", type=int, default=128)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--num-workers", type=int, default=4)
     parser.add_argument("--prompt-text", type=str, default="Please describe this image in detail.")

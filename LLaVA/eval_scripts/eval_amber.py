@@ -26,6 +26,7 @@ from llava.utils import disable_torch_init
 from eval_scripts.eval_caption_dynamic import (
     attach_intervention_config,
     finalize_intervention_stats,
+    maybe_merge_resume_intervention_stats,
 )
 
 
@@ -273,11 +274,6 @@ def save_intervention_stats(model, args):
         "topk": args.topk,
         "text_threshold": args.text_threshold,
         "text_scale": args.text_scale,
-        "gate_floor": args.gate_floor,
-        "gate_midpoint": args.gate_midpoint,
-        "gate_sharpness": args.gate_sharpness,
-        "gate_score_power": args.gate_score_power,
-        "gate_hard_threshold": args.gate_hard_threshold,
         "dynamic_strength": args.dynamic_strength,
         "dynamic_ratio_power": args.dynamic_ratio_power,
         "dynamic_score_power": args.dynamic_score_power,
@@ -292,7 +288,9 @@ def save_intervention_stats(model, args):
     out_file = args.intervention_stats_file or os.path.join(
         os.path.dirname(os.path.expanduser(args.answers_file)), "intervention_stats.json"
     )
-    with open(os.path.expanduser(out_file), "w", encoding="utf-8") as f:
+    out_file = os.path.expanduser(out_file)
+    stats = maybe_merge_resume_intervention_stats(stats, out_file, args)
+    with open(out_file, "w", encoding="utf-8") as f:
         json.dump(stats, f, indent=2, ensure_ascii=False)
 
 
@@ -431,7 +429,7 @@ def build_parser():
     parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--top_p", type=float, default=None)
     parser.add_argument("--num_beams", type=int, default=1)
-    parser.add_argument("--max_new_tokens", type=int, default=256)
+    parser.add_argument("--max_new_tokens", type=int, default=128)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--num-workers", type=int, default=4)
     parser.add_argument("--max-samples", type=int, default=0)
@@ -445,16 +443,11 @@ def build_parser():
     parser.add_argument("--head-source", type=str, default="default", choices=["default", "file"])
     parser.add_argument("--head-file", type=str, default="")
     parser.add_argument("--head-score-key", type=str, default="score")
-    parser.add_argument("--head-score-normalize", type=str, default="minmax", choices=["minmax", "raw", "logminmax", "rank_percentile"])
+    parser.add_argument("--head-score-normalize", type=str, default="minmax", choices=["minmax", "raw", "logminmax"])
     parser.add_argument("--use-head-scores", action="store_true")
 
     parser.add_argument("--text-threshold", type=float, default=0.4)
     parser.add_argument("--text-scale", type=float, default=0.5)
-    parser.add_argument("--gate-floor", type=float, default=0.0)
-    parser.add_argument("--gate-midpoint", type=float, default=0.35)
-    parser.add_argument("--gate-sharpness", type=float, default=12.0)
-    parser.add_argument("--gate-score-power", type=float, default=1.0)
-    parser.add_argument("--gate-hard-threshold", type=float, default=0.65)
 
     parser.add_argument("--dynamic-strength", type=float, default=1.0)
     parser.add_argument("--dynamic-ratio-power", type=float, default=1.0)
@@ -462,6 +455,7 @@ def build_parser():
     parser.add_argument("--dynamic-context-mode", type=str, default="ratio_exp", choices=["text_exp", "ratio_exp", "ratio_power", "text_power"])
     parser.add_argument("--dynamic-tau", type=float, default=0.9)
     parser.add_argument("--dynamic-exp-sharpness", type=float, default=6.0)
+    parser.add_argument("--dynamic-redistribute", type=str, default="renorm", choices=["renorm", "system", "system_only", "vision", "vision_only"])
 
     parser.add_argument("--log-intervention-stats", action="store_true")
     parser.add_argument("--intervention-stats-file", type=str, default="")

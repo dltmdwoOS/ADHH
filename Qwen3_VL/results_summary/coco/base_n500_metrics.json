@@ -1,0 +1,20 @@
+{
+  "model": "qwen2.5-vl-7b",
+  "method": "base",
+  "source_file": "Qwen3_VL/results_base/coco/qwen2.5-vl-7b_base_n500/captions_eval_results.json",
+  "overall_metrics": {
+    "CHAIRs": 0.282,
+    "CHAIRi": 0.08420175072947061,
+    "ObjectPrecision": 0.8515625,
+    "ObjectRecall": 0.5913200723327305,
+    "ObjectF1": 0.6979722518676628,
+    "Bleu": [
+      0.1534767252817044,
+      0.09043557356631725,
+      0.04918526789613831,
+      0.02687398167708935
+    ],
+    "CIDEr": 1.0511314371711635e-34,
+    "METEOR": 0.15347887445340863
+  }
+}

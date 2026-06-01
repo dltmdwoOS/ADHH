@@ -1,0 +1,20 @@
+{
+  "model": "llava-v1.5-7b",
+  "method": "base",
+  "source_file": "LLaVA/results/coco/llava-v1.5-7b_base_n500/captions_eval_results.json",
+  "overall_metrics": {
+    "CHAIRs": 0.546,
+    "CHAIRi": 0.1475782038345106,
+    "ObjectPrecision": 0.7354910714285714,
+    "ObjectRecall": 0.7944544906570223,
+    "ObjectF1": 0.7638365691104028,
+    "Bleu": [
+      0.1742675270317367,
+      0.11678568397657361,
+      0.0719807085968905,
+      0.044270444970220736
+    ],
+    "CIDEr": 5.4360065934140155e-09,
+    "METEOR": 0.1790136066275879
+  }
+}

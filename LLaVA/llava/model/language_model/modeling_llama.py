@@ -450,8 +450,83 @@ def _heads_for_layer(config, layer_idx):
     return out
 
 
+def _maybe_reset_ds_rho_trace(config, layer_idx):
+    if getattr(config, "intervention", "none") != "ds":
+        return
+    if not bool(getattr(config, "log_ds_rho", False)):
+        return
+    if int(layer_idx or 0) == 0:
+        config._ds_rho_trace_buffer = []
+
+
+def _append_ds_rho_trace(config, layer_idx, head_idx, head_score, text_mass, img_mass, ratio, risk, selected_mask):
+    if not bool(getattr(config, "log_ds_rho", False)):
+        return
+
+    buffer = getattr(config, "_ds_rho_trace_buffer", None)
+    if buffer is None:
+        buffer = []
+        config._ds_rho_trace_buffer = buffer
+
+    text_f = text_mass.detach().float().reshape(-1)
+    img_f = img_mass.detach().float().reshape(-1)
+    ratio_f = ratio.detach().float().reshape(-1)
+    risk_f = risk.detach().float().reshape(-1)
+    selected_f = selected_mask.detach().float().reshape(-1)
+
+    for batch_idx in range(risk_f.numel()):
+        buffer.append({
+            "layer": int(layer_idx),
+            "head": int(head_idx),
+            "batch_idx": int(batch_idx),
+            "rho": float(risk_f[batch_idx].item()),
+            "selected": bool(selected_f[batch_idx].item() >= 0.5),
+            "ratio": float(ratio_f[batch_idx].item()),
+            "text_mass": float(text_f[batch_idx].item()),
+            "img_mass": float(img_f[batch_idx].item()),
+            "head_score": float(head_score),
+        })
+
+
+def _maybe_print_ds_rho_trace(config, layer_idx):
+    if getattr(config, "intervention", "none") != "ds":
+        return
+    if not bool(getattr(config, "log_ds_rho", False)):
+        return
+
+    num_layers = getattr(config, "num_hidden_layers", None)
+    if num_layers is not None and int(layer_idx) != int(num_layers) - 1:
+        return
+
+    step = int(getattr(config, "_ds_rho_trace_step", 0))
+    every = max(int(getattr(config, "ds_rho_log_every", 1)), 1)
+    buffer = list(getattr(config, "_ds_rho_trace_buffer", []) or [])
+
+    if step % every == 0 and buffer:
+        topn = max(int(getattr(config, "ds_rho_log_topn", 10)), 1)
+        threshold = float(getattr(config, "ds_threshold", 0.25))
+        top = sorted(buffer, key=lambda x: x["rho"], reverse=True)[:topn]
+        selected = [x for x in buffer if x["selected"]]
+        mean_rho = sum(x["rho"] for x in buffer) / max(len(buffer), 1)
+        mean_selected_rho = sum(x["rho"] for x in selected) / max(len(selected), 1) if selected else 0.0
+        payload = {
+            "sample_id": getattr(config, "ds_trace_sample_id", None),
+            "step": step,
+            "candidate_heads": len(buffer),
+            "selected_heads": len(selected),
+            "threshold": threshold,
+            "mean_rho": mean_rho,
+            "mean_selected_rho": mean_selected_rho,
+            "top": top,
+        }
+        print("[DS_RHO] " + json.dumps(payload, ensure_ascii=False), flush=True)
+
+    config._ds_rho_trace_step = step + 1
+    config._ds_rho_trace_buffer = []
+
+
 def _maybe_reset_dynamic_trace(config, layer_idx):
-    if getattr(config, "intervention", "none") != "dynamic":
+    if getattr(config, "intervention", "none") not in ("dynamic", "dynamic"):
         return
     if not bool(getattr(config, "log_dynamic_trace", False)):
         return
@@ -497,7 +572,7 @@ def _append_dynamic_trace(
 
 
 def _maybe_print_dynamic_trace(config, layer_idx):
-    if getattr(config, "intervention", "none") != "dynamic":
+    if getattr(config, "intervention", "none") not in ("dynamic", "dynamic"):
         return
     if not bool(getattr(config, "log_dynamic_trace", False)):
         return
@@ -525,6 +600,7 @@ def _maybe_print_dynamic_trace(config, layer_idx):
             "strong_heads": len(strong),
             "near_zero_heads": len(near_zero),
             "context_mode": getattr(config, "dynamic_context_mode", None),
+            "redistribute": getattr(config, "dynamic_redistribute", "renorm"),
             "strength": float(getattr(config, "dynamic_strength", 1.0)),
             "tau": float(getattr(config, "dynamic_tau", 0.5)),
             "exp_sharpness": float(getattr(config, "dynamic_exp_sharpness", 6.0)),
@@ -589,22 +665,26 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
     if mode == "none":
         return attn_weights
 
+    _maybe_reset_ds_rho_trace(config, layer_idx)
     _maybe_reset_dynamic_trace(config, layer_idx)
 
     selected = _heads_for_layer(config, layer_idx)
     if not selected:
+        _maybe_print_ds_rho_trace(config, layer_idx)
         _maybe_print_dynamic_trace(config, layer_idx)
         return attn_weights
 
     img_start = getattr(config, "img_start_pos", None)
     img_length = getattr(config, "img_length", None)
     if img_start is None or img_length is None:
+        _maybe_print_ds_rho_trace(config, layer_idx)
         _maybe_print_dynamic_trace(config, layer_idx)
         return attn_weights
 
     img_end = img_start + img_length
     text_start = img_end
     if text_start >= attn_weights.size(-1):
+        _maybe_print_ds_rho_trace(config, layer_idx)
         _maybe_print_dynamic_trace(config, layer_idx)
         return attn_weights
 
@@ -616,6 +696,10 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
     dynamic_tau = float(getattr(config, "dynamic_tau", 0.5))
     dynamic_exp_sharpness = float(getattr(config, "dynamic_exp_sharpness", 6.0))
     dynamic_context_mode = getattr(config, "dynamic_context_mode", "text_exp")
+    dynamic_redistribute = getattr(config, "dynamic_redistribute", "renorm")
+    ds_threshold = float(getattr(config, "ds_threshold", 0.25))
+    ds_max_suppression = float(getattr(config, "ds_max_suppression", 0.8))
+    ds_ramp_power = float(getattr(config, "ds_ramp_power", 1.0))
     use_head_scores = bool(getattr(config, "use_head_scores", False))
 
     eps = 1e-6
@@ -668,14 +752,54 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
                 ratio, context_source, context_prior, suppression, scale
             )
 
+        elif mode in ("ds", "ds_soft"):
+            img_mass = attn_weights[:, head, -1, img_start:img_end].sum(dim=-1)
+            ratio = (text_mass / (text_mass + img_mass + eps)).clamp(0, 1)
+            score_prior = min(max(float(head_score), 0.0), 1.0)
+            risk = (score_prior * ratio).clamp(0, 1)
+            selected_mask = (risk >= ds_threshold).to(attn_weights.dtype)
+
+            if mode == "ds":
+                suppression = selected_mask
+                ramp = selected_mask
+            else:
+                ramp_span = max(1.0 - ds_threshold, eps)
+                ramp = ((risk - ds_threshold) / ramp_span).clamp(0, 1)
+                ramp = ramp.pow(max(ds_ramp_power, 0.0))
+                suppression = ramp.clamp(0, 1)
+
+            scale = 1.0 - suppression
+            stat_extra = {
+                "img_mass": img_mass,
+                "ratio": ratio,
+                "risk": risk,
+                "selected": selected_mask,
+                "ds_ramp": ramp,
+                "ds_suppression": suppression,
+            }
+            _append_ds_rho_trace(config, layer_idx, head, head_score, text_mass, img_mass, ratio, risk, selected_mask)
+
         else:
             continue
 
         _update_intervention_stats(config, layer_idx, head, mode, scale, text_mass, head_score, stat_extra)
-        attn_weights[:, head, -1, text_start:] = text_slice * scale.unsqueeze(-1)
+
+        scaled_text_slice = text_slice * scale.unsqueeze(-1)
+        if mode == "dynamic" and dynamic_redistribute in ("system", "system_only", "vision", "vision_only"):
+            removed_mass = (text_mass - scaled_text_slice.sum(dim=-1)).clamp_min(0.0)
+            if dynamic_redistribute in ("system", "system_only") and img_start > 0:
+                target_slice = attn_weights[:, head, -1, :img_start]
+                target_mass = target_slice.sum(dim=-1).clamp_min(eps)
+                attn_weights[:, head, -1, :img_start] = target_slice + target_slice * (removed_mass / target_mass).unsqueeze(-1)
+            elif dynamic_redistribute in ("vision", "vision_only") and img_end > img_start:
+                target_slice = attn_weights[:, head, -1, img_start:img_end]
+                target_mass = target_slice.sum(dim=-1).clamp_min(eps)
+                attn_weights[:, head, -1, img_start:img_end] = target_slice + target_slice * (removed_mass / target_mass).unsqueeze(-1)
+        attn_weights[:, head, -1, text_start:] = scaled_text_slice
 
     denom = attn_weights[:, :, -1, :].sum(dim=-1, keepdim=True).clamp_min(eps)
     attn_weights[:, :, -1, :] = attn_weights[:, :, -1, :] / denom
+    _maybe_print_ds_rho_trace(config, layer_idx)
     _maybe_print_dynamic_trace(config, layer_idx)
     return attn_weights
 
@@ -827,7 +951,7 @@ class LlamaAttention(nn.Module):
 
         # upcast attention to fp32
         attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
-        # unified intervention: none | adhh | soft | dynamic
+        # unified intervention: none | adhh | soft | dynamic | dynamic | ds
         attn_weights = _apply_text_intervention(attn_weights, self.config, self.layer_idx)
 
         attn_weights = nn.functional.dropout(attn_weights, p=self.attention_dropout, training=self.training)

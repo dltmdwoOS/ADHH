@@ -1,0 +1,20 @@
+{
+  "model": "llama3-llava-next-8b",
+  "method": "dynamic",
+  "source_file": "LLaVA_NeXT/results_l9_l16/coco/llama3-llava-next-8b_dynamic_ratio_exp_file_k100_s1.0_q8.0_tau0.9_p1.0_n500_global__itext_all__C_toi_HminusG/captions_eval_results.json",
+  "overall_metrics": {
+    "CHAIRs": 0.198,
+    "CHAIRi": 0.050169109357384445,
+    "ObjectPrecision": 0.8962693357597816,
+    "ObjectRecall": 0.5937311633514165,
+    "ObjectF1": 0.7142857142857143,
+    "Bleu": [
+      0.1460978965991715,
+      0.09363863621053864,
+      0.055322146983777916,
+      0.03241697273714297
+    ],
+    "CIDEr": 2.037957750063855e-12,
+    "METEOR": 0.15675935639978084
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "model": "qwen2.5-vl-7b",
+  "method": "dynamic",
+  "source_file": "Qwen3_VL/results_l9_l21/coco/qwen2.5-vl-7b_dynamic_ratio_exp_file_k100_s1.0_q8.0_tau0.9_p1.0_n500_global__itext_all__C_toi_HminusG/captions_eval_results.json",
+  "overall_metrics": {
+    "CHAIRs": 0.152,
+    "CHAIRi": 0.08075511274252753,
+    "ObjectPrecision": 0.8932038834951457,
+    "ObjectRecall": 0.4436407474382158,
+    "ObjectF1": 0.5928312525171163,
+    "Bleu": [
+      0.17541448088197675,
+      0.10259516173498888,
+      0.05710614798800176,
+      0.032071881875045775
+    ],
+    "CIDEr": 0.039184428885428106,
+    "METEOR": 0.15909581720801452
+  }
+}

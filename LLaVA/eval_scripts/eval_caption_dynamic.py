@@ -26,6 +26,26 @@ from llava.utils import disable_torch_init
 from llava.mm_utils import tokenizer_image_token, process_images, get_model_name_from_path
 
 
+
+def load_completed_question_ids(answers_file):
+    completed = set()
+    if not answers_file or not os.path.exists(answers_file):
+        return completed
+    with open(answers_file, "r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                item = json.loads(line)
+            except json.JSONDecodeError:
+                print(f"[resume] ignoring malformed answer line {line_no} in {answers_file}")
+                continue
+            question_id = item.get("question_id")
+            if question_id is not None:
+                completed.add(int(question_id))
+    return completed
+
 def split_list(lst, n):
     chunk_size = math.ceil(len(lst) / n)
     return [lst[i:i + chunk_size] for i in range(0, len(lst), chunk_size)]
@@ -342,17 +362,13 @@ def attach_intervention_config(model, args):
 
     model.config.text_threshold = args.text_threshold
     model.config.text_scale = args.text_scale
-    model.config.gate_floor = args.gate_floor
-    model.config.gate_midpoint = args.gate_midpoint
-    model.config.gate_sharpness = args.gate_sharpness
-    model.config.gate_score_power = args.gate_score_power
-    model.config.gate_hard_threshold = args.gate_hard_threshold
     model.config.dynamic_strength = args.dynamic_strength
     model.config.dynamic_ratio_power = args.dynamic_ratio_power
     model.config.dynamic_score_power = args.dynamic_score_power
     model.config.dynamic_tau = args.dynamic_tau
     model.config.dynamic_exp_sharpness = args.dynamic_exp_sharpness
     model.config.dynamic_context_mode = args.dynamic_context_mode
+    model.config.dynamic_redistribute = args.dynamic_redistribute
     model.config.use_head_scores = args.use_head_scores
     model.config.log_dynamic_trace = args.log_dynamic_trace
     model.config.dynamic_trace_topn = args.dynamic_trace_topn
@@ -373,22 +389,19 @@ def save_run_config(args, head_cfg):
         "dataset": args.dataset,
         "num_samples": args.num_samples,
         "seed": args.seed,
+        "resume": args.resume,
         "intervention": args.intervention,
         "head_source": args.head_source,
         "topk": args.topk,
         "text_threshold": args.text_threshold,
         "text_scale": args.text_scale,
-        "gate_floor": args.gate_floor,
-        "gate_midpoint": args.gate_midpoint,
-        "gate_sharpness": args.gate_sharpness,
-        "gate_score_power": args.gate_score_power,
-        "gate_hard_threshold": args.gate_hard_threshold,
         "dynamic_strength": args.dynamic_strength,
         "dynamic_ratio_power": args.dynamic_ratio_power,
         "dynamic_score_power": args.dynamic_score_power,
         "dynamic_tau": args.dynamic_tau,
         "dynamic_exp_sharpness": args.dynamic_exp_sharpness,
         "dynamic_context_mode": args.dynamic_context_mode,
+        "dynamic_redistribute": args.dynamic_redistribute,
         "use_head_scores": args.use_head_scores,
         "head_file": args.head_file,
         "head_score_key": args.head_score_key,
@@ -436,40 +449,133 @@ def finalize_intervention_stats(raw_stats):
     }
 
 
+def total_intervention_count(stats):
+    total = 0
+    for bucket in (stats or {}).get("overall", {}).values():
+        total += int(bucket.get("count", 0))
+    return total
+
+
+def merge_intervention_bucket(old, new):
+    old = old or {}
+    new = new or {}
+    old_count = int(old.get("count", 0))
+    new_count = int(new.get("count", 0))
+    total_count = old_count + new_count
+    if total_count <= 0:
+        return dict(new or old)
+
+    merged = {}
+    for key in sorted(set(old) | set(new)):
+        if key == "count":
+            continue
+        old_value = old.get(key)
+        new_value = new.get(key)
+
+        if key.startswith("mean_"):
+            old_sum = float(old_value or 0.0) * old_count
+            new_sum = float(new_value or 0.0) * new_count
+            merged[key] = (old_sum + new_sum) / total_count
+        elif key.startswith("min_"):
+            vals = [v for v in (old_value, new_value) if v is not None]
+            if vals:
+                merged[key] = min(vals)
+        elif key.startswith("max_"):
+            vals = [v for v in (old_value, new_value) if v is not None]
+            if vals:
+                merged[key] = max(vals)
+        elif key in ("scaled_count", "near_zero_count"):
+            merged[key] = int(old_value or 0) + int(new_value or 0)
+        elif key in ("scaled_rate", "near_zero_rate"):
+            continue
+        elif new_value is not None:
+            merged[key] = new_value
+        elif old_value is not None:
+            merged[key] = old_value
+
+    merged["count"] = total_count
+    merged["scaled_rate"] = merged.get("scaled_count", 0) / total_count
+    merged["near_zero_rate"] = merged.get("near_zero_count", 0) / total_count
+    return merged
+
+
+def merge_intervention_stats(old_stats, new_stats):
+    if not old_stats:
+        return new_stats
+    if not new_stats or total_intervention_count(new_stats) == 0:
+        return old_stats
+
+    merged = {"overall": {}, "by_head": {}}
+    for section in ("overall", "by_head"):
+        old_section = old_stats.get(section, {})
+        new_section = new_stats.get(section, {})
+        for key in sorted(set(old_section) | set(new_section)):
+            merged[section][key] = merge_intervention_bucket(
+                old_section.get(key),
+                new_section.get(key),
+            )
+    return merged
+
+
+def maybe_merge_resume_intervention_stats(stats, out_file, args):
+    if not getattr(args, "resume", False) or not os.path.exists(out_file):
+        return stats
+
+    if total_intervention_count(stats) == 0:
+        print(f"[resume] no new intervention stats; keeping existing stats at {out_file}")
+        with open(out_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    with open(out_file, "r", encoding="utf-8") as f:
+        existing = json.load(f)
+    existing_count = total_intervention_count(existing)
+    new_count = total_intervention_count(stats)
+    merged = merge_intervention_stats(existing, stats)
+    merged_count = total_intervention_count(merged)
+    print(
+        f"[resume] merged intervention stats at {out_file}: "
+        f"existing_count={existing_count}, new_count={new_count}, "
+        f"merged_count={merged_count}"
+    )
+    return merged
+
+
 def save_intervention_stats(model, args):
     if not args.log_intervention_stats:
         return
 
+    out_file = args.intervention_stats_file
+    if not out_file:
+        out_file = os.path.join(os.path.dirname(os.path.expanduser(args.answers_file)), "intervention_stats.json")
+    out_file = os.path.expanduser(out_file)
+    if getattr(args, "resume", False) and getattr(args, "_resume_remaining_questions", 1) == 0 and os.path.exists(out_file):
+        print(f"[resume] no remaining questions; keeping existing intervention stats at {out_file}")
+        return
+
     stats = finalize_intervention_stats(getattr(model.config, "_intervention_stats", None))
+    stats = maybe_merge_resume_intervention_stats(stats, out_file, args)
     stats["config"] = {
         "intervention": args.intervention,
         "topk": args.topk,
         "text_threshold": args.text_threshold,
-        "gate_floor": args.gate_floor,
-        "gate_midpoint": args.gate_midpoint,
-        "gate_sharpness": args.gate_sharpness,
-        "gate_score_power": args.gate_score_power,
-        "gate_hard_threshold": args.gate_hard_threshold,
         "dynamic_strength": args.dynamic_strength,
         "dynamic_ratio_power": args.dynamic_ratio_power,
         "dynamic_score_power": args.dynamic_score_power,
         "dynamic_tau": args.dynamic_tau,
         "dynamic_exp_sharpness": args.dynamic_exp_sharpness,
         "dynamic_context_mode": args.dynamic_context_mode,
+        "dynamic_redistribute": args.dynamic_redistribute,
         "use_head_scores": args.use_head_scores,
         "head_file": args.head_file,
         "head_score_key": args.head_score_key,
         "head_score_normalize": args.head_score_normalize,
+        "resume": args.resume,
         "log_dynamic_trace": args.log_dynamic_trace,
         "dynamic_trace_topn": args.dynamic_trace_topn,
         "dynamic_trace_every": args.dynamic_trace_every,
     }
 
-    out_file = args.intervention_stats_file
-    if not out_file:
-        out_file = os.path.join(os.path.dirname(os.path.expanduser(args.answers_file)), "intervention_stats.json")
-
-    with open(os.path.expanduser(out_file), "w") as f:
+    with open(out_file, "w") as f:
         json.dump(stats, f, indent=2)
 
 
@@ -487,7 +593,17 @@ def eval_model(args):
 
     answers_file = os.path.expanduser(args.answers_file)
     os.makedirs(os.path.dirname(answers_file), exist_ok=True)
-    ans_file = open(answers_file, "w")
+    total_chunk_questions = len(questions)
+    completed_question_ids = load_completed_question_ids(answers_file) if args.resume else set()
+    if completed_question_ids:
+        questions = [q for q in questions if int(q["question_id"]) not in completed_question_ids]
+        print(
+            f"[resume] {len(completed_question_ids)} completed answers found in {answers_file}; "
+            f"running {len(questions)}/{total_chunk_questions} remaining questions for chunk {args.chunk_idx}."
+        )
+    args._resume_remaining_questions = len(questions)
+    ans_mode = "a" if args.resume else "w"
+    ans_file = open(answers_file, ans_mode, encoding="utf-8")
 
     if 'plain' in model_name and 'finetune' not in model_name.lower() and 'mmtag' not in args.conv_mode:
         args.conv_mode = args.conv_mode + '_mmtag'
@@ -563,6 +679,7 @@ if __name__ == "__main__":
     parser.add_argument("--caption_file_path", type=str, default="")
     parser.add_argument("--question-file", type=str, default="question.jsonl")
     parser.add_argument("--answers-file", type=str, default="answers.jsonl")
+    parser.add_argument("--resume", action="store_true", help="Append to an existing answers file and skip already completed question_ids.")
     parser.add_argument("--dataset", type=str, default="coco")
     parser.add_argument("--output-path", type=str, default="")
     parser.add_argument("--conv-mode", type=str, default="llava_v1")
@@ -586,12 +703,15 @@ if __name__ == "__main__":
                         help="Power applied to text/(text+image) reliance; 0 disables context modulation.")
     parser.add_argument("--dynamic-score-power", type=float, default=1.0,
                         help="Power applied to normalized offline head scores.")
-    parser.add_argument("--dynamic-context-mode", type=str, default="text_exp",
+    parser.add_argument("--dynamic-context-mode", type=str, default="ratio_exp",
                         choices=["text_exp", "ratio_exp", "ratio_power", "text_power"])
     parser.add_argument("--dynamic-tau", type=float, default=0.5,
                         help="Center point for exponential dynamic context modes.")
     parser.add_argument("--dynamic-exp-sharpness", type=float, default=6.0,
                         help="Sharpness k in exp(k * (context - tau)).")
+    parser.add_argument("--dynamic-redistribute", type=str, default="renorm",
+                        choices=["renorm", "system", "system_only", "vision", "vision_only"],
+                        help="Where to explicitly move the text attention mass removed by dynamic. renorm keeps the original row-renormalization behavior.")
     parser.add_argument("--use-head-scores", action="store_true")
     parser.add_argument("--log-dynamic-trace", action="store_true",
                         help="Print per-decoding-step dynamic suppression summaries to decode.log.")
@@ -604,11 +724,6 @@ if __name__ == "__main__":
     parser.add_argument("--text-threshold", type=float, default=0.0, help=argparse.SUPPRESS)
     parser.add_argument("--text-scale", type=float, default=0.5, help=argparse.SUPPRESS)
     parser.add_argument("--gate-scale", type=float, default=1.0, help=argparse.SUPPRESS)
-    parser.add_argument("--gate-floor", type=float, default=0.0, help=argparse.SUPPRESS)
-    parser.add_argument("--gate-midpoint", type=float, default=0.0, help=argparse.SUPPRESS)
-    parser.add_argument("--gate-sharpness", type=float, default=0.0, help=argparse.SUPPRESS)
-    parser.add_argument("--gate-score-power", type=float, default=1.0, help=argparse.SUPPRESS)
-    parser.add_argument("--gate-hard-threshold", type=float, default=0.0, help=argparse.SUPPRESS)
 
     parser.add_argument("--sample-id-file", type=str, default="")
     parser.add_argument("--save-sample-id-file", type=str, default="")

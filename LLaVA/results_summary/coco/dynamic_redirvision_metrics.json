@@ -1,0 +1,20 @@
+{
+  "model": "llava-v1.5-7b",
+  "method": "dynamic",
+  "source_file": "LLaVA/results_l9_l16/coco/llava-v1.5-7b_dynamic_ratio_exp_file_k100_s1.0_q8.0_tau0.90_p1.0_redirvision_n500_global__itext_all__C_toi_HminusG/captions_eval_results.json",
+  "overall_metrics": {
+    "CHAIRs": 0.242,
+    "CHAIRi": 0.06654170571696345,
+    "ObjectPrecision": 0.8704866562009419,
+    "ObjectRecall": 0.6684749849306811,
+    "ObjectF1": 0.7562222979884079,
+    "Bleu": [
+      0.22618186203569027,
+      0.1587080521237676,
+      0.10463397628677738,
+      0.06831223758158889
+    ],
+    "CIDEr": 0.002277181594133167,
+    "METEOR": 0.21228959562557592
+  }
+}

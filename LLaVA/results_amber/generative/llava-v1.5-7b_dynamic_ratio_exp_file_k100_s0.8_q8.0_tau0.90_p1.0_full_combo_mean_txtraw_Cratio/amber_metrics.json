@@ -1,0 +1,20 @@
+{
+  "official_command": [
+    "/venv/ha/bin/python",
+    "inference.py",
+    "--inference_data",
+    "/workspace/Hallucination-Attribution/LLaVA/results_amber/generative/llava-v1.5-7b_dynamic_ratio_exp_file_k100_s0.8_q8.0_tau0.90_p1.0_full_combo_mean_txtraw_Cratio/amber_responses.json",
+    "--evaluation_type",
+    "g"
+  ],
+  "official_cwd": "/workspace/Hallucination-Attribution/third_party/AMBER",
+  "returncode": 0,
+  "stdout_file": "./results_amber/generative/llava-v1.5-7b_dynamic_ratio_exp_file_k100_s0.8_q8.0_tau0.90_p1.0_full_combo_mean_txtraw_Cratio/amber_official_eval_stdout.txt",
+  "stderr_file": "./results_amber/generative/llava-v1.5-7b_dynamic_ratio_exp_file_k100_s0.8_q8.0_tau0.90_p1.0_full_combo_mean_txtraw_Cratio/amber_official_eval_stderr.txt",
+  "metrics": {
+    "CHAIR": 6.1,
+    "Cover": 48.4,
+    "Hal": 25.5,
+    "Cog": 2.4
+  }
+}

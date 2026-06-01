@@ -62,7 +62,7 @@ CUDA_VISIBLE_DEVICES="${gpu}" python -m eval_scripts.eval_mmvet \
   --system-prompt "${system_prompt}" \
   --seed "${seed}" \
   --num-workers 4 \
-  --max_new_tokens 256 \
+  --max_new_tokens 128 \
   --max-samples "${max_samples}" \
   --prompt-style "${prompt_style}" \
   --prompt-template "${prompt_template}" \

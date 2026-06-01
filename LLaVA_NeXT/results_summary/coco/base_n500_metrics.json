@@ -1,0 +1,20 @@
+{
+  "model": "llama3-llava-next-8b",
+  "method": "base",
+  "source_file": "LLaVA_NeXT/results_base/coco/llama3-llava-next-8b_base_n500/captions_eval_results.json",
+  "overall_metrics": {
+    "CHAIRs": 0.248,
+    "CHAIRi": 0.08074534161490683,
+    "ObjectPrecision": 0.8679750223015165,
+    "ObjectRecall": 0.5864978902953587,
+    "ObjectF1": 0.7000000000000001,
+    "Bleu": [
+      0.1415733702774527,
+      0.08426669254117466,
+      0.04295431715074551,
+      0.021728122710451398
+    ],
+    "CIDEr": 5.338336034668548e-29,
+    "METEOR": 0.14631581700010843
+  }
+}

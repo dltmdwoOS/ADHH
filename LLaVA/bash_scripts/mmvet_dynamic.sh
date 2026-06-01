@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export OPENAI_API_KEY="${OPENAI_API_KEY:-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}"
 model_name=${MODEL_NAME:-llava-v1.5-7b}
 model_path=${MODEL_PATH:-liuhaotian/llava-v1.5-7b}
 mmvet_root=${MMVET_ROOT:-../third_party/MM-Vet}
@@ -22,9 +23,9 @@ fi
 # default | file
 head_source=${HEAD_SOURCE:-file}
 # txt_attn_raw_all | combo_mean_txtraw_Cratio | C_txt_img_ratio_hall_minus_nonhall
-head_score_key=${HEAD_SCORE_KEY:-global__itext_all__C_toi_HminusG}
-head_file=${HEAD_FILE:-./results/coco/llava-v1.5-7b_base_original_qa_n3000/surrogate_hh_scores/surrogate_score_zoo/ranked_heads_${head_score_key}.json}
-head_score_normalize=${HEAD_SCORE_NORMALIZE:-rank_percentile}
+head_score_key=${HEAD_SCORE_KEY:-combo_mean_txtraw_Cratio}
+head_file=${HEAD_FILE:-./results/coco/llava-v1.5-7b_base_original_qa_n3000/surrogate_hh_scores/surrogate_score_zoo_l12_l31/ranked_heads_${head_score_key}.json}
+head_score_normalize=${HEAD_SCORE_NORMALIZE:-raw}
 use_head_scores=${USE_HEAD_SCORES:-true}
 
 # Current dynamic default: ratio-conditioned exponential suppression.
@@ -103,7 +104,7 @@ run_job() {
     --system-prompt "${system_prompt}" \
     --seed "${seed}" \
     --num-workers 4 \
-    --max_new_tokens 256 \
+    --max_new_tokens 128 \
     --max-samples "${max_samples}" \
     --prompt-style "${prompt_style}" \
     --prompt-template "${prompt_template}" \

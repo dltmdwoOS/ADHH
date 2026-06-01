@@ -44,7 +44,7 @@ CUDA_VISIBLE_DEVICES="${gpu}" python -m eval_scripts.eval_amber \
   --conv-mode vicuna_v1 \
   --seed "${seed}" \
   --num-workers 4 \
-  --max_new_tokens 256 \
+  --max_new_tokens 128 \
   --max-samples "${max_samples}" \
   --intervention none \
   "${official_args[@]}" \

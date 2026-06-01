@@ -1,0 +1,20 @@
+{
+  "model": "llava-v1.5-7b",
+  "method": "adhh",
+  "source_file": "LLaVA/results/coco/llava-v1.5-7b_adhh_file_k20_tau0.4_n500_real/captions_eval_results.json",
+  "overall_metrics": {
+    "CHAIRs": 0.366,
+    "CHAIRi": 0.09637714816535067,
+    "ObjectPrecision": 0.8173970783532537,
+    "ObjectRecall": 0.7420132610006027,
+    "ObjectF1": 0.7778830963665088,
+    "Bleu": [
+      0.17384560843746846,
+      0.12034093478351086,
+      0.07686637741821074,
+      0.04850973904989881
+    ],
+    "CIDEr": 1.4407445066532938e-10,
+    "METEOR": 0.17871456088748394
+  }
+}

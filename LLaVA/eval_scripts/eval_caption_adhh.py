@@ -335,11 +335,6 @@ def attach_intervention_config(model, args):
 
     model.config.text_threshold = args.text_threshold
     model.config.text_scale = args.text_scale
-    model.config.gate_floor = args.gate_floor
-    model.config.gate_midpoint = args.gate_midpoint
-    model.config.gate_sharpness = args.gate_sharpness
-    model.config.gate_score_power = args.gate_score_power
-    model.config.gate_hard_threshold = args.gate_hard_threshold
     model.config.use_head_scores = args.use_head_scores
 
     # backward compatibility
@@ -360,11 +355,6 @@ def save_run_config(args, head_cfg):
         "topk": args.topk,
         "text_threshold": args.text_threshold,
         "text_scale": args.text_scale,
-        "gate_floor": args.gate_floor,
-        "gate_midpoint": args.gate_midpoint,
-        "gate_sharpness": args.gate_sharpness,
-        "gate_score_power": args.gate_score_power,
-        "gate_hard_threshold": args.gate_hard_threshold,
         "use_head_scores": args.use_head_scores,
         "head_file": args.head_file,
         "head_score_key": args.head_score_key,
@@ -418,11 +408,6 @@ def save_intervention_stats(model, args):
         "intervention": args.intervention,
         "topk": args.topk,
         "text_threshold": args.text_threshold,
-        "gate_floor": args.gate_floor,
-        "gate_midpoint": args.gate_midpoint,
-        "gate_sharpness": args.gate_sharpness,
-        "gate_score_power": args.gate_score_power,
-        "gate_hard_threshold": args.gate_hard_threshold,
         "use_head_scores": args.use_head_scores,
         "head_file": args.head_file,
         "head_score_key": args.head_score_key,
@@ -542,12 +527,6 @@ if __name__ == "__main__":
 
     parser.add_argument("--text-threshold", type=float, default=0.4)
     parser.add_argument("--text-scale", type=float, default=0.5)
-    parser.add_argument("--gate-scale", type=float, default=1.0, help=argparse.SUPPRESS)
-    parser.add_argument("--gate-floor", type=float, default=0.25)
-    parser.add_argument("--gate-midpoint", type=float, default=0.35)
-    parser.add_argument("--gate-sharpness", type=float, default=12.0)
-    parser.add_argument("--gate-score-power", type=float, default=1.0)
-    parser.add_argument("--gate-hard-threshold", type=float, default=0.65)
     parser.add_argument("--use-head-scores", action="store_true")
 
     parser.add_argument("--sample-id-file", type=str, default="")

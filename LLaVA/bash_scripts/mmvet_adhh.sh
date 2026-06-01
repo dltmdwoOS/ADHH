@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export OPENAI_API_KEY="${OPENAI_API_KEY:-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}"
 model_name=${MODEL_NAME:-llava-v1.5-7b}
 model_path=${MODEL_PATH:-liuhaotian/llava-v1.5-7b}
 mmvet_root=${MMVET_ROOT:-../third_party/MM-Vet}
@@ -75,7 +76,7 @@ CUDA_VISIBLE_DEVICES="${gpu}" python -m eval_scripts.eval_mmvet \
   --system-prompt "${system_prompt}" \
   --seed "${seed}" \
   --num-workers 4 \
-  --max_new_tokens 256 \
+  --max_new_tokens 128 \
   --max-samples "${max_samples}" \
   --prompt-style "${prompt_style}" \
   --prompt-template "${prompt_template}" \

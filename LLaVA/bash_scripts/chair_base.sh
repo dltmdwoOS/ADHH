@@ -13,8 +13,8 @@ data_path=../dataset
 num_samples=${NUM_SAMPLES:-500}
 result_path=./results/$dataset/${model_name}_base_n${num_samples}_txtattn
 analysis_path=$result_path/analysis
-txtattn_head_file=${TXTATTN_HEAD_FILE:-./results/coco/llava-v1.5-7b_base_original_qa_n3000/surrogate_hh_scores/ranked_heads_combo_mean_txtraw_Cratio.json}
-txtattn_topk=${TXTATTN_TOPK:-100}
+txtattn_head_file=${TXTATTN_HEAD_FILE:-./results/coco/llava-v1.5-7b_base_original_qa_n3000/surrogate_hh_scores/candidate_heads_l12_l31.json}
+txtattn_topk=${TXTATTN_TOPK:-0}
 
 mkdir -p "$result_path" "$analysis_path"
 
@@ -30,7 +30,7 @@ CUDA_VISIBLE_DEVICES='0' python -m eval_scripts.eval_caption \
     --conv-mode vicuna_v1 \
     --num_samples "$num_samples" \
     --save-sample-ids "$result_path/sample_ids.json" \
-    --max_new_tokens 256 \
+    --max_new_tokens 128 \
     --enable-attention-analysis \
     --enable-txtattn-trace \
     --txtattn-head-file "$txtattn_head_file" \
