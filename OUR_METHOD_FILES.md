@@ -59,6 +59,23 @@ Key files:
 
 Compact metrics and the selected head pool are under `Qwen3_VL/results_summary/`.
 
+## VILA Port
+
+`ADHH/VILA/` contains the minimal overlay files needed to reproduce the same dynamic head-suppression workflow on VILA, without vendoring the full upstream VILA repository.
+
+Key files:
+
+- `eval_scripts/eval_caption.py`: base captioning plus text-attention trace collection for VILA prompts/spans.
+- `eval_scripts/eval_caption_base.py`: base COCO/CHAIR decoding entrypoint.
+- `eval_scripts/eval_caption_dynamic.py`: dynamic intervention evaluation. For VILA, the attention intervention is applied by monkey-patching HuggingFace `LlamaAttention.forward` at runtime rather than by editing VILA's model class directly.
+- `eval_scripts/compute_surrogate_score_zoo.py`, `build_layer_surrogate_combos.py`, `filter_txtattn_summary.py`, `summarize_txtattn_trace.py`, and `estimate_dynamic_tau.py`: the same head-pool construction pipeline used by the other model ports.
+- `bash_scripts/decoding_base_with_original_qa.sh`: collects all-head text-attention traces on COCO original-QA samples.
+- `bash_scripts/run_layer_list_dynamic_pipeline.sh`: filters traces to explicit layer lists, builds surrogate head pools, estimates tau, and launches dynamic runs.
+- `bash_scripts/chair_base.sh`: VILA base COCO/CHAIR baseline.
+- `llava/model/language_model/llava_llama.py`: included as a reference copy of the VILA LLaMA wrapper used when the port was tested. The active dynamic hook is still in `eval_caption_dynamic.py`.
+
+The VILA result directories are not copied wholesale. Compact artifacts such as `captions_eval_results.json`, `run_config.json`, `intervention_stats.json`, `dynamic_tau_estimate.json`, and ranked-head JSON files can be copied selectively once final runs are chosen.
+
 ## Head Pool Used By The Current Method
 
 The main score is `global__itext_all__C_toi_HminusG`:

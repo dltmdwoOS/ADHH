@@ -1,0 +1,66 @@
+{
+  "official_command": [
+    "python",
+    "mm-vet_evaluator.py",
+    "--mmvet_path",
+    "/workspace/Hallucination-Attribution/dataset/mm-vet",
+    "--result_file",
+    "/workspace/Hallucination-Attribution/LLaVA/results_mmvet/llava-v1.5-7b_proto_ratio_exp_file_k100_s0.8_q4.0_tau0.90_p1.0_full_combo_mean_txtraw_Cratio/mmvet_responses.json",
+    "--result_path",
+    "/workspace/Hallucination-Attribution/LLaVA/results_mmvet/llava-v1.5-7b_proto_ratio_exp_file_k100_s0.8_q4.0_tau0.90_p1.0_full_combo_mean_txtraw_Cratio",
+    "--gpt_model",
+    "gpt-4-0613",
+    "--num_run",
+    "1"
+  ],
+  "official_cwd": "/workspace/Hallucination-Attribution/third_party/MM-Vet",
+  "returncode": 0,
+  "stdout_file": "./results_mmvet/llava-v1.5-7b_proto_ratio_exp_file_k100_s0.8_q4.0_tau0.90_p1.0_full_combo_mean_txtraw_Cratio/mmvet_official_eval_stdout.txt",
+  "stderr_file": "./results_mmvet/llava-v1.5-7b_proto_ratio_exp_file_k100_s0.8_q4.0_tau0.90_p1.0_full_combo_mean_txtraw_Cratio/mmvet_official_eval_stderr.txt",
+  "metrics_file": "./results_mmvet/llava-v1.5-7b_proto_ratio_exp_file_k100_s0.8_q4.0_tau0.90_p1.0_full_combo_mean_txtraw_Cratio/mmvet_metrics.json",
+  "official_outputs": {
+    "grade_file": "./results_mmvet/llava-v1.5-7b_proto_ratio_exp_file_k100_s0.8_q4.0_tau0.90_p1.0_full_combo_mean_txtraw_Cratio/mmvet_responses_gpt-4-0613-grade-1runs.json",
+    "cap_score_file": "./results_mmvet/llava-v1.5-7b_proto_ratio_exp_file_k100_s0.8_q4.0_tau0.90_p1.0_full_combo_mean_txtraw_Cratio/mmvet_responses_gpt-4-0613-cap-score-1runs.csv",
+    "cap_int_score_file": "./results_mmvet/llava-v1.5-7b_proto_ratio_exp_file_k100_s0.8_q4.0_tau0.90_p1.0_full_combo_mean_txtraw_Cratio/mmvet_responses_gpt-4-0613-cap-int-score-1runs.csv"
+  },
+  "score_tables": {
+    "cap_score_file": [
+      {
+        "": "mmvet_responses",
+        "rec": "35.1",
+        "ocr": "21.7",
+        "know": "18.0",
+        "gen": "19.2",
+        "spat": "28.7",
+        "math": "11.5",
+        "total": "31.1",
+        "std": "0.0",
+        "runs": "[31.1]"
+      }
+    ],
+    "cap_int_score_file": [
+      {
+        "": "mmvet_responses",
+        "know_gen_rec": "18.4",
+        "rec": "70.3",
+        "ocr_spat": "21.9",
+        "ocr_math_spat": "21.4",
+        "spat_rec": "66.7",
+        "ocr": "34.2",
+        "ocr_math": "0.0",
+        "know_rec": "16.7",
+        "ocr_gen_rec_spat": "20.0",
+        "ocr_know_gen_rec": "15.0",
+        "ocr_rec_spat": "14.3",
+        "ocr_rec": "50.0",
+        "ocr_know_spat": "33.3",
+        "spat_know_rec": "0.0",
+        "ocr_gen_spat": "60.0",
+        "ocr_math_rec_spat": "0.0",
+        "total": "31.1",
+        "std": "0.0",
+        "runs": "[31.1]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "summary_file": "./results/coco/qwen2.5-vl-7b_base_original_qa_n500_txtattn_l0_l27_allheads/txtattn_summary.json",
+  "output_dir": "./results/coco/qwen2.5-vl-7b_base_original_qa_n500_txtattn_l0_l27_allheads/surrogate_score_zoo",
+  "num_heads": 784,
+  "num_scores": 31,
+  "note": "These scores are hypothesis-driven surrogate families generated without fitting to any verified top-k HH list."
+}

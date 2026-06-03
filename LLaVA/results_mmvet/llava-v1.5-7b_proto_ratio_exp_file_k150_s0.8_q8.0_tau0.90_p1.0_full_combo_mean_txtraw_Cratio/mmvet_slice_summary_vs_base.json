@@ -1,0 +1,202 @@
+{
+  "overall": {
+    "total": {
+      "count": 218,
+      "score": 26.926605504587158,
+      "delta_vs_baseline": -3.853211009174312
+    }
+  },
+  "by_capability": {
+    "gen": {
+      "count": 80,
+      "score": 12.625,
+      "delta_vs_baseline": -7.875
+    },
+    "know": {
+      "count": 84,
+      "score": 14.523809523809522,
+      "delta_vs_baseline": -3.0952380952380945
+    },
+    "math": {
+      "count": 26,
+      "score": 11.538461538461538,
+      "delta_vs_baseline": 3.8461538461538463
+    },
+    "ocr": {
+      "count": 96,
+      "score": 19.479166666666668,
+      "delta_vs_baseline": -3.229166666666667
+    },
+    "rec": {
+      "count": 150,
+      "score": 28.800000000000004,
+      "delta_vs_baseline": -6.799999999999999
+    },
+    "spat": {
+      "count": 75,
+      "score": 25.333333333333336,
+      "delta_vs_baseline": -1.0666666666666667
+    }
+  },
+  "by_capability_combo": {
+    "gen+know+ocr+rec": {
+      "count": 8,
+      "score": 2.5,
+      "delta_vs_baseline": -16.25
+    },
+    "gen+know+rec": {
+      "count": 62,
+      "score": 15.32258064516129,
+      "delta_vs_baseline": -2.096774193548387
+    },
+    "gen+ocr+rec+spat": {
+      "count": 8,
+      "score": 0.0,
+      "delta_vs_baseline": -45.0
+    },
+    "gen+ocr+spat": {
+      "count": 2,
+      "score": 20.0,
+      "delta_vs_baseline": -4.999999999999999
+    },
+    "know+ocr+spat": {
+      "count": 3,
+      "score": 33.33333333333333,
+      "delta_vs_baseline": 0.0
+    },
+    "know+rec": {
+      "count": 9,
+      "score": 16.666666666666664,
+      "delta_vs_baseline": 0.0
+    },
+    "know+rec+spat": {
+      "count": 2,
+      "score": 0.0,
+      "delta_vs_baseline": 0.0
+    },
+    "math+ocr": {
+      "count": 11,
+      "score": 0.0,
+      "delta_vs_baseline": 0.0
+    },
+    "math+ocr+rec+spat": {
+      "count": 1,
+      "score": 0.0,
+      "delta_vs_baseline": 0.0
+    },
+    "math+ocr+spat": {
+      "count": 14,
+      "score": 21.428571428571427,
+      "delta_vs_baseline": 7.142857142857142
+    },
+    "ocr": {
+      "count": 12,
+      "score": 37.5,
+      "delta_vs_baseline": -8.333333333333332
+    },
+    "ocr+rec": {
+      "count": 4,
+      "score": 50.0,
+      "delta_vs_baseline": 0.0
+    },
+    "ocr+rec+spat": {
+      "count": 7,
+      "score": 14.285714285714285,
+      "delta_vs_baseline": 0.0
+    },
+    "ocr+spat": {
+      "count": 26,
+      "score": 25.384615384615383,
+      "delta_vs_baseline": 7.307692307692307
+    },
+    "rec": {
+      "count": 37,
+      "score": 59.45945945945946,
+      "delta_vs_baseline": -10.81081081081081
+    },
+    "rec+spat": {
+      "count": 12,
+      "score": 58.333333333333336,
+      "delta_vs_baseline": 0.0
+    }
+  },
+  "by_answer_operator": {
+    "and": {
+      "count": 11,
+      "score": 18.181818181818183,
+      "delta_vs_baseline": 9.090909090909092
+    },
+    "or": {
+      "count": 26,
+      "score": 19.230769230769234,
+      "delta_vs_baseline": 7.6923076923076925
+    },
+    "single": {
+      "count": 181,
+      "score": 28.563535911602212,
+      "delta_vs_baseline": -6.298342541436465
+    }
+  },
+  "by_imagesource": {
+    "ChestX-ray14": {
+      "count": 3,
+      "score": 0.0,
+      "delta_vs_baseline": 0.0
+    },
+    "vcr2542": {
+      "count": 1,
+      "score": 0.0,
+      "delta_vs_baseline": 0.0
+    },
+    "vcr2557": {
+      "count": 1,
+      "score": 100.0,
+      "delta_vs_baseline": 30.000000000000004
+    },
+    "vcr2590": {
+      "count": 1,
+      "score": 90.0,
+      "delta_vs_baseline": 0.0
+    },
+    "vcr3005": {
+      "count": 1,
+      "score": 0.0,
+      "delta_vs_baseline": 0.0
+    },
+    "vcr3026": {
+      "count": 1,
+      "score": 100.0,
+      "delta_vs_baseline": 0.0
+    },
+    "vcr3065": {
+      "count": 1,
+      "score": 0.0,
+      "delta_vs_baseline": 0.0
+    },
+    "vcr3076": {
+      "count": 1,
+      "score": 50.0,
+      "delta_vs_baseline": -40.0
+    },
+    "vcr3103": {
+      "count": 1,
+      "score": 100.0,
+      "delta_vs_baseline": 0.0
+    },
+    "vcr3130": {
+      "count": 1,
+      "score": 0.0,
+      "delta_vs_baseline": 0.0
+    },
+    "vcr3180": {
+      "count": 1,
+      "score": 100.0,
+      "delta_vs_baseline": 0.0
+    },
+    "web": {
+      "count": 205,
+      "score": 26.0,
+      "delta_vs_baseline": -4.048780487804878
+    }
+  }
+}

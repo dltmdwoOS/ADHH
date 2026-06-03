@@ -1,0 +1,43 @@
+# Minimal-ish dependency set for CHAIR base captioning with non-PS3 VILA/NVILA models.
+# Install this in a fresh VILA-only Python 3.10 environment, then run:
+#   pip install -e . --no-deps
+# Do not install the full pyproject dependency set for this experiment: ps3-torch
+# currently pins timm==1.0.15 while VILA pins timm==0.9.12.
+
+torch==2.3.0
+torchvision==0.18.0
+transformers==4.46.0
+tokenizers>=0.15.2
+sentencepiece==0.1.99
+shortuuid
+accelerate==0.34.2
+peft>=0.9.0
+bitsandbytes==0.43.2
+pydantic<2,>=1
+markdown2[all]
+numpy==1.26.4
+scikit-learn==1.2.2
+requests
+httpx
+uvicorn
+fastapi
+fire
+seaborn
+einops==0.6.1
+einops-exts==0.0.4
+timm==0.9.12
+openpyxl==3.1.2
+pytorchvideo==0.1.5
+decord2==2.0.0
+datasets==2.16.1
+openai==1.8.0
+webdataset==0.2.86
+nltk==3.3
+pywsd==1.2.4
+opencv-python-headless==4.8.0.76
+s2wrapper @ git+https://github.com/bfshi/scaling_on_scales
+tyro
+loguru
+hydra-core
+pycocotools
+pycocoevalcap

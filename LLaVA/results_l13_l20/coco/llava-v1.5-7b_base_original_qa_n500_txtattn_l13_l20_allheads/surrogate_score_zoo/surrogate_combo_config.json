@@ -1,0 +1,32 @@
+{
+  "summary_file": "./results_l13_l20/coco/llava-v1.5-7b_base_original_qa_n500_txtattn_l13_l20_allheads/txtattn_summary.json",
+  "output_dir": "./results_l13_l20/coco/llava-v1.5-7b_base_original_qa_n500_txtattn_l13_l20_allheads/surrogate_score_zoo",
+  "num_heads": 256,
+  "layers": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "fronts": [
+    "itext_all",
+    "txt_attn_raw_all"
+  ],
+  "backs": [
+    "C_toi_HminusG",
+    "C_logtoi_HminusG",
+    "C_itext_mass_HminusG"
+  ],
+  "selection_methods": [
+    "global",
+    "local",
+    "layerweighted_top5mean_alpha2"
+  ],
+  "num_ranked_files": 12,
+  "overlap_summary": "./results_l13_l20/coco/llava-v1.5-7b_base_original_qa_n500_txtattn_l13_l20_allheads/surrogate_score_zoo/surrogate_combo_overlap_summary.csv",
+  "note": "Layer 12 is absent from the current all-head trace, so each verified set has one unavailable head L12H10."
+}

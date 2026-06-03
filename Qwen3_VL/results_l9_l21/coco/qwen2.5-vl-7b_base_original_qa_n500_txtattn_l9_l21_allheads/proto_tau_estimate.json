@@ -1,0 +1,45 @@
+{
+  "summary_file": "./results_l9_l21/coco/qwen2.5-vl-7b_base_original_qa_n500_txtattn_l9_l21_allheads/txtattn_summary.json",
+  "num_heads": 364,
+  "method": "hallucinated_head_median_ratio",
+  "ratio_definition": "I_text / (I_text + image_attn + eps), computed from per-head bucket means in txtattn_summary.json",
+  "recommended_tau": 0.8,
+  "recommended_tau_str": "0.80",
+  "round_step": 0.05,
+  "round_mode": "floor",
+  "bucket_ratio_stats": {
+    "all": {
+      "mean": 0.7791462641374602,
+      "q25": 0.6557593976783557,
+      "q50": 0.850425030026745,
+      "q75": 0.9641985842029452,
+      "q90": 0.9886953546101978
+    },
+    "object": {
+      "mean": 0.7382776516569322,
+      "q25": 0.5953579719310162,
+      "q50": 0.8043191013525464,
+      "q75": 0.948336271913206,
+      "q90": 0.9834311443872404
+    },
+    "hallucinated": {
+      "mean": 0.7561927974715766,
+      "q25": 0.6214966283213257,
+      "q50": 0.8356379227967868,
+      "q75": 0.9611286735951448,
+      "q90": 0.9893289565884464
+    },
+    "non_hallucinated": {
+      "mean": 0.7367880125530186,
+      "q25": 0.5935905313161886,
+      "q50": 0.8018257164567666,
+      "q75": 0.9474313964404482,
+      "q90": 0.9829765982956126
+    }
+  },
+  "notes": [
+    "This follows the earlier heuristic: choose tau near the hallucinated-object median ratio as the center of the high text-reliance regime.",
+    "The value is rounded conservatively downward by default, matching the previous 0.916 -> 0.90 choice.",
+    "This is not a validation-set hyperparameter search; it is a distributional rule derived from training txt-attn statistics."
+  ]
+}

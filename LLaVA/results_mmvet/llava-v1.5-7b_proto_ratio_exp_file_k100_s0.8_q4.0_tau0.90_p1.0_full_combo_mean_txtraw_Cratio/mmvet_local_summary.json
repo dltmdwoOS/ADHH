@@ -1,0 +1,167 @@
+{
+  "num_records": 218,
+  "capability_counts": {
+    "ocr": 96,
+    "math": 26,
+    "spat": 75,
+    "rec": 150,
+    "know": 84,
+    "gen": 80
+  },
+  "capability_combo_counts": {
+    "math+ocr": 11,
+    "math+ocr+spat": 14,
+    "math+ocr+rec+spat": 1,
+    "rec+spat": 12,
+    "ocr+spat": 26,
+    "ocr+rec+spat": 7,
+    "know+ocr+spat": 3,
+    "ocr+rec": 4,
+    "know+rec+spat": 2,
+    "ocr": 12,
+    "rec": 37,
+    "know+rec": 9,
+    "gen+know+rec": 62,
+    "gen+know+ocr+rec": 8,
+    "gen+ocr+rec+spat": 8,
+    "gen+ocr+spat": 2
+  },
+  "imagesource_counts": {
+    "web": 205,
+    "ChestX-ray14": 3,
+    "vcr2542": 1,
+    "vcr2557": 1,
+    "vcr2590": 1,
+    "vcr3005": 1,
+    "vcr3026": 1,
+    "vcr3065": 1,
+    "vcr3076": 1,
+    "vcr3103": 1,
+    "vcr3130": 1,
+    "vcr3180": 1
+  },
+  "answer_operator_counts": {
+    "and": 11,
+    "or": 26,
+    "single": 181
+  },
+  "generation_length": {
+    "avg_words": 57.12844036697248,
+    "max_words": 222,
+    "min_words": 4
+  },
+  "by_capability": {
+    "ocr": {
+      "count": 96,
+      "max_words": 222,
+      "avg_words": 52.5
+    },
+    "math": {
+      "count": 26,
+      "max_words": 147,
+      "avg_words": 24.307692307692307
+    },
+    "spat": {
+      "count": 75,
+      "max_words": 222,
+      "avg_words": 49.346666666666664
+    },
+    "rec": {
+      "count": 150,
+      "max_words": 222,
+      "avg_words": 66.17333333333333
+    },
+    "know": {
+      "count": 84,
+      "max_words": 221,
+      "avg_words": 89.23809523809524
+    },
+    "gen": {
+      "count": 80,
+      "max_words": 222,
+      "avg_words": 109.3125
+    }
+  },
+  "by_capability_combo": {
+    "math+ocr": {
+      "count": 11,
+      "max_words": 147,
+      "avg_words": 35.63636363636363
+    },
+    "math+ocr+spat": {
+      "count": 14,
+      "max_words": 72,
+      "avg_words": 16.214285714285715
+    },
+    "math+ocr+rec+spat": {
+      "count": 1,
+      "max_words": 13,
+      "avg_words": 13.0
+    },
+    "rec+spat": {
+      "count": 12,
+      "max_words": 31,
+      "avg_words": 12.0
+    },
+    "ocr+spat": {
+      "count": 26,
+      "max_words": 193,
+      "avg_words": 36.73076923076923
+    },
+    "ocr+rec+spat": {
+      "count": 7,
+      "max_words": 82,
+      "avg_words": 27.285714285714285
+    },
+    "know+ocr+spat": {
+      "count": 3,
+      "max_words": 99,
+      "avg_words": 71.0
+    },
+    "ocr+rec": {
+      "count": 4,
+      "max_words": 16,
+      "avg_words": 12.5
+    },
+    "know+rec+spat": {
+      "count": 2,
+      "max_words": 19,
+      "avg_words": 13.5
+    },
+    "ocr": {
+      "count": 12,
+      "max_words": 134,
+      "avg_words": 32.75
+    },
+    "rec": {
+      "count": 37,
+      "max_words": 70,
+      "avg_words": 17.89189189189189
+    },
+    "know+rec": {
+      "count": 9,
+      "max_words": 212,
+      "avg_words": 49.111111111111114
+    },
+    "gen+know+rec": {
+      "count": 62,
+      "max_words": 221,
+      "avg_words": 99.01612903225806
+    },
+    "gen+know+ocr+rec": {
+      "count": 8,
+      "max_words": 102,
+      "avg_words": 84.375
+    },
+    "gen+ocr+rec+spat": {
+      "count": 8,
+      "max_words": 222,
+      "avg_words": 197.875
+    },
+    "gen+ocr+spat": {
+      "count": 2,
+      "max_words": 183,
+      "avg_words": 174.0
+    }
+  }
+}

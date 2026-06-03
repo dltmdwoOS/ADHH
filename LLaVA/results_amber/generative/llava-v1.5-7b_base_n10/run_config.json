@@ -1,0 +1,134 @@
+{
+  "model_path": "liuhaotian/llava-v1.5-7b",
+  "model_base": null,
+  "image_folder": "../dataset/AMBER/images",
+  "amber_root": "../third_party/AMBER",
+  "query_file": "../third_party/AMBER/data/query/query_generative.json",
+  "answers_file": "./results_amber/generative/llava-v1.5-7b_base_n10/answers.jsonl",
+  "response_file": "./results_amber/generative/llava-v1.5-7b_base_n10/amber_responses.json",
+  "metrics_file": "./results_amber/generative/llava-v1.5-7b_base_n10/amber_metrics.json",
+  "official_stdout_file": "",
+  "official_stderr_file": "",
+  "run_official_eval": true,
+  "strict_official_eval": false,
+  "skip_generation": false,
+  "conv_mode": "vicuna_v1",
+  "temperature": 0.0,
+  "top_p": null,
+  "num_beams": 1,
+  "max_new_tokens": 256,
+  "seed": 42,
+  "num_workers": 4,
+  "max_samples": 10,
+  "prompt_template": "{query}",
+  "resume": false,
+  "infer_image_start": true,
+  "intervention": "none",
+  "topk": 20,
+  "head_source": "default",
+  "head_file": "",
+  "head_score_key": "score",
+  "head_score_normalize": "minmax",
+  "use_head_scores": false,
+  "text_threshold": 0.4,
+  "text_scale": 0.5,
+  "gate_floor": 0.0,
+  "gate_midpoint": 0.35,
+  "gate_sharpness": 12.0,
+  "gate_score_power": 1.0,
+  "gate_hard_threshold": 0.65,
+  "proto_strength": 1.0,
+  "proto_ratio_power": 1.0,
+  "proto_score_power": 1.0,
+  "proto_context_mode": "ratio_exp",
+  "proto_tau": 0.9,
+  "proto_exp_sharpness": 6.0,
+  "log_intervention_stats": false,
+  "intervention_stats_file": "",
+  "selected_heads": [
+    [
+      16,
+      29
+    ],
+    [
+      26,
+      9
+    ],
+    [
+      13,
+      31
+    ],
+    [
+      15,
+      10
+    ],
+    [
+      20,
+      12
+    ],
+    [
+      30,
+      9
+    ],
+    [
+      19,
+      18
+    ],
+    [
+      17,
+      0
+    ],
+    [
+      18,
+      9
+    ],
+    [
+      26,
+      28
+    ],
+    [
+      19,
+      27
+    ],
+    [
+      18,
+      26
+    ],
+    [
+      15,
+      25
+    ],
+    [
+      14,
+      16
+    ],
+    [
+      31,
+      26
+    ],
+    [
+      15,
+      24
+    ],
+    [
+      31,
+      3
+    ],
+    [
+      22,
+      20
+    ],
+    [
+      27,
+      29
+    ],
+    [
+      17,
+      28
+    ]
+  ],
+  "num_questions": 10,
+  "num_pending_questions": 10,
+  "resumed_records": 0,
+  "resume_info": {}
+}

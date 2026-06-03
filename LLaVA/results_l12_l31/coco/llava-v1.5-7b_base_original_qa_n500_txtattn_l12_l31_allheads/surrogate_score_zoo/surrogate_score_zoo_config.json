@@ -1,0 +1,7 @@
+{
+  "summary_file": "./results_l12_l31/coco/llava-v1.5-7b_base_original_qa_n500_txtattn_l12_l31_allheads/txtattn_summary.json",
+  "output_dir": "./results_l12_l31/coco/llava-v1.5-7b_base_original_qa_n500_txtattn_l12_l31_allheads/surrogate_score_zoo",
+  "num_heads": 640,
+  "num_scores": 31,
+  "note": "These scores are hypothesis-driven surrogate families generated without fitting to any verified top-k HH list."
+}
