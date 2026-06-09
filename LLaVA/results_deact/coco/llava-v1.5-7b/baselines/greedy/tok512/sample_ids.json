@@ -1,0 +1,2502 @@
+[
+  {
+    "question_id": 230008,
+    "image": "COCO_val2014_000000230008.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 519055,
+    "image": "COCO_val2014_000000519055.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 527447,
+    "image": "COCO_val2014_000000527447.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 153976,
+    "image": "COCO_val2014_000000153976.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 326317,
+    "image": "COCO_val2014_000000326317.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 245447,
+    "image": "COCO_val2014_000000245447.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 359239,
+    "image": "COCO_val2014_000000359239.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 325992,
+    "image": "COCO_val2014_000000325992.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 378098,
+    "image": "COCO_val2014_000000378098.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 74617,
+    "image": "COCO_val2014_000000074617.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 209782,
+    "image": "COCO_val2014_000000209782.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 438024,
+    "image": "COCO_val2014_000000438024.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 320180,
+    "image": "COCO_val2014_000000320180.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 378096,
+    "image": "COCO_val2014_000000378096.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 356424,
+    "image": "COCO_val2014_000000356424.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 206218,
+    "image": "COCO_val2014_000000206218.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 225225,
+    "image": "COCO_val2014_000000225225.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 7281,
+    "image": "COCO_val2014_000000007281.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 525211,
+    "image": "COCO_val2014_000000525211.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 308555,
+    "image": "COCO_val2014_000000308555.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 85543,
+    "image": "COCO_val2014_000000085543.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 12192,
+    "image": "COCO_val2014_000000012192.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 482951,
+    "image": "COCO_val2014_000000482951.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 27982,
+    "image": "COCO_val2014_000000027982.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 51028,
+    "image": "COCO_val2014_000000051028.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 414236,
+    "image": "COCO_val2014_000000414236.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 495578,
+    "image": "COCO_val2014_000000495578.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 109005,
+    "image": "COCO_val2014_000000109005.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 542423,
+    "image": "COCO_val2014_000000542423.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 540642,
+    "image": "COCO_val2014_000000540642.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 78194,
+    "image": "COCO_val2014_000000078194.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 397101,
+    "image": "COCO_val2014_000000397101.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 532503,
+    "image": "COCO_val2014_000000532503.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 189775,
+    "image": "COCO_val2014_000000189775.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 480551,
+    "image": "COCO_val2014_000000480551.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 381213,
+    "image": "COCO_val2014_000000381213.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 458073,
+    "image": "COCO_val2014_000000458073.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 489743,
+    "image": "COCO_val2014_000000489743.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 105552,
+    "image": "COCO_val2014_000000105552.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 338905,
+    "image": "COCO_val2014_000000338905.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 369082,
+    "image": "COCO_val2014_000000369082.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 324155,
+    "image": "COCO_val2014_000000324155.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 462643,
+    "image": "COCO_val2014_000000462643.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 416335,
+    "image": "COCO_val2014_000000416335.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 41633,
+    "image": "COCO_val2014_000000041633.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 156372,
+    "image": "COCO_val2014_000000156372.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 134133,
+    "image": "COCO_val2014_000000134133.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 223554,
+    "image": "COCO_val2014_000000223554.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 101636,
+    "image": "COCO_val2014_000000101636.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 570107,
+    "image": "COCO_val2014_000000570107.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 51157,
+    "image": "COCO_val2014_000000051157.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 462756,
+    "image": "COCO_val2014_000000462756.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 268390,
+    "image": "COCO_val2014_000000268390.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 10928,
+    "image": "COCO_val2014_000000010928.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 38155,
+    "image": "COCO_val2014_000000038155.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 414289,
+    "image": "COCO_val2014_000000414289.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 256973,
+    "image": "COCO_val2014_000000256973.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 473994,
+    "image": "COCO_val2014_000000473994.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 14321,
+    "image": "COCO_val2014_000000014321.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 542487,
+    "image": "COCO_val2014_000000542487.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 96762,
+    "image": "COCO_val2014_000000096762.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 435922,
+    "image": "COCO_val2014_000000435922.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 405534,
+    "image": "COCO_val2014_000000405534.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 540502,
+    "image": "COCO_val2014_000000540502.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 38438,
+    "image": "COCO_val2014_000000038438.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 115749,
+    "image": "COCO_val2014_000000115749.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 312103,
+    "image": "COCO_val2014_000000312103.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 506614,
+    "image": "COCO_val2014_000000506614.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 340047,
+    "image": "COCO_val2014_000000340047.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 563730,
+    "image": "COCO_val2014_000000563730.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 439854,
+    "image": "COCO_val2014_000000439854.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 532963,
+    "image": "COCO_val2014_000000532963.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 27935,
+    "image": "COCO_val2014_000000027935.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 331223,
+    "image": "COCO_val2014_000000331223.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 208808,
+    "image": "COCO_val2014_000000208808.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 518163,
+    "image": "COCO_val2014_000000518163.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 465552,
+    "image": "COCO_val2014_000000465552.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 292188,
+    "image": "COCO_val2014_000000292188.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 113678,
+    "image": "COCO_val2014_000000113678.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 557595,
+    "image": "COCO_val2014_000000557595.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 418854,
+    "image": "COCO_val2014_000000418854.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 536158,
+    "image": "COCO_val2014_000000536158.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 550643,
+    "image": "COCO_val2014_000000550643.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 542782,
+    "image": "COCO_val2014_000000542782.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 435937,
+    "image": "COCO_val2014_000000435937.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 418219,
+    "image": "COCO_val2014_000000418219.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 352234,
+    "image": "COCO_val2014_000000352234.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 298137,
+    "image": "COCO_val2014_000000298137.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 500703,
+    "image": "COCO_val2014_000000500703.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 494182,
+    "image": "COCO_val2014_000000494182.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 278032,
+    "image": "COCO_val2014_000000278032.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 189203,
+    "image": "COCO_val2014_000000189203.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 338041,
+    "image": "COCO_val2014_000000338041.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 426852,
+    "image": "COCO_val2014_000000426852.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 246248,
+    "image": "COCO_val2014_000000246248.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 475484,
+    "image": "COCO_val2014_000000475484.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 270556,
+    "image": "COCO_val2014_000000270556.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 202622,
+    "image": "COCO_val2014_000000202622.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 140231,
+    "image": "COCO_val2014_000000140231.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 403619,
+    "image": "COCO_val2014_000000403619.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 451120,
+    "image": "COCO_val2014_000000451120.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 376123,
+    "image": "COCO_val2014_000000376123.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 497555,
+    "image": "COCO_val2014_000000497555.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 220732,
+    "image": "COCO_val2014_000000220732.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 457907,
+    "image": "COCO_val2014_000000457907.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 148910,
+    "image": "COCO_val2014_000000148910.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 20147,
+    "image": "COCO_val2014_000000020147.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 375440,
+    "image": "COCO_val2014_000000375440.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 400728,
+    "image": "COCO_val2014_000000400728.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 54750,
+    "image": "COCO_val2014_000000054750.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 455225,
+    "image": "COCO_val2014_000000455225.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 419312,
+    "image": "COCO_val2014_000000419312.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 453824,
+    "image": "COCO_val2014_000000453824.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 511844,
+    "image": "COCO_val2014_000000511844.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 201190,
+    "image": "COCO_val2014_000000201190.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 242301,
+    "image": "COCO_val2014_000000242301.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 469609,
+    "image": "COCO_val2014_000000469609.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 137830,
+    "image": "COCO_val2014_000000137830.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 300725,
+    "image": "COCO_val2014_000000300725.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 520301,
+    "image": "COCO_val2014_000000520301.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 424196,
+    "image": "COCO_val2014_000000424196.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 279994,
+    "image": "COCO_val2014_000000279994.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 78288,
+    "image": "COCO_val2014_000000078288.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 319024,
+    "image": "COCO_val2014_000000319024.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 303994,
+    "image": "COCO_val2014_000000303994.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 464006,
+    "image": "COCO_val2014_000000464006.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 10449,
+    "image": "COCO_val2014_000000010449.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 224757,
+    "image": "COCO_val2014_000000224757.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 575222,
+    "image": "COCO_val2014_000000575222.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 264420,
+    "image": "COCO_val2014_000000264420.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 192403,
+    "image": "COCO_val2014_000000192403.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 177375,
+    "image": "COCO_val2014_000000177375.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 23369,
+    "image": "COCO_val2014_000000023369.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 52596,
+    "image": "COCO_val2014_000000052596.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 18073,
+    "image": "COCO_val2014_000000018073.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 341006,
+    "image": "COCO_val2014_000000341006.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 196168,
+    "image": "COCO_val2014_000000196168.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 332654,
+    "image": "COCO_val2014_000000332654.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 253263,
+    "image": "COCO_val2014_000000253263.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 19484,
+    "image": "COCO_val2014_000000019484.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 221390,
+    "image": "COCO_val2014_000000221390.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 199918,
+    "image": "COCO_val2014_000000199918.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 534121,
+    "image": "COCO_val2014_000000534121.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 96832,
+    "image": "COCO_val2014_000000096832.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 421361,
+    "image": "COCO_val2014_000000421361.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 286322,
+    "image": "COCO_val2014_000000286322.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 550707,
+    "image": "COCO_val2014_000000550707.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 40821,
+    "image": "COCO_val2014_000000040821.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 114348,
+    "image": "COCO_val2014_000000114348.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 344222,
+    "image": "COCO_val2014_000000344222.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 57222,
+    "image": "COCO_val2014_000000057222.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 542145,
+    "image": "COCO_val2014_000000542145.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 498806,
+    "image": "COCO_val2014_000000498806.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 465007,
+    "image": "COCO_val2014_000000465007.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 397287,
+    "image": "COCO_val2014_000000397287.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 59108,
+    "image": "COCO_val2014_000000059108.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 18975,
+    "image": "COCO_val2014_000000018975.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 89395,
+    "image": "COCO_val2014_000000089395.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 497514,
+    "image": "COCO_val2014_000000497514.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 125182,
+    "image": "COCO_val2014_000000125182.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 233840,
+    "image": "COCO_val2014_000000233840.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 65394,
+    "image": "COCO_val2014_000000065394.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 13333,
+    "image": "COCO_val2014_000000013333.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 314515,
+    "image": "COCO_val2014_000000314515.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 428178,
+    "image": "COCO_val2014_000000428178.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 189376,
+    "image": "COCO_val2014_000000189376.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 397518,
+    "image": "COCO_val2014_000000397518.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 329614,
+    "image": "COCO_val2014_000000329614.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 176778,
+    "image": "COCO_val2014_000000176778.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 334311,
+    "image": "COCO_val2014_000000334311.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 266151,
+    "image": "COCO_val2014_000000266151.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 280710,
+    "image": "COCO_val2014_000000280710.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 144938,
+    "image": "COCO_val2014_000000144938.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 22563,
+    "image": "COCO_val2014_000000022563.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 471955,
+    "image": "COCO_val2014_000000471955.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 446209,
+    "image": "COCO_val2014_000000446209.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 356906,
+    "image": "COCO_val2014_000000356906.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 146503,
+    "image": "COCO_val2014_000000146503.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 48692,
+    "image": "COCO_val2014_000000048692.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 183387,
+    "image": "COCO_val2014_000000183387.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 498463,
+    "image": "COCO_val2014_000000498463.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 7088,
+    "image": "COCO_val2014_000000007088.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 308295,
+    "image": "COCO_val2014_000000308295.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 576650,
+    "image": "COCO_val2014_000000576650.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 407861,
+    "image": "COCO_val2014_000000407861.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 493720,
+    "image": "COCO_val2014_000000493720.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 177407,
+    "image": "COCO_val2014_000000177407.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 474344,
+    "image": "COCO_val2014_000000474344.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 180283,
+    "image": "COCO_val2014_000000180283.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 210032,
+    "image": "COCO_val2014_000000210032.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 25751,
+    "image": "COCO_val2014_000000025751.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 438059,
+    "image": "COCO_val2014_000000438059.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 2014,
+    "image": "COCO_val2014_000000002014.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 269280,
+    "image": "COCO_val2014_000000269280.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 514254,
+    "image": "COCO_val2014_000000514254.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 459967,
+    "image": "COCO_val2014_000000459967.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 195267,
+    "image": "COCO_val2014_000000195267.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 139530,
+    "image": "COCO_val2014_000000139530.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 149284,
+    "image": "COCO_val2014_000000149284.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 337498,
+    "image": "COCO_val2014_000000337498.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 102671,
+    "image": "COCO_val2014_000000102671.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 137576,
+    "image": "COCO_val2014_000000137576.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 509807,
+    "image": "COCO_val2014_000000509807.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 189103,
+    "image": "COCO_val2014_000000189103.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 123213,
+    "image": "COCO_val2014_000000123213.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 154213,
+    "image": "COCO_val2014_000000154213.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 490275,
+    "image": "COCO_val2014_000000490275.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 126583,
+    "image": "COCO_val2014_000000126583.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 127496,
+    "image": "COCO_val2014_000000127496.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 89781,
+    "image": "COCO_val2014_000000089781.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 534801,
+    "image": "COCO_val2014_000000534801.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 511159,
+    "image": "COCO_val2014_000000511159.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 94563,
+    "image": "COCO_val2014_000000094563.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 22382,
+    "image": "COCO_val2014_000000022382.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 405574,
+    "image": "COCO_val2014_000000405574.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 105220,
+    "image": "COCO_val2014_000000105220.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 578522,
+    "image": "COCO_val2014_000000578522.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 383777,
+    "image": "COCO_val2014_000000383777.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 111054,
+    "image": "COCO_val2014_000000111054.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 192458,
+    "image": "COCO_val2014_000000192458.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 388212,
+    "image": "COCO_val2014_000000388212.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 501062,
+    "image": "COCO_val2014_000000501062.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 269037,
+    "image": "COCO_val2014_000000269037.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 122317,
+    "image": "COCO_val2014_000000122317.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 476279,
+    "image": "COCO_val2014_000000476279.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 552672,
+    "image": "COCO_val2014_000000552672.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 37734,
+    "image": "COCO_val2014_000000037734.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 400975,
+    "image": "COCO_val2014_000000400975.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 217957,
+    "image": "COCO_val2014_000000217957.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 215897,
+    "image": "COCO_val2014_000000215897.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 565597,
+    "image": "COCO_val2014_000000565597.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 155732,
+    "image": "COCO_val2014_000000155732.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 481710,
+    "image": "COCO_val2014_000000481710.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 436883,
+    "image": "COCO_val2014_000000436883.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 113935,
+    "image": "COCO_val2014_000000113935.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 405547,
+    "image": "COCO_val2014_000000405547.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 262162,
+    "image": "COCO_val2014_000000262162.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 494085,
+    "image": "COCO_val2014_000000494085.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 210299,
+    "image": "COCO_val2014_000000210299.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 120648,
+    "image": "COCO_val2014_000000120648.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 269450,
+    "image": "COCO_val2014_000000269450.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 309940,
+    "image": "COCO_val2014_000000309940.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 439630,
+    "image": "COCO_val2014_000000439630.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 475917,
+    "image": "COCO_val2014_000000475917.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 504902,
+    "image": "COCO_val2014_000000504902.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 39811,
+    "image": "COCO_val2014_000000039811.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 296224,
+    "image": "COCO_val2014_000000296224.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 534194,
+    "image": "COCO_val2014_000000534194.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 246252,
+    "image": "COCO_val2014_000000246252.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 385633,
+    "image": "COCO_val2014_000000385633.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 191013,
+    "image": "COCO_val2014_000000191013.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 566576,
+    "image": "COCO_val2014_000000566576.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 54763,
+    "image": "COCO_val2014_000000054763.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 372220,
+    "image": "COCO_val2014_000000372220.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 465591,
+    "image": "COCO_val2014_000000465591.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 345822,
+    "image": "COCO_val2014_000000345822.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 80273,
+    "image": "COCO_val2014_000000080273.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 464144,
+    "image": "COCO_val2014_000000464144.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 70020,
+    "image": "COCO_val2014_000000070020.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 75611,
+    "image": "COCO_val2014_000000075611.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 72052,
+    "image": "COCO_val2014_000000072052.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 291380,
+    "image": "COCO_val2014_000000291380.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 567886,
+    "image": "COCO_val2014_000000567886.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 535313,
+    "image": "COCO_val2014_000000535313.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 495519,
+    "image": "COCO_val2014_000000495519.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 302318,
+    "image": "COCO_val2014_000000302318.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 334170,
+    "image": "COCO_val2014_000000334170.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 548506,
+    "image": "COCO_val2014_000000548506.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 574785,
+    "image": "COCO_val2014_000000574785.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 560463,
+    "image": "COCO_val2014_000000560463.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 510734,
+    "image": "COCO_val2014_000000510734.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 486175,
+    "image": "COCO_val2014_000000486175.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 552947,
+    "image": "COCO_val2014_000000552947.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 179500,
+    "image": "COCO_val2014_000000179500.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 110601,
+    "image": "COCO_val2014_000000110601.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 535467,
+    "image": "COCO_val2014_000000535467.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 90284,
+    "image": "COCO_val2014_000000090284.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 67765,
+    "image": "COCO_val2014_000000067765.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 502414,
+    "image": "COCO_val2014_000000502414.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 81390,
+    "image": "COCO_val2014_000000081390.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 71357,
+    "image": "COCO_val2014_000000071357.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 71215,
+    "image": "COCO_val2014_000000071215.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 488573,
+    "image": "COCO_val2014_000000488573.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 581593,
+    "image": "COCO_val2014_000000581593.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 79689,
+    "image": "COCO_val2014_000000079689.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 469329,
+    "image": "COCO_val2014_000000469329.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 82375,
+    "image": "COCO_val2014_000000082375.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 322791,
+    "image": "COCO_val2014_000000322791.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 183332,
+    "image": "COCO_val2014_000000183332.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 527375,
+    "image": "COCO_val2014_000000527375.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 428769,
+    "image": "COCO_val2014_000000428769.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 204536,
+    "image": "COCO_val2014_000000204536.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 268831,
+    "image": "COCO_val2014_000000268831.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 527578,
+    "image": "COCO_val2014_000000527578.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 581205,
+    "image": "COCO_val2014_000000581205.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 315622,
+    "image": "COCO_val2014_000000315622.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 248400,
+    "image": "COCO_val2014_000000248400.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 521197,
+    "image": "COCO_val2014_000000521197.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 331366,
+    "image": "COCO_val2014_000000331366.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 183973,
+    "image": "COCO_val2014_000000183973.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 176193,
+    "image": "COCO_val2014_000000176193.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 435208,
+    "image": "COCO_val2014_000000435208.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 103255,
+    "image": "COCO_val2014_000000103255.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 34141,
+    "image": "COCO_val2014_000000034141.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 431479,
+    "image": "COCO_val2014_000000431479.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 156195,
+    "image": "COCO_val2014_000000156195.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 220638,
+    "image": "COCO_val2014_000000220638.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 137578,
+    "image": "COCO_val2014_000000137578.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 43613,
+    "image": "COCO_val2014_000000043613.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 474188,
+    "image": "COCO_val2014_000000474188.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 466766,
+    "image": "COCO_val2014_000000466766.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 11260,
+    "image": "COCO_val2014_000000011260.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 491764,
+    "image": "COCO_val2014_000000491764.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 21378,
+    "image": "COCO_val2014_000000021378.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 216083,
+    "image": "COCO_val2014_000000216083.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 453330,
+    "image": "COCO_val2014_000000453330.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 263073,
+    "image": "COCO_val2014_000000263073.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 40881,
+    "image": "COCO_val2014_000000040881.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 488567,
+    "image": "COCO_val2014_000000488567.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 122217,
+    "image": "COCO_val2014_000000122217.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 218752,
+    "image": "COCO_val2014_000000218752.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 456261,
+    "image": "COCO_val2014_000000456261.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 292206,
+    "image": "COCO_val2014_000000292206.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 489313,
+    "image": "COCO_val2014_000000489313.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 190156,
+    "image": "COCO_val2014_000000190156.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 561856,
+    "image": "COCO_val2014_000000561856.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 92187,
+    "image": "COCO_val2014_000000092187.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 306636,
+    "image": "COCO_val2014_000000306636.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 460461,
+    "image": "COCO_val2014_000000460461.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 270215,
+    "image": "COCO_val2014_000000270215.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 203299,
+    "image": "COCO_val2014_000000203299.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 385473,
+    "image": "COCO_val2014_000000385473.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 392659,
+    "image": "COCO_val2014_000000392659.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 326367,
+    "image": "COCO_val2014_000000326367.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 79545,
+    "image": "COCO_val2014_000000079545.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 130645,
+    "image": "COCO_val2014_000000130645.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 545756,
+    "image": "COCO_val2014_000000545756.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 562261,
+    "image": "COCO_val2014_000000562261.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 500211,
+    "image": "COCO_val2014_000000500211.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 166060,
+    "image": "COCO_val2014_000000166060.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 447364,
+    "image": "COCO_val2014_000000447364.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 473215,
+    "image": "COCO_val2014_000000473215.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 5652,
+    "image": "COCO_val2014_000000005652.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 267224,
+    "image": "COCO_val2014_000000267224.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 359020,
+    "image": "COCO_val2014_000000359020.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 397658,
+    "image": "COCO_val2014_000000397658.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 562207,
+    "image": "COCO_val2014_000000562207.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 308358,
+    "image": "COCO_val2014_000000308358.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 548703,
+    "image": "COCO_val2014_000000548703.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 459195,
+    "image": "COCO_val2014_000000459195.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 329030,
+    "image": "COCO_val2014_000000329030.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 85390,
+    "image": "COCO_val2014_000000085390.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 546717,
+    "image": "COCO_val2014_000000546717.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 70460,
+    "image": "COCO_val2014_000000070460.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 516984,
+    "image": "COCO_val2014_000000516984.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 67213,
+    "image": "COCO_val2014_000000067213.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 434693,
+    "image": "COCO_val2014_000000434693.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 566596,
+    "image": "COCO_val2014_000000566596.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 391214,
+    "image": "COCO_val2014_000000391214.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 293804,
+    "image": "COCO_val2014_000000293804.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 158952,
+    "image": "COCO_val2014_000000158952.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 195367,
+    "image": "COCO_val2014_000000195367.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 573622,
+    "image": "COCO_val2014_000000573622.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 240403,
+    "image": "COCO_val2014_000000240403.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 379144,
+    "image": "COCO_val2014_000000379144.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 41773,
+    "image": "COCO_val2014_000000041773.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 82812,
+    "image": "COCO_val2014_000000082812.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 36962,
+    "image": "COCO_val2014_000000036962.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 526342,
+    "image": "COCO_val2014_000000526342.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 216228,
+    "image": "COCO_val2014_000000216228.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 147729,
+    "image": "COCO_val2014_000000147729.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 382111,
+    "image": "COCO_val2014_000000382111.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 321118,
+    "image": "COCO_val2014_000000321118.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 460156,
+    "image": "COCO_val2014_000000460156.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 496887,
+    "image": "COCO_val2014_000000496887.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 409331,
+    "image": "COCO_val2014_000000409331.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 253624,
+    "image": "COCO_val2014_000000253624.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 232085,
+    "image": "COCO_val2014_000000232085.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 239943,
+    "image": "COCO_val2014_000000239943.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 109425,
+    "image": "COCO_val2014_000000109425.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 67959,
+    "image": "COCO_val2014_000000067959.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 417023,
+    "image": "COCO_val2014_000000417023.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 301494,
+    "image": "COCO_val2014_000000301494.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 413295,
+    "image": "COCO_val2014_000000413295.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 432234,
+    "image": "COCO_val2014_000000432234.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 421072,
+    "image": "COCO_val2014_000000421072.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 342479,
+    "image": "COCO_val2014_000000342479.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 358624,
+    "image": "COCO_val2014_000000358624.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 162067,
+    "image": "COCO_val2014_000000162067.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 246124,
+    "image": "COCO_val2014_000000246124.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 278582,
+    "image": "COCO_val2014_000000278582.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 256343,
+    "image": "COCO_val2014_000000256343.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 153445,
+    "image": "COCO_val2014_000000153445.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 284286,
+    "image": "COCO_val2014_000000284286.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 293022,
+    "image": "COCO_val2014_000000293022.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 378147,
+    "image": "COCO_val2014_000000378147.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 118921,
+    "image": "COCO_val2014_000000118921.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 575357,
+    "image": "COCO_val2014_000000575357.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 364596,
+    "image": "COCO_val2014_000000364596.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 577251,
+    "image": "COCO_val2014_000000577251.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 436183,
+    "image": "COCO_val2014_000000436183.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 519815,
+    "image": "COCO_val2014_000000519815.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 10580,
+    "image": "COCO_val2014_000000010580.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 33845,
+    "image": "COCO_val2014_000000033845.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 518836,
+    "image": "COCO_val2014_000000518836.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 286606,
+    "image": "COCO_val2014_000000286606.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 373029,
+    "image": "COCO_val2014_000000373029.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 296907,
+    "image": "COCO_val2014_000000296907.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 342819,
+    "image": "COCO_val2014_000000342819.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 160834,
+    "image": "COCO_val2014_000000160834.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 158999,
+    "image": "COCO_val2014_000000158999.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 165141,
+    "image": "COCO_val2014_000000165141.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 421060,
+    "image": "COCO_val2014_000000421060.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 230212,
+    "image": "COCO_val2014_000000230212.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 427986,
+    "image": "COCO_val2014_000000427986.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 442456,
+    "image": "COCO_val2014_000000442456.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 26363,
+    "image": "COCO_val2014_000000026363.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 386707,
+    "image": "COCO_val2014_000000386707.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 128058,
+    "image": "COCO_val2014_000000128058.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 449856,
+    "image": "COCO_val2014_000000449856.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 373768,
+    "image": "COCO_val2014_000000373768.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 253575,
+    "image": "COCO_val2014_000000253575.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 500878,
+    "image": "COCO_val2014_000000500878.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 343769,
+    "image": "COCO_val2014_000000343769.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 410589,
+    "image": "COCO_val2014_000000410589.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 48196,
+    "image": "COCO_val2014_000000048196.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 132067,
+    "image": "COCO_val2014_000000132067.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 442223,
+    "image": "COCO_val2014_000000442223.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 556966,
+    "image": "COCO_val2014_000000556966.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 324436,
+    "image": "COCO_val2014_000000324436.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 52386,
+    "image": "COCO_val2014_000000052386.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 13220,
+    "image": "COCO_val2014_000000013220.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 163041,
+    "image": "COCO_val2014_000000163041.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 399205,
+    "image": "COCO_val2014_000000399205.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 471567,
+    "image": "COCO_val2014_000000471567.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 545564,
+    "image": "COCO_val2014_000000545564.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 109045,
+    "image": "COCO_val2014_000000109045.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 88031,
+    "image": "COCO_val2014_000000088031.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 551963,
+    "image": "COCO_val2014_000000551963.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 419119,
+    "image": "COCO_val2014_000000419119.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 34464,
+    "image": "COCO_val2014_000000034464.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 195204,
+    "image": "COCO_val2014_000000195204.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 222788,
+    "image": "COCO_val2014_000000222788.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 370013,
+    "image": "COCO_val2014_000000370013.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 174284,
+    "image": "COCO_val2014_000000174284.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 210221,
+    "image": "COCO_val2014_000000210221.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 369533,
+    "image": "COCO_val2014_000000369533.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 191577,
+    "image": "COCO_val2014_000000191577.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 559665,
+    "image": "COCO_val2014_000000559665.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 533378,
+    "image": "COCO_val2014_000000533378.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 64889,
+    "image": "COCO_val2014_000000064889.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 297676,
+    "image": "COCO_val2014_000000297676.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 412094,
+    "image": "COCO_val2014_000000412094.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 557357,
+    "image": "COCO_val2014_000000557357.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 344314,
+    "image": "COCO_val2014_000000344314.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 430546,
+    "image": "COCO_val2014_000000430546.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 373140,
+    "image": "COCO_val2014_000000373140.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 38666,
+    "image": "COCO_val2014_000000038666.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 227845,
+    "image": "COCO_val2014_000000227845.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 248069,
+    "image": "COCO_val2014_000000248069.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 313811,
+    "image": "COCO_val2014_000000313811.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 163155,
+    "image": "COCO_val2014_000000163155.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 351463,
+    "image": "COCO_val2014_000000351463.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 135604,
+    "image": "COCO_val2014_000000135604.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 336628,
+    "image": "COCO_val2014_000000336628.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 130839,
+    "image": "COCO_val2014_000000130839.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 469652,
+    "image": "COCO_val2014_000000469652.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 35940,
+    "image": "COCO_val2014_000000035940.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 404738,
+    "image": "COCO_val2014_000000404738.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 261665,
+    "image": "COCO_val2014_000000261665.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 346759,
+    "image": "COCO_val2014_000000346759.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 389197,
+    "image": "COCO_val2014_000000389197.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 141508,
+    "image": "COCO_val2014_000000141508.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 110138,
+    "image": "COCO_val2014_000000110138.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 208748,
+    "image": "COCO_val2014_000000208748.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 509811,
+    "image": "COCO_val2014_000000509811.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 113588,
+    "image": "COCO_val2014_000000113588.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 121633,
+    "image": "COCO_val2014_000000121633.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 190690,
+    "image": "COCO_val2014_000000190690.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 340508,
+    "image": "COCO_val2014_000000340508.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 528011,
+    "image": "COCO_val2014_000000528011.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 432309,
+    "image": "COCO_val2014_000000432309.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 368510,
+    "image": "COCO_val2014_000000368510.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 61658,
+    "image": "COCO_val2014_000000061658.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 449594,
+    "image": "COCO_val2014_000000449594.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 183204,
+    "image": "COCO_val2014_000000183204.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 448211,
+    "image": "COCO_val2014_000000448211.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 459645,
+    "image": "COCO_val2014_000000459645.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 510864,
+    "image": "COCO_val2014_000000510864.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 157955,
+    "image": "COCO_val2014_000000157955.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 458632,
+    "image": "COCO_val2014_000000458632.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 309424,
+    "image": "COCO_val2014_000000309424.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 299573,
+    "image": "COCO_val2014_000000299573.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 340594,
+    "image": "COCO_val2014_000000340594.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 377155,
+    "image": "COCO_val2014_000000377155.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 48281,
+    "image": "COCO_val2014_000000048281.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 366406,
+    "image": "COCO_val2014_000000366406.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 553669,
+    "image": "COCO_val2014_000000553669.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 335340,
+    "image": "COCO_val2014_000000335340.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 14029,
+    "image": "COCO_val2014_000000014029.jpg",
+    "prompt": "Please describe this image in detail."
+  }
+]

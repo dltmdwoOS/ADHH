@@ -526,7 +526,7 @@ def _maybe_print_ds_rho_trace(config, layer_idx):
 
 
 def _maybe_reset_dynamic_trace(config, layer_idx):
-    if getattr(config, "intervention", "none") not in ("dynamic", "dynamic"):
+    if getattr(config, "intervention", "none") not in ("dynamic", "late_boost", "linear", "exp", "threshold_exp", "center_exp", "linear_tail_exp"):
         return
     if not bool(getattr(config, "log_dynamic_trace", False)):
         return
@@ -572,7 +572,7 @@ def _append_dynamic_trace(
 
 
 def _maybe_print_dynamic_trace(config, layer_idx):
-    if getattr(config, "intervention", "none") not in ("dynamic", "dynamic"):
+    if getattr(config, "intervention", "none") not in ("dynamic", "late_boost", "linear", "exp", "threshold_exp", "center_exp", "linear_tail_exp"):
         return
     if not bool(getattr(config, "log_dynamic_trace", False)):
         return
@@ -603,6 +603,11 @@ def _maybe_print_dynamic_trace(config, layer_idx):
             "redistribute": getattr(config, "dynamic_redistribute", "renorm"),
             "strength": float(getattr(config, "dynamic_strength", 1.0)),
             "tau": float(getattr(config, "dynamic_tau", 0.5)),
+            "late_boost_start": int(getattr(config, "dynamic_late_boost_start", -1)),
+            "late_boost_end": int(getattr(config, "dynamic_late_boost_end", 128)),
+            "late_boost_mode": getattr(config, "dynamic_late_boost_mode", "linear"),
+            "late_tau": float(getattr(config, "dynamic_late_tau", -1.0)),
+            "effective_tau": float(getattr(config, "_dynamic_effective_tau", getattr(config, "dynamic_tau", 0.5))),
             "exp_sharpness": float(getattr(config, "dynamic_exp_sharpness", 6.0)),
             "mean_suppression": mean("suppression", buffer),
             "mean_scale": mean("scale", buffer),
@@ -695,14 +700,31 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
     dynamic_score_power = float(getattr(config, "dynamic_score_power", 1.0))
     dynamic_tau = float(getattr(config, "dynamic_tau", 0.5))
     dynamic_exp_sharpness = float(getattr(config, "dynamic_exp_sharpness", 6.0))
+    dynamic_late_boost_start = int(getattr(config, "dynamic_late_boost_start", -1))
+    dynamic_late_boost_end = int(getattr(config, "dynamic_late_boost_end", 128))
+    dynamic_late_boost_mode = getattr(config, "dynamic_late_boost_mode", "linear")
+    dynamic_late_tau = float(getattr(config, "dynamic_late_tau", -1.0))
     dynamic_context_mode = getattr(config, "dynamic_context_mode", "text_exp")
     dynamic_redistribute = getattr(config, "dynamic_redistribute", "renorm")
+    dynamic_renorm = bool(getattr(config, "dynamic_renorm", True))
+    probe_renorm = bool(getattr(config, "probe_renorm", True))
     ds_threshold = float(getattr(config, "ds_threshold", 0.25))
     ds_max_suppression = float(getattr(config, "ds_max_suppression", 0.8))
     ds_ramp_power = float(getattr(config, "ds_ramp_power", 1.0))
     use_head_scores = bool(getattr(config, "use_head_scores", False))
 
     eps = 1e-6
+    pending_stats = []
+    generation_step = int(getattr(config, "_dynamic_trace_step", 0))
+    effective_dynamic_tau = dynamic_tau
+    if mode == "late_boost" and dynamic_late_boost_start >= 0 and dynamic_late_tau >= 0.0 and generation_step >= dynamic_late_boost_start:
+        if dynamic_late_boost_mode == "linear":
+            late_end = max(dynamic_late_boost_end, dynamic_late_boost_start + 1)
+            progress = min(max((generation_step - dynamic_late_boost_start) / max(late_end - dynamic_late_boost_start, 1), 0.0), 1.0)
+            effective_dynamic_tau = dynamic_tau + progress * (dynamic_late_tau - dynamic_tau)
+        else:
+            effective_dynamic_tau = dynamic_late_tau
+    config._dynamic_effective_tau = effective_dynamic_tau
 
     for head, head_score in selected:
         text_slice = attn_weights[:, head, -1, text_start:]
@@ -717,7 +739,7 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
             scale = 1.0 - trigger * (1.0 - text_scale)
             stat_extra = None
 
-        elif mode == "dynamic":
+        elif mode in ("dynamic", "late_boost"):
             img_mass = attn_weights[:, head, -1, img_start:img_end].sum(dim=-1)
             ratio = (text_mass / (text_mass + img_mass + eps)).clamp(0, 1)
             text_context = text_mass.clamp(0, 1)
@@ -730,10 +752,10 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
                 context_prior = ratio.pow(max(dynamic_ratio_power, 0.0))
             elif dynamic_context_mode == "ratio_exp":
                 context_source = ratio
-                context_prior = torch.exp(max(dynamic_exp_sharpness, 0.0) * (ratio - dynamic_tau)) 
+                context_prior = torch.exp(max(dynamic_exp_sharpness, 0.0) * (ratio - effective_dynamic_tau)) 
             elif dynamic_context_mode == "text_exp":
                 context_source = text_context
-                context_prior = torch.exp(max(dynamic_exp_sharpness, 0.0) * (text_context - dynamic_tau))
+                context_prior = torch.exp(max(dynamic_exp_sharpness, 0.0) * (text_context - effective_dynamic_tau))
             else:
                 context_source = text_context
                 context_prior = text_context.pow(max(dynamic_ratio_power, 0.0))
@@ -750,6 +772,129 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
             _append_dynamic_trace(
                 config, layer_idx, head, head_score, score_prior, text_mass, img_mass,
                 ratio, context_source, context_prior, suppression, scale
+            )
+
+        elif mode == "linear":
+            img_mass = attn_weights[:, head, -1, img_start:img_end].sum(dim=-1)
+            ratio = (text_mass / (text_mass + img_mass + eps)).clamp(0, 1)
+            score_prior = float(head_score) if use_head_scores else 1.0
+            suppression = score_prior * ratio
+            scale = 1.0 - suppression
+            stat_extra = {
+                "img_mass": img_mass,
+                "ratio": ratio,
+                "context_source": ratio,
+                "context_prior": ratio,
+                "dynamic_suppression": suppression,
+            }
+            _append_dynamic_trace(
+                config, layer_idx, head, head_score, score_prior, text_mass, img_mass,
+                ratio, ratio, ratio, suppression, scale
+            )
+
+        elif mode == "exp":
+            img_mass = attn_weights[:, head, -1, img_start:img_end].sum(dim=-1)
+            ratio = (text_mass / (text_mass + img_mass + eps)).clamp(0, 1)
+            score_prior = float(head_score) if use_head_scores else 1.0
+            sharpness = max(dynamic_exp_sharpness, 0.0)
+            if sharpness <= eps:
+                exp_gate = ratio
+            else:
+                exp_gate = torch.expm1(sharpness * ratio) / max(math.expm1(sharpness), eps)
+            suppression = score_prior * exp_gate
+            scale = 1.0 - suppression
+            stat_extra = {
+                "img_mass": img_mass,
+                "ratio": ratio,
+                "context_source": ratio,
+                "context_prior": exp_gate,
+                "dynamic_suppression": suppression,
+                "exp_gate": exp_gate,
+            }
+            _append_dynamic_trace(
+                config, layer_idx, head, head_score, score_prior, text_mass, img_mass,
+                ratio, ratio, exp_gate, suppression, scale
+            )
+
+        elif mode == "threshold_exp":
+            img_mass = attn_weights[:, head, -1, img_start:img_end].sum(dim=-1)
+            ratio = (text_mass / (text_mass + img_mass + eps)).clamp(0, 1)
+            score_prior = float(head_score) if use_head_scores else 1.0
+            score_prior = max(score_prior, 0.0) ** max(dynamic_score_power, 0.0)
+            tau_span = max(1.0 - dynamic_tau, eps)
+            excess = ((ratio - dynamic_tau).clamp_min(0.0) / tau_span).clamp(0, 1)
+            sharpness = max(dynamic_exp_sharpness, 0.0)
+            if sharpness <= eps:
+                threshold_gate = excess
+            else:
+                threshold_gate = 1.0 - torch.exp(-sharpness * excess)
+            suppression = (dynamic_strength * score_prior * threshold_gate).clamp(0, 1)
+            scale = 1.0 - suppression
+            stat_extra = {
+                "img_mass": img_mass,
+                "ratio": ratio,
+                "context_source": excess,
+                "context_prior": threshold_gate,
+                "dynamic_suppression": suppression,
+                "threshold_gate": threshold_gate,
+                "threshold_excess": excess,
+            }
+            _append_dynamic_trace(
+                config, layer_idx, head, head_score, score_prior, text_mass, img_mass,
+                ratio, excess, threshold_gate, suppression, scale
+            )
+
+        elif mode == "center_exp":
+            img_mass = attn_weights[:, head, -1, img_start:img_end].sum(dim=-1)
+            ratio = (text_mass / (text_mass + img_mass + eps)).clamp(0, 1)
+            score_prior = float(head_score) if use_head_scores else 1.0
+            score_prior = max(score_prior, 0.0) ** max(dynamic_score_power, 0.0)
+            sharpness = max(dynamic_exp_sharpness, 0.0)
+            if sharpness <= eps:
+                center_gate = torch.ones_like(ratio)
+            else:
+                center_gate = torch.exp(sharpness * (ratio - dynamic_tau))
+            suppression = (dynamic_strength * score_prior * center_gate).clamp(0, 1)
+            scale = 1.0 - suppression
+            stat_extra = {
+                "img_mass": img_mass,
+                "ratio": ratio,
+                "context_source": ratio,
+                "context_prior": center_gate,
+                "dynamic_suppression": suppression,
+                "center_gate": center_gate,
+                "center_delta": ratio - dynamic_tau,
+            }
+            _append_dynamic_trace(
+                config, layer_idx, head, head_score, score_prior, text_mass, img_mass,
+                ratio, ratio, center_gate, suppression, scale
+            )
+
+        elif mode == "linear_tail_exp":
+            img_mass = attn_weights[:, head, -1, img_start:img_end].sum(dim=-1)
+            ratio = (text_mass / (text_mass + img_mass + eps)).clamp(0, 1)
+            score_prior = float(head_score) if use_head_scores else 1.0
+            tau_span = max(1.0 - dynamic_tau, eps)
+            tail_position = ((ratio - dynamic_tau) / tau_span).clamp(0, 1)
+            sharpness = max(dynamic_exp_sharpness, 0.0)
+            if sharpness <= eps:
+                tail_gate = tail_position
+            else:
+                tail_gate = torch.expm1(sharpness * tail_position) / max(math.expm1(sharpness), eps)
+            suppression = score_prior * ratio + (1.0 - score_prior) * tail_gate
+            scale = 1.0 - suppression
+            stat_extra = {
+                "img_mass": img_mass,
+                "ratio": ratio,
+                "context_source": ratio,
+                "context_prior": tail_gate,
+                "dynamic_suppression": suppression,
+                "tail_gate": tail_gate,
+                "tail_position": tail_position,
+            }
+            _append_dynamic_trace(
+                config, layer_idx, head, head_score, score_prior, text_mass, img_mass,
+                ratio, ratio, tail_gate, suppression, scale
             )
 
         elif mode in ("ds", "ds_soft"):
@@ -779,14 +924,37 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
             }
             _append_ds_rho_trace(config, layer_idx, head, head_score, text_mass, img_mass, ratio, risk, selected_mask)
 
+        elif mode == "probe_hard":
+            img_mass = attn_weights[:, head, -1, img_start:img_end].sum(dim=-1)
+            ratio = (text_mass / (text_mass + img_mass + eps)).clamp(0, 1)
+            scale_value = min(max(float(getattr(config, "probe_text_scale", 0.0)), 0.0), 1.0)
+            probe_thresholding = bool(getattr(config, "probe_thresholding", False))
+            probe_threshold = float(getattr(config, "probe_threshold", threshold))
+            if probe_thresholding:
+                trigger = (text_mass >= probe_threshold).to(attn_weights.dtype)
+                scale = 1.0 - trigger * (1.0 - scale_value)
+            else:
+                trigger = torch.ones_like(text_mass, dtype=attn_weights.dtype)
+                scale = torch.full_like(text_mass, scale_value)
+            stat_extra = {
+                "img_mass": img_mass,
+                "ratio": ratio,
+                "probe_trigger": trigger,
+                "probe_threshold": torch.full_like(text_mass, probe_threshold),
+                "probe_suppression": 1.0 - scale,
+            }
+
         else:
             continue
 
-        _update_intervention_stats(config, layer_idx, head, mode, scale, text_mass, head_score, stat_extra)
+        row_before = attn_weights[:, head, -1, :]
+        sys_mass_before = row_before[:, :img_start].sum(dim=-1)
+        vision_mass_before = row_before[:, img_start:img_end].sum(dim=-1)
+        row_sum_before = row_before.sum(dim=-1)
 
         scaled_text_slice = text_slice * scale.unsqueeze(-1)
-        if mode == "dynamic" and dynamic_redistribute in ("system", "system_only", "vision", "vision_only"):
-            removed_mass = (text_mass - scaled_text_slice.sum(dim=-1)).clamp_min(0.0)
+        removed_mass = (text_mass - scaled_text_slice.sum(dim=-1)).clamp_min(0.0)
+        if mode in ("dynamic", "late_boost", "linear", "exp", "threshold_exp", "center_exp", "linear_tail_exp") and dynamic_redistribute in ("system", "system_only", "vision", "vision_only", "sysvis"):
             if dynamic_redistribute in ("system", "system_only") and img_start > 0:
                 target_slice = attn_weights[:, head, -1, :img_start]
                 target_mass = target_slice.sum(dim=-1).clamp_min(eps)
@@ -795,13 +963,151 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
                 target_slice = attn_weights[:, head, -1, img_start:img_end]
                 target_mass = target_slice.sum(dim=-1).clamp_min(eps)
                 attn_weights[:, head, -1, img_start:img_end] = target_slice + target_slice * (removed_mass / target_mass).unsqueeze(-1)
+            elif dynamic_redistribute == "sysvis" and attn_weights.size(-1) > img_end:
+                target_slice = attn_weights[:, head, -1, :img_start].sum(dim=-1) + attn_weights[:, head, -1, img_start:img_end].sum(dim=-1)
+                target_mass = target_slice.clamp_min(eps)
+                attn_weights[:, head, -1, :img_start] = attn_weights[:, head, -1, :img_start] + (attn_weights[:, head, -1, :img_start] / target_mass.unsqueeze(-1)) * removed_mass.unsqueeze(-1)
+                attn_weights[:, head, -1, img_start:img_end] = attn_weights[:, head, -1, img_start:img_end] + (attn_weights[:, head, -1, img_start:img_end] / target_mass.unsqueeze(-1)) * removed_mass.unsqueeze(-1)
+
         attn_weights[:, head, -1, text_start:] = scaled_text_slice
 
-    denom = attn_weights[:, :, -1, :].sum(dim=-1, keepdim=True).clamp_min(eps)
-    attn_weights[:, :, -1, :] = attn_weights[:, :, -1, :] / denom
+        pending_stat = {
+            "layer_idx": layer_idx,
+            "head": head,
+            "mode": mode,
+            "scale": scale,
+            "text_mass": text_mass,
+            "head_score": head_score,
+            "extra": stat_extra,
+            "sys_mass_before": sys_mass_before,
+            "vision_mass_before": vision_mass_before,
+            "text_mass_before": text_mass,
+            "row_sum_before": row_sum_before,
+            "removed_text_mass": removed_mass,
+        }
+        pending_stats.append(pending_stat)
+
+    should_renorm = (
+        (mode in ("dynamic", "late_boost", "linear", "exp", "threshold_exp", "center_exp", "linear_tail_exp") and dynamic_renorm)
+        or (mode == "probe_hard" and probe_renorm)
+        or mode not in ("dynamic", "late_boost", "linear", "exp", "threshold_exp", "center_exp", "linear_tail_exp", "probe_hard")
+    )
+    if should_renorm:
+        denom = attn_weights[:, :, -1, :].sum(dim=-1, keepdim=True).clamp_min(eps)
+        attn_weights[:, :, -1, :] = attn_weights[:, :, -1, :] / denom
+
+    for pending_stat in pending_stats:
+        head = pending_stat["head"]
+        row_after = attn_weights[:, head, -1, :]
+        extra = dict(pending_stat["extra"] or {})
+        extra.update({
+            "sys_mass_before": pending_stat["sys_mass_before"],
+            "vision_mass_before": pending_stat["vision_mass_before"],
+            "text_mass_before": pending_stat["text_mass_before"],
+            "row_sum_before": pending_stat["row_sum_before"],
+            "removed_text_mass": pending_stat["removed_text_mass"],
+            "sys_mass_after": row_after[:, :img_start].sum(dim=-1),
+            "vision_mass_after": row_after[:, img_start:img_end].sum(dim=-1),
+            "text_mass_after": row_after[:, text_start:].sum(dim=-1),
+            "row_sum_after": row_after.sum(dim=-1),
+        })
+        _update_intervention_stats(
+            config, pending_stat["layer_idx"], head, pending_stat["mode"],
+            pending_stat["scale"], pending_stat["text_mass"], pending_stat["head_score"], extra
+        )
     _maybe_print_ds_rho_trace(config, layer_idx)
     _maybe_print_dynamic_trace(config, layer_idx)
     return attn_weights
+
+
+def _maybe_trace_txtattn_last_row(attn_weights, config, layer_idx):
+    if not bool(getattr(config, "enable_txtattn_last_row_trace", False)):
+        return
+    if layer_idx is None or attn_weights is None:
+        return
+
+    layer_idx = int(layer_idx)
+    step_idx = int(getattr(config, "_txtattn_trace_current_step", 0))
+    last_layer_idx = int(getattr(config, "num_hidden_layers", -1)) - 1
+
+    def maybe_advance_step():
+        if layer_idx == last_layer_idx:
+            config._txtattn_trace_current_step = step_idx + 1
+
+    heads_by_layer = getattr(config, "txtattn_trace_heads_by_layer", None) or {}
+    heads = heads_by_layer.get(layer_idx, [])
+    if not heads:
+        maybe_advance_step()
+        return
+
+    img_start = getattr(config, "img_start_pos", None)
+    img_length = getattr(config, "img_length", None)
+    if img_start is None or img_length is None:
+        maybe_advance_step()
+        return
+
+    img_start = int(img_start)
+    img_length = int(img_length)
+    img_end = img_start + img_length
+    att_seq_len = int(attn_weights.size(-1))
+    if img_start < 0 or img_length <= 0 or img_end > att_seq_len:
+        maybe_advance_step()
+        return
+
+    prompt_after_image_len = int(getattr(config, "prompt_after_image_len", 0))
+    generated_start = min(max(img_end + prompt_after_image_len, img_end), att_seq_len)
+
+    row = attn_weights[0, :, -1, :]
+    head_idx = torch.tensor([int(h) for h in heads], device=row.device, dtype=torch.long)
+    if int(head_idx.max().item()) >= int(row.size(0)):
+        maybe_advance_step()
+        return
+    selected_rows = row.index_select(0, head_idx).float()
+
+    image_attn = selected_rows[:, img_start:img_end].sum(dim=-1)
+    i_text = selected_rows[:, img_end:].sum(dim=-1)
+    generated_txt_attn = selected_rows[:, generated_start:].sum(dim=-1)
+    txt_img_ratio = i_text / (image_attn + 1e-12)
+
+    buffer = getattr(config, "_txtattn_last_row_buffer", None)
+    if buffer is None:
+        buffer = []
+        config._txtattn_last_row_buffer = buffer
+    while len(buffer) <= step_idx:
+        buffer.append({"layout": None, "head_values": []})
+
+    record = buffer[step_idx]
+    if record["layout"] is None:
+        record["layout"] = {
+            "prompt_visible_len": int(img_start + 1 + prompt_after_image_len),
+            "generated_len": int(max(att_seq_len - generated_start, 0)),
+            "final_att_seq_len": int(att_seq_len),
+            "image_start": int(img_start),
+            "image_end": int(img_end),
+            "image_len": int(img_length),
+            "generated_start": int(generated_start),
+            "sys_len": int(img_start),
+            "txt_len": int(att_seq_len - img_end),
+            "generated_special_len": 0,
+            "trace_mode": "last_row",
+            "trace_note": "Last-query-row trace; I_text and txt_img_ratio use the full text-side region image_end:.",
+        }
+
+    image_attn = image_attn.detach().cpu().tolist()
+    i_text = i_text.detach().cpu().tolist()
+    generated_txt_attn = generated_txt_attn.detach().cpu().tolist()
+    txt_img_ratio = txt_img_ratio.detach().cpu().tolist()
+    for idx, head in enumerate(heads):
+        record["head_values"].append({
+            "layer": int(layer_idx),
+            "head": int(head),
+            "I_text": float(i_text[idx]),
+            "generated_txt_attn": float(generated_txt_attn[idx]),
+            "image_attn": float(image_attn[idx]),
+            "txt_img_ratio": float(txt_img_ratio[idx]),
+        })
+
+    maybe_advance_step()
 
 class LlamaAttention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
@@ -953,6 +1259,7 @@ class LlamaAttention(nn.Module):
         attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
         # unified intervention: none | adhh | soft | dynamic | dynamic | ds
         attn_weights = _apply_text_intervention(attn_weights, self.config, self.layer_idx)
+        _maybe_trace_txtattn_last_row(attn_weights, self.config, self.layer_idx)
 
         attn_weights = nn.functional.dropout(attn_weights, p=self.attention_dropout, training=self.training)
         attn_output = torch.matmul(attn_weights, value_states)
@@ -1275,6 +1582,19 @@ class LlamaSdpaAttention(LlamaAttention):
         else:
             attn_statistics = (None, None, None, None)
 
+        last_row_weights = None
+        intervention_active = getattr(self.config, "intervention", "none") != "none"
+        trace_active = bool(getattr(self.config, "enable_txtattn_last_row_trace", False))
+        if intervention_active or trace_active:
+            last_row_weights = torch.matmul(query_states[:, :, -1:, :], key_states.transpose(2, 3)) / math.sqrt(self.head_dim)
+            if attention_mask is not None:
+                last_row_weights = last_row_weights + attention_mask[:, :, -1:, :]
+            last_row_weights = nn.functional.softmax(last_row_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
+            if intervention_active:
+                last_row_weights = _apply_text_intervention(last_row_weights, self.config, self.layer_idx)
+            if trace_active:
+                _maybe_trace_txtattn_last_row(last_row_weights, self.config, self.layer_idx)
+
         attn_output = torch.nn.functional.scaled_dot_product_attention(
             query_states,
             key_states,
@@ -1284,6 +1604,11 @@ class LlamaSdpaAttention(LlamaAttention):
             # The q_len > 1 is necessary to match with AttentionMaskConverter.to_causal_4d that does not create a causal mask in case q_len == 1.
             is_causal=self.is_causal and attention_mask is None and q_len > 1,
         )
+
+        if intervention_active and last_row_weights is not None:
+            attn_output[:, :, -1:, :] = torch.matmul(last_row_weights, value_states)
+        if last_row_weights is not None:
+            del last_row_weights
 
         attn_output = attn_output.transpose(1, 2).contiguous()
         attn_output = attn_output.reshape(bsz, q_len, self.hidden_size)

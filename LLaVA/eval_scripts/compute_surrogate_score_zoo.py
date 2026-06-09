@@ -6,9 +6,7 @@ import math
 import os
 from collections import OrderedDict
 
-
 BUCKETS = ("all", "object", "hallucinated", "non_hallucinated")
-METRICS = ("I_text", "generated_txt_attn", "image_attn", "txt_img_ratio")
 
 
 def finite(value, default=0.0):
@@ -27,23 +25,6 @@ def mean_metric(item, bucket, metric):
     return finite(item["buckets"].get(bucket, {}).get("metrics", {}).get(metric, {}).get("mean", 0.0))
 
 
-def var_metric(item, bucket, metric):
-    return max(finite(item["buckets"].get(bucket, {}).get("metrics", {}).get(metric, {}).get("var", 0.0)), 0.0)
-
-
-def frac(text, image, eps):
-    return min(max(text / (text + image + eps), 0.0), 1.0)
-
-
-def rel_delta(pos, neg, eps):
-    delta = max(0.0, pos - neg)
-    return delta / (pos + neg + eps)
-
-
-def safe_ratio(num, den, eps):
-    return num / (den + eps)
-
-
 def rank_percentiles(values, reverse=True):
     ordered = sorted(values, key=values.get, reverse=reverse)
     n = len(ordered)
@@ -52,173 +33,190 @@ def rank_percentiles(values, reverse=True):
     return {hid: 1.0 - i / (n - 1) for i, hid in enumerate(ordered)}
 
 
-def normalize_minmax(values):
-    vals = list(values.values())
-    if not vals:
-        return {}
-    lo, hi = min(vals), max(vals)
-    span = hi - lo
-    if abs(span) < 1e-12:
-        return {k: 1.0 for k in values}
-    return {k: (v - lo) / span for k, v in values.items()}
+def logtoi(text, image, eps):
+    return math.log1p(max(text / (image + eps), 0.0))
 
 
-def write_ranked(path, score_name, description, layer_range, records, score_key):
-    ranked = sorted(records, key=lambda x: (x[score_key], x.get("tie_break", 0.0)), reverse=True)
-    by_layer = {}
-    for rank, item in enumerate(ranked, start=1):
-        item["global_rank"] = rank
-        by_layer.setdefault(item["layer"], []).append(item)
-    for layer_items in by_layer.values():
-        layer_items.sort(key=lambda x: (x[score_key], x.get("tie_break", 0.0)), reverse=True)
-        for rank, item in enumerate(layer_items, start=1):
-            item["layer_rank"] = rank
-    for item in ranked:
-        item.pop("tie_break", None)
-    obj = {
-        "score_name": score_name,
-        "description": description,
-        "layer_range": layer_range,
-        "heads": ranked,
-    }
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(obj, f, indent=2, ensure_ascii=False)
-    return ranked
-
-
-def build_head_features(summary, eps):
+def build_features(summary, eps):
     features = OrderedDict()
-    for key, item in summary["by_head"].items():
+    for _, item in summary["by_head"].items():
         layer = int(item["layer"])
         head = int(item["head"])
         hid = head_id(layer, head)
-        f = {
-            "layer": layer,
-            "head": head,
-            "head_id": hid,
-        }
+        f = {"layer": layer, "head": head, "head_id": hid}
         for bucket in BUCKETS:
-            t = mean_metric(item, bucket, "generated_txt_attn")
+            text = mean_metric(item, bucket, "generated_txt_attn")
             itext = mean_metric(item, bucket, "I_text")
-            img = mean_metric(item, bucket, "image_attn")
-            ratio_mean = mean_metric(item, bucket, "txt_img_ratio")
-            f[f"T_{bucket}"] = t
+            image = mean_metric(item, bucket, "image_attn")
+            raw_toi = mean_metric(item, bucket, "txt_img_ratio")
+            f[f"T_{bucket}"] = text
             f[f"Itext_{bucket}"] = itext
-            f[f"Img_{bucket}"] = img
-            f[f"R_{bucket}"] = frac(t, img, eps)
-            f[f"LogTOI_{bucket}"] = math.log1p(max(safe_ratio(t, img, eps), 0.0))
-            f[f"RawTOI_{bucket}"] = ratio_mean
-            f[f"T_std_{bucket}"] = math.sqrt(var_metric(item, bucket, "generated_txt_attn"))
-            f[f"Img_std_{bucket}"] = math.sqrt(var_metric(item, bucket, "image_attn"))
-        # Core contrasts.
-        for metric in ("T", "Itext", "R", "LogTOI"):
-            h = f[f"{metric}_hallucinated"]
-            g = f[f"{metric}_non_hallucinated"]
-            a = f[f"{metric}_all"]
-            o = f[f"{metric}_object"]
-            f[f"Delta_{metric}_HminusG"] = h - g
-            f[f"PosDelta_{metric}_HminusG"] = max(0.0, h - g)
-            f[f"RelDelta_{metric}_HminusG"] = rel_delta(h, g, eps)
-            f[f"Delta_{metric}_HminusAll"] = h - a
-            f[f"Delta_{metric}_ObjminusAll"] = o - a
-        f["ImgDrop_HminusG"] = max(0.0, f["Img_non_hallucinated"] - f["Img_hallucinated"])
-        f["ImgDropRel_HminusG"] = f["ImgDrop_HminusG"] / (f["Img_non_hallucinated"] + f["Img_hallucinated"] + eps)
+            f[f"Img_{bucket}"] = image
+            f[f"RawTOI_{bucket}"] = raw_toi
+            f[f"LogTOI_{bucket}"] = logtoi(text, image, eps)
         features[hid] = f
     return features
 
 
-def compute_score_maps(features, eps):
-    ids = list(features)
-    raw = OrderedDict()
+def global_order(records, score_name):
+    return sorted(
+        records,
+        key=lambda x: (x[score_name], x.get("front_percentile", 0.0), x.get("back_percentile", 0.0)),
+        reverse=True,
+    )
 
-    def add(name, values, desc):
-        raw[name] = (values, desc)
 
-    add("text_all", {hid: features[hid]["T_all"] for hid in ids}, "Mean generated-text-prefix attention over all generated steps.")
-    add("itext_all", {hid: features[hid]["Itext_all"] for hid in ids}, "Mean intervention text-slice attention over all generated steps.")
-    add("text_hall", {hid: features[hid]["T_hallucinated"] for hid in ids}, "Mean generated-text-prefix attention on hallucinated object steps.")
-    add("text_object", {hid: features[hid]["T_object"] for hid in ids}, "Mean generated-text-prefix attention on object steps.")
-    add("ratio_all", {hid: features[hid]["R_all"] for hid in ids}, "Mean-level T/(T+I) over all generated steps.")
-    add("ratio_hall", {hid: features[hid]["R_hallucinated"] for hid in ids}, "Mean-level T/(T+I) on hallucinated object steps.")
-    add("logtoi_hall", {hid: features[hid]["LogTOI_hallucinated"] for hid in ids}, "Log text-over-image ratio on hallucinated object steps, from mean masses.")
-    add("low_image_hall", {hid: 1.0 - features[hid]["Img_hallucinated"] for hid in ids}, "Heads that pay little image attention on hallucinated object steps.")
+def annotate_ranks(ranked, score_field):
+    by_layer = {}
+    for rank, item in enumerate(ranked, start=1):
+        item["global_rank"] = rank
+        item["selection_method"] = "global"
+        by_layer.setdefault(int(item["layer"]), []).append(item)
+    for items in by_layer.values():
+        sorted_items = sorted(
+            items,
+            key=lambda x: (x[score_field], x.get("front_percentile", 0.0), x.get("back_percentile", 0.0)),
+            reverse=True,
+        )
+        for local_rank, item in enumerate(sorted_items, start=1):
+            item["layer_rank"] = local_rank
 
-    add("C_text_hall_minus_nonhall", {hid: features[hid]["PosDelta_T_HminusG"] for hid in ids}, "Positive hallucinated minus grounded object contrast in text-prefix attention.")
-    add("C_ratio_hall_minus_nonhall", {hid: features[hid]["PosDelta_R_HminusG"] for hid in ids}, "Positive hallucinated minus grounded object contrast in T/(T+I).")
-    add("C_logtoi_hall_minus_nonhall", {hid: features[hid]["PosDelta_LogTOI_HminusG"] for hid in ids}, "Positive hallucinated minus grounded object contrast in log text-over-image.")
-    add("C_itext_hall_minus_nonhall", {hid: features[hid]["PosDelta_Itext_HminusG"] for hid in ids}, "Positive hallucinated minus grounded object contrast in intervention text-slice mass.")
-    add("C_image_drop_nonhall_minus_hall", {hid: features[hid]["ImgDrop_HminusG"] for hid in ids}, "Image-attention drop from grounded to hallucinated object steps.")
 
-    add("RelC_text_hall_minus_nonhall", {hid: features[hid]["RelDelta_T_HminusG"] for hid in ids}, "Relative contrast in text-prefix attention: delta/(hall+grounded).")
-    add("RelC_ratio_hall_minus_nonhall", {hid: features[hid]["RelDelta_R_HminusG"] for hid in ids}, "Relative contrast in T/(T+I): delta/(hall+grounded).")
-    add("RelC_logtoi_hall_minus_nonhall", {hid: features[hid]["RelDelta_LogTOI_HminusG"] for hid in ids}, "Relative contrast in log text-over-image.")
-    add("RelC_image_drop", {hid: features[hid]["ImgDropRel_HminusG"] for hid in ids}, "Relative image-attention drop on hallucinated object steps.")
+def write_ranked(path, score_name, description, layer_range, ranked):
+    annotate_ranks(ranked, score_name)
+    obj = {
+        "score_name": score_name,
+        "description": description,
+        "layer_range": layer_range,
+        "selection_method": "global",
+        "layer_order": [],
+        "heads": ranked,
+    }
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(obj, f, indent=2, ensure_ascii=False)
 
-    add("Specific_text_delta_x_hall", {hid: features[hid]["PosDelta_T_HminusG"] * features[hid]["T_hallucinated"] for hid in ids}, "Absolute text contrast gated by hallucinated-step text strength.")
-    add("Specific_ratio_delta_x_hall", {hid: features[hid]["PosDelta_R_HminusG"] * features[hid]["R_hallucinated"] for hid in ids}, "Absolute ratio contrast gated by hallucinated-step ratio strength.")
-    add("Specific_logtoi_delta_x_hall", {hid: features[hid]["PosDelta_LogTOI_HminusG"] * features[hid]["LogTOI_hallucinated"] for hid in ids}, "Absolute log text-over-image contrast gated by hallucinated-step strength.")
-    add("Specific_text_threefactor", {hid: features[hid]["PosDelta_T_HminusG"] * features[hid]["RelDelta_T_HminusG"] * features[hid]["T_hallucinated"] for hid in ids}, "Text mass three-factor score: delta * relative contrast * hall strength.")
-    add("Specific_ratio_threefactor", {hid: features[hid]["PosDelta_R_HminusG"] * features[hid]["RelDelta_R_HminusG"] * features[hid]["R_hallucinated"] for hid in ids}, "Ratio three-factor score: delta * relative contrast * hall strength.")
 
-    add("Object_text_minus_all", {hid: max(0.0, features[hid]["Delta_T_ObjminusAll"]) for hid in ids}, "Object-token text-prefix excess over all generated steps.")
-    add("Hall_text_minus_all", {hid: max(0.0, features[hid]["Delta_T_HminusAll"]) for hid in ids}, "Hallucinated-token text-prefix excess over all generated steps.")
-    add("Object_ratio_minus_all", {hid: max(0.0, features[hid]["Delta_R_ObjminusAll"]) for hid in ids}, "Object-token T/(T+I) excess over all generated steps.")
-    add("Hall_ratio_minus_all", {hid: max(0.0, features[hid]["Delta_R_HminusAll"]) for hid in ids}, "Hallucinated-token T/(T+I) excess over all generated steps.")
-
-    # Rank-fusion families. These are fixed hypothesis families, not fitted to any verified HH list.
-    pct = {name: rank_percentiles(vals) for name, (vals, _) in raw.items()}
-    add("Fusion_text70_ratioC30", {hid: 0.70 * pct["text_all"][hid] + 0.30 * pct["C_ratio_hall_minus_nonhall"][hid] for hid in ids}, "Rank fusion: 70% global text-prefix reliance, 30% hallucination contrast in T/(T+I).")
-    add("Fusion_text50_ratioC30_imgdrop20", {hid: 0.50 * pct["text_all"][hid] + 0.30 * pct["C_ratio_hall_minus_nonhall"][hid] + 0.20 * pct["C_image_drop_nonhall_minus_hall"][hid] for hid in ids}, "Rank fusion: text reliance + ratio contrast + image-attention drop.")
-    add("Fusion_halltext50_logC30_imgdrop20", {hid: 0.50 * pct["text_hall"][hid] + 0.30 * pct["C_logtoi_hall_minus_nonhall"][hid] + 0.20 * pct["C_image_drop_nonhall_minus_hall"][hid] for hid in ids}, "Rank fusion: hallucinated-step text reliance + log text-over-image contrast + image drop.")
-    add("Fusion_text40_absC30_relC30", {hid: 0.40 * pct["text_all"][hid] + 0.30 * pct["C_text_hall_minus_nonhall"][hid] + 0.30 * pct["RelC_text_hall_minus_nonhall"][hid] for hid in ids}, "Rank fusion balancing global text reliance, absolute text contrast, and relative text contrast.")
-    add("Fusion_ratio_policy", {hid: 0.40 * pct["ratio_hall"][hid] + 0.30 * pct["C_ratio_hall_minus_nonhall"][hid] + 0.30 * pct["RelC_ratio_hall_minus_nonhall"][hid] for hid in ids}, "Policy-style ratio fusion using hall ratio, absolute ratio contrast, and relative ratio contrast.")
-
-    return raw
+def make_records(features, score_name, score_values, front_values, back_values, front_pct, back_pct, back_name):
+    records = []
+    for hid, f in features.items():
+        signed_toi = f["RawTOI_hallucinated"] - f["RawTOI_non_hallucinated"]
+        signed_itext = f["Itext_hallucinated"] - f["Itext_non_hallucinated"]
+        rel_itext = signed_itext / (f["Itext_all"] + 1e-12)
+        text_minus_img_h = f["Itext_hallucinated"] - f["Img_hallucinated"]
+        text_minus_img_g = f["Itext_non_hallucinated"] - f["Img_non_hallucinated"]
+        records.append({
+            "layer": f["layer"],
+            "head": f["head"],
+            "head_id": hid,
+            score_name: score_values[hid],
+            "score": score_values[hid],
+            "front_name": "itext_all",
+            "front_raw": front_values[hid],
+            "front_percentile": front_pct[hid],
+            "back_name": back_name,
+            "back_raw": back_values[hid],
+            "back_percentile": back_pct[hid],
+            "signed_back_raw": back_values[hid],
+            "signed_toi_back_raw": signed_toi,
+            "signed_itext_back_raw": signed_itext,
+            "rel_itext_back_raw": rel_itext,
+            "textminusimg_back_raw": text_minus_img_h - text_minus_img_g,
+            "clipped_back_raw": max(0.0, back_values[hid]),
+            "T_all": f["T_all"],
+            "Itext_all": f["Itext_all"],
+            "RawTOI_hallucinated": f["RawTOI_hallucinated"],
+            "RawTOI_non_hallucinated": f["RawTOI_non_hallucinated"],
+            "LogTOI_hallucinated": f["LogTOI_hallucinated"],
+            "LogTOI_non_hallucinated": f["LogTOI_non_hallucinated"],
+            "Itext_hallucinated": f["Itext_hallucinated"],
+            "Itext_non_hallucinated": f["Itext_non_hallucinated"],
+            "Img_hallucinated": f["Img_hallucinated"],
+            "Img_non_hallucinated": f["Img_non_hallucinated"],
+        })
+    return global_order(records, score_name)
 
 
 def main(args):
     with open(os.path.expanduser(args.summary_file), "r", encoding="utf-8") as f:
         summary = json.load(f)
-    features = build_head_features(summary, args.eps)
+    features = build_features(summary, args.eps)
     layer_values = [f["layer"] for f in features.values()]
     layer_range = [min(layer_values), max(layer_values)] if layer_values else None
-    score_maps = compute_score_maps(features, args.eps)
 
     out_dir = os.path.expanduser(args.output_dir)
     os.makedirs(out_dir, exist_ok=True)
+
+    # Keep this directory compact: future runs emit only the TOI rankings used
+    # by the paper-facing dynamic intervention and control probes.
+    for name in os.listdir(out_dir):
+        if name.startswith("ranked_heads_") and name.endswith(".json"):
+            os.remove(os.path.join(out_dir, name))
+        elif name in {
+            "surrogate_combo_overlap_summary.csv",
+            "surrogate_combo_config.json",
+            "surrogate_score_zoo_overview.csv",
+            "surrogate_score_zoo_config.json",
+        }:
+            os.remove(os.path.join(out_dir, name))
+
+    front_values = {hid: f["Itext_all"] for hid, f in features.items()}
+    toi_hminusg = {
+        hid: f["RawTOI_hallucinated"] - f["RawTOI_non_hallucinated"]
+        for hid, f in features.items()
+    }
+    clipped_toi_hminusg = {hid: max(0.0, value) for hid, value in toi_hminusg.items()}
+    front_pct = rank_percentiles(front_values)
+    clipped_toi_pct = rank_percentiles(clipped_toi_hminusg)
+    signed_toi_pct = rank_percentiles(toi_hminusg)
+    def mean_combo(back_pct):
+        return {hid: 0.5 * front_pct[hid] + 0.5 * back_pct[hid] for hid in features}
+
+    score_specs = [
+        {
+            "score_name": "global__itext_all__C_toi_HminusG",
+            "back_name": "C_toi_HminusG",
+            "back_values": clipped_toi_hminusg,
+            "back_pct": clipped_toi_pct,
+            "score_values": mean_combo(clipped_toi_pct),
+            "description": "Global rank-percentile combo: 0.5*P(Itext_all) + 0.5*P(max(0, RawTOI_hallucinated - RawTOI_non_hallucinated)).",
+        },
+        {
+            "score_name": "global__itext_all__C_toi_HminusG_signed",
+            "back_name": "C_toi_HminusG_signed",
+            "back_values": toi_hminusg,
+            "back_pct": signed_toi_pct,
+            "score_values": mean_combo(signed_toi_pct),
+            "description": "Global signed rank-percentile combo: 0.5*P(Itext_all) + 0.5*P(RawTOI_hallucinated - RawTOI_non_hallucinated), without clipping negative contrast to zero.",
+        },
+    ]
+
     overview_rows = []
-    for score_name, (values, desc) in score_maps.items():
-        norm_values = normalize_minmax(values)
-        records = []
-        for hid, f in features.items():
-            records.append({
-                "layer": f["layer"],
-                "head": f["head"],
-                "head_id": hid,
-                score_name: norm_values[hid],
-                f"{score_name}_raw": values[hid],
-                "T_all": f["T_all"],
-                "T_hallucinated": f["T_hallucinated"],
-                "T_non_hallucinated": f["T_non_hallucinated"],
-                "R_hallucinated": f["R_hallucinated"],
-                "R_non_hallucinated": f["R_non_hallucinated"],
-                "Img_hallucinated": f["Img_hallucinated"],
-                "Img_non_hallucinated": f["Img_non_hallucinated"],
-                "tie_break": f["T_all"],
-            })
-        path = os.path.join(out_dir, f"ranked_heads_{score_name}.json")
-        ranked = write_ranked(path, score_name, desc, layer_range, records, score_name)
+    for spec in score_specs:
+        ranked = make_records(
+            features=features,
+            score_name=spec["score_name"],
+            score_values=spec["score_values"],
+            front_values=front_values,
+            back_values=spec["back_values"],
+            front_pct=front_pct,
+            back_pct=spec["back_pct"],
+            back_name=spec["back_name"],
+        )
+        out_path = os.path.join(out_dir, f"ranked_heads_{spec['score_name']}.json")
+        write_ranked(out_path, spec["score_name"], spec["description"], layer_range, ranked)
         overview_rows.append({
-            "score_name": score_name,
-            "description": desc,
-            "path": path,
+            "score_name": spec["score_name"],
+            "description": spec["description"],
+            "path": out_path,
             "top1": ranked[0]["head_id"] if ranked else "",
             "top20": " ".join(item["head_id"] for item in ranked[:20]),
+            "top100_negative_back_raw": sum(1 for item in ranked[:100] if item.get("back_raw", 0.0) < 0),
         })
 
     overview_path = os.path.join(out_dir, "surrogate_score_zoo_overview.csv")
+    fields = ["score_name", "description", "path", "top1", "top20", "top100_negative_back_raw"]
     with open(overview_path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["score_name", "description", "path", "top1", "top20"])
+        writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         writer.writerows(overview_rows)
 
@@ -226,8 +224,9 @@ def main(args):
         "summary_file": args.summary_file,
         "output_dir": out_dir,
         "num_heads": len(features),
-        "num_scores": len(score_maps),
-        "note": "These scores are hypothesis-driven surrogate families generated without fitting to any verified top-k HH list.",
+        "num_scores": len(score_specs),
+        "scores": [spec["score_name"] for spec in score_specs],
+        "note": "This compact zoo emits only the TOI rank-fused rankings used by the paper-facing head-pool controls and dynamic intervention.",
     }
     with open(os.path.join(out_dir, "surrogate_score_zoo_config.json"), "w", encoding="utf-8") as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
@@ -236,7 +235,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate a diverse zoo of hallucination-head surrogate scores from txtattn_summary.json.")
+    parser = argparse.ArgumentParser(description="Generate compact surrogate head rankings from txtattn_summary.json.")
     parser.add_argument("--summary-file", required=True)
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--eps", type=float, default=1e-12)

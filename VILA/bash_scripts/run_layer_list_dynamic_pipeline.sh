@@ -12,16 +12,22 @@ train_num_samples=${TRAIN_NUM_SAMPLES:-500}
 source_summary=${SOURCE_SUMMARY:-./results/${dataset}/${model_name}_base_original_qa_n${train_num_samples}_txtattn_l0_l31_allheads/txtattn_summary.json}
 read -r -a layer_specs <<< "${LAYER_SPECS:-9:16}"
 
+intervention=${INTERVENTION:-late_boost}
 head_source=${HEAD_SOURCE:-file}
-head_score_key=${HEAD_SCORE_KEY:-global__itext_all__C_toi_HminusG}
+head_score_key=${HEAD_SCORE_KEY:-global__itext_all__C_toi_HminusG_signed}
 head_score_normalize=${HEAD_SCORE_NORMALIZE:-rank_percentile}
+min_head_back_raw=${MIN_HEAD_BACK_RAW:-0.0}
 use_head_scores=${USE_HEAD_SCORES:-true}
 dynamic_context_mode=${DYNAMIC_CONTEXT_MODE:-ratio_exp}
-read -r -a dynamic_redistribute_list <<< "${DYNAMIC_REDISTRIBUTES:-renorm}"
-dynamic_renorm=${DYNAMIC_RENORM:-true}
-read -r -a dynamic_tau_list <<< "${DYNAMIC_TAUS:-0.9}"
-AUTO_DYNAMIC_TAU=${AUTO_DYNAMIC_TAU:-true}
-auto_tau_round_step=${AUTO_TAU_ROUND_STEP:-0.05}
+dynamic_late_boost_start=${DYNAMIC_LATE_BOOST_START:-0}
+dynamic_late_boost_end=${DYNAMIC_LATE_BOOST_END:-128}
+dynamic_late_boost_mode=${DYNAMIC_LATE_BOOST_MODE:-linear}
+dynamic_late_tau=${DYNAMIC_LATE_TAU:-0.82}
+read -r -a dynamic_redistribute_list <<< "${DYNAMIC_REDISTRIBUTES:-none}"
+dynamic_renorm=${DYNAMIC_RENORM:-false}
+IFS=';' read -r -a dynamic_tau_list <<< "${DYNAMIC_TAUS:-0.90}"
+AUTO_DYNAMIC_TAU=${AUTO_DYNAMIC_TAU:-false}
+auto_tau_round_step=${AUTO_TAU_ROUND_STEP:-0.01}
 auto_tau_round_mode=${AUTO_TAU_ROUND_MODE:-floor}
 read -r -a topk_list <<< "${TOPK_LIST:-100}"
 IFS=';' read -r -a dynamic_presets <<< "${DYNAMIC_PRESETS:-1.0 8.0 1.0; 1.0 10.0 1.0;}"
@@ -130,11 +136,6 @@ prepare_layer_spec() {
     --summary-file "${filtered_summary}" \
     --output-dir "${surrogate_dir}"
 
-  echo "[layers ${layer_spec}] building combo head pools -> ${surrogate_dir}"
-  run_cmd "${python_bin}" eval_scripts/build_layer_surrogate_combos.py \
-    --summary-file "${filtered_summary}" \
-    --output-dir "${surrogate_dir}"
-
   if [[ "${AUTO_DYNAMIC_TAU}" == "true" ]]; then
     local tau_file=${stats_root}/dynamic_tau_estimate.json
     echo "[layers ${layer_spec}] estimating dynamic tau -> ${tau_file}"
@@ -170,11 +171,19 @@ run_dynamic_job() {
   if [[ "${dynamic_renorm}" != "true" ]]; then
     redir_suffix="${redir_suffix}_norenorm"
   fi
+  local braw_suffix=""
+  if [[ "${min_head_back_raw}" != "0" && "${min_head_back_raw}" != "0.0" ]]; then
+    braw_suffix="_bmin${min_head_back_raw}"
+  fi
+  local late_suffix=""
+  if [[ "${intervention}" == "late_boost" && "${dynamic_late_boost_start}" != "-1" && "${dynamic_late_tau}" != "-1" && "${dynamic_late_tau}" != "-1.0" ]]; then
+    late_suffix="_late${dynamic_late_boost_mode}${dynamic_late_boost_start}-${dynamic_late_boost_end}tau${dynamic_late_tau}"
+  fi
 
   local range_root=./results_${slug}/${dataset}
   local stats_root=${range_root}/${model_name}_base_original_qa_n${train_num_samples}_txtattn_${slug}_allheads
   local head_file=${stats_root}/surrogate_score_zoo/ranked_heads_${head_score_key}.json
-  local result_path=${range_root}/${model_name}_dynamic_${dynamic_context_mode}_${head_source}_k${topk}_s${strength}_q${q}_tau${tau}_p${score_power}${redir_suffix}_n${num_samples}_${head_score_key}
+  local result_path=${range_root}/${model_name}_${intervention}_${dynamic_context_mode}_${head_source}_k${topk}_s${strength}_q${q}_tau${tau}_p${score_power}${redir_suffix}${late_suffix}${braw_suffix}_n${num_samples}_${head_score_key}
   mkdir -p "${result_path}"
 
   local score_args=()
@@ -194,7 +203,7 @@ run_dynamic_job() {
     renorm_args+=(--no-dynamic-renorm)
   fi
 
-  echo "[GPU ${gpu}] layers=${layer_spec} topk=${topk} s=${strength} q=${q} tau=${tau} p=${score_power} redistribute=${redistribute} renorm=${dynamic_renorm}"
+  echo "[GPU ${gpu}] layers=${layer_spec} intervention=${intervention} topk=${topk} min_back_raw=${min_head_back_raw} s=${strength} q=${q} tau=${tau} p=${score_power} redistribute=${redistribute} renorm=${dynamic_renorm} late_mode=${dynamic_late_boost_mode} late_start=${dynamic_late_boost_start} late_end=${dynamic_late_boost_end} late_tau=${dynamic_late_tau}"
   if [[ "${dry_run}" == "true" ]]; then
     echo "[dry-run] would write ${result_path}"
     return 0
@@ -215,15 +224,20 @@ run_dynamic_job() {
     --seed "${seed}" \
     --sample-id-file "${sample_id_file}" \
     --save-sample-id-file "${sample_id_file}" \
-    --intervention dynamic \
+    --intervention "${intervention}" \
     --head-source "${head_source}" \
     --head-file "${head_file}" \
     --topk "${topk}" \
     --head-score-key "${head_score_key}" \
     --head-score-normalize "${head_score_normalize}" \
+    --min-head-back-raw "${min_head_back_raw}" \
     --dynamic-context-mode "${dynamic_context_mode}" \
     --dynamic-strength "${strength}" \
     --dynamic-exp-sharpness "${q}" \
+    --dynamic-late-boost-start "${dynamic_late_boost_start}" \
+    --dynamic-late-boost-end "${dynamic_late_boost_end}" \
+    --dynamic-late-boost-mode "${dynamic_late_boost_mode}" \
+    --dynamic-late-tau "${dynamic_late_tau}" \
     --dynamic-tau "${tau}" \
     --dynamic-score-power "${score_power}" \
     --dynamic-redistribute "${redistribute}" \

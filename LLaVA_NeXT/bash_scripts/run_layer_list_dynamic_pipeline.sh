@@ -30,26 +30,23 @@ source_summary=${SOURCE_SUMMARY:-./results/${dataset}/${model_name}_base_origina
 read -r -a layer_specs <<< "${LAYER_SPECS:-${LAYER_RANGES:-9:16}}"
 
 # Dynamic/head-pool settings.
+intervention=${INTERVENTION:-late_boost}
 head_source=${HEAD_SOURCE:-file}
-head_score_key=${HEAD_SCORE_KEY:-global__itext_all__C_toi_HminusG}
+head_score_key=${HEAD_SCORE_KEY:-global__itext_all__C_toi_HminusG_signed}
 head_score_normalize=${HEAD_SCORE_NORMALIZE:-rank_percentile}
+min_head_back_raw=${MIN_HEAD_BACK_RAW:-0.0}
 use_head_scores=${USE_HEAD_SCORES:-true}
 dynamic_context_mode=${DYNAMIC_CONTEXT_MODE:-ratio_exp}
-read -r -a dynamic_redistribute_list <<< "${DYNAMIC_REDISTRIBUTES:-renorm}"
-dynamic_taus_env_set=false
-if [[ -n "${DYNAMIC_TAUS+x}" ]]; then
-  dynamic_taus_env_set=true
-fi
-read -r -a dynamic_tau_list <<< "${DYNAMIC_TAUS:-0.9}"
-AUTO_DYNAMIC_TAU=false
-if [[ -n "${AUTO_DYNAMIC_TAU+x}" ]]; then
-  auto_dynamic_tau=${AUTO_DYNAMIC_TAU}
-elif [[ "${dynamic_taus_env_set}" == "true" ]]; then
-  auto_dynamic_tau=false
-else
-  auto_dynamic_tau=true
-fi
-auto_tau_round_step=${AUTO_TAU_ROUND_STEP:-0.05}
+dynamic_late_boost_start=${DYNAMIC_LATE_BOOST_START:-0}
+dynamic_late_boost_end=${DYNAMIC_LATE_BOOST_END:-128}
+dynamic_late_boost_mode=${DYNAMIC_LATE_BOOST_MODE:-linear}
+dynamic_late_tau=${DYNAMIC_LATE_TAU:-0.82}
+read -r -a dynamic_redistribute_list <<< "${DYNAMIC_REDISTRIBUTES:-none}"
+dynamic_renorm=${DYNAMIC_RENORM:-false}
+IFS=';' read -r -a dynamic_tau_list <<< "${DYNAMIC_TAUS:-0.90}"
+AUTO_DYNAMIC_TAU=${AUTO_DYNAMIC_TAU:-false}
+auto_dynamic_tau=${AUTO_DYNAMIC_TAU}
+auto_tau_round_step=${AUTO_TAU_ROUND_STEP:-0.01}
 auto_tau_round_mode=${AUTO_TAU_ROUND_MODE:-floor}
 read -r -a topk_list <<< "${TOPK_LIST:-100}"
 
@@ -172,11 +169,6 @@ prepare_layer_spec() {
     --summary-file "${filtered_summary}" \
     --output-dir "${surrogate_dir}"
 
-  echo "[layers ${layer_spec}] building combo head pools -> ${surrogate_dir}"
-  run_cmd "${python_bin}" eval_scripts/build_layer_surrogate_combos.py \
-    --summary-file "${filtered_summary}" \
-    --output-dir "${surrogate_dir}"
-
   if [[ "${auto_dynamic_tau}" == "true" ]]; then
     local tau_file=${stats_root}/dynamic_tau_estimate.json
     echo "[layers ${layer_spec}] estimating dynamic tau -> ${tau_file}"
@@ -209,11 +201,22 @@ run_dynamic_job() {
   if [[ "${dynamic_redistribute}" != "renorm" ]]; then
     redir_suffix="_redir${dynamic_redistribute}"
   fi
+  if [[ "${dynamic_renorm}" != "true" ]]; then
+    redir_suffix="${redir_suffix}_norenorm"
+  fi
+  local braw_suffix=""
+  if [[ "${min_head_back_raw}" != "0" && "${min_head_back_raw}" != "0.0" ]]; then
+    braw_suffix="_bmin${min_head_back_raw}"
+  fi
+  local late_suffix=""
+  if [[ "${intervention}" == "late_boost" && "${dynamic_late_boost_start}" != "-1" && "${dynamic_late_tau}" != "-1" && "${dynamic_late_tau}" != "-1.0" ]]; then
+    late_suffix="_late${dynamic_late_boost_mode}${dynamic_late_boost_start}-${dynamic_late_boost_end}tau${dynamic_late_tau}"
+  fi
 
   local range_root=./results_${layer_slug_name}/${dataset}
   local stats_root=${range_root}/${model_name}_base_original_qa_n${train_num_samples}_txtattn_${layer_slug_name}_allheads
   local head_file=${stats_root}/surrogate_score_zoo/ranked_heads_${head_score_key}.json
-  local result_path=${range_root}/${model_name}_dynamic_${dynamic_context_mode}_${head_source}_k${topk}_s${dynamic_strength}_q${dynamic_exp_sharpness}_tau${dynamic_tau}_p${dynamic_score_power}${redir_suffix}_n${num_samples}_${head_score_key}
+  local result_path=${range_root}/${model_name}_${intervention}_${dynamic_context_mode}_${head_source}_k${topk}_s${dynamic_strength}_q${dynamic_exp_sharpness}_tau${dynamic_tau}_p${dynamic_score_power}${redir_suffix}${late_suffix}${braw_suffix}_n${num_samples}_${head_score_key}
   mkdir -p "${result_path}"
 
   local extra_head_args=()
@@ -222,6 +225,7 @@ run_dynamic_job() {
       --head-file "${head_file}"
       --head-score-key "${head_score_key}"
       --head-score-normalize "${head_score_normalize}"
+      --min-head-back-raw "${min_head_back_raw}"
     )
   fi
 
@@ -244,7 +248,12 @@ run_dynamic_job() {
     resume_args+=(--resume)
   fi
 
-  echo "[GPU ${gpu}] layers=${layer_spec} topk=${topk} s=${dynamic_strength} q=${dynamic_exp_sharpness} tau=${dynamic_tau} p=${dynamic_score_power} redistribute=${dynamic_redistribute}"
+  local renorm_args=()
+  if [[ "${dynamic_renorm}" != "true" ]]; then
+    renorm_args+=(--no-dynamic-renorm)
+  fi
+
+  echo "[GPU ${gpu}] layers=${layer_spec} intervention=${intervention} topk=${topk} min_back_raw=${min_head_back_raw} s=${dynamic_strength} q=${dynamic_exp_sharpness} tau=${dynamic_tau} p=${dynamic_score_power} redistribute=${dynamic_redistribute} renorm=${dynamic_renorm} late_mode=${dynamic_late_boost_mode} late_start=${dynamic_late_boost_start} late_end=${dynamic_late_boost_end} late_tau=${dynamic_late_tau}"
 
   if [[ "${dry_run}" == "true" ]]; then
     echo "[dry-run] would write ${result_path}"
@@ -263,7 +272,7 @@ run_dynamic_job() {
     --conv-mode "${CONV_MODE:-llava_llama_3}" \
     --num_samples "${num_samples}" \
     --seed "${seed}" \
-    --intervention dynamic \
+    --intervention "${intervention}" \
     --head-source "${head_source}" \
     "${extra_head_args[@]}" \
     --topk "${topk}" \
@@ -271,8 +280,13 @@ run_dynamic_job() {
     --dynamic-context-mode "${dynamic_context_mode}" \
     --dynamic-tau "${dynamic_tau}" \
     --dynamic-exp-sharpness "${dynamic_exp_sharpness}" \
+    --dynamic-late-boost-start "${dynamic_late_boost_start}" \
+    --dynamic-late-boost-end "${dynamic_late_boost_end}" \
+    --dynamic-late-boost-mode "${dynamic_late_boost_mode}" \
+    --dynamic-late-tau "${dynamic_late_tau}" \
     --dynamic-score-power "${dynamic_score_power}" \
     --dynamic-redistribute "${dynamic_redistribute}" \
+    "${renorm_args[@]}" \
     "${score_args[@]}" \
     "${trace_args[@]}" \
     --log-intervention-stats \
@@ -286,7 +300,7 @@ run_dynamic_job() {
     --caption_file captions_val2014.json \
     > "${result_path}/chair.log" 2>&1
 
-  echo "[GPU ${gpu}] done layers=${layer_spec} topk=${topk} s=${dynamic_strength} q=${dynamic_exp_sharpness} tau=${dynamic_tau} p=${dynamic_score_power} redistribute=${dynamic_redistribute}"
+  echo "[GPU ${gpu}] done layers=${layer_spec} intervention=${intervention} topk=${topk} min_back_raw=${min_head_back_raw} s=${dynamic_strength} q=${dynamic_exp_sharpness} tau=${dynamic_tau} p=${dynamic_score_power} redistribute=${dynamic_redistribute} renorm=${dynamic_renorm} late_mode=${dynamic_late_boost_mode} late_start=${dynamic_late_boost_start} late_end=${dynamic_late_boost_end} late_tau=${dynamic_late_tau}"
 }
 
 for layer_spec in "${layer_specs[@]}"; do

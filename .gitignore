@@ -34,3 +34,6 @@ serve_images/
 
 baselines/*
 newer_models/*
+
+*.jpg
+*.log

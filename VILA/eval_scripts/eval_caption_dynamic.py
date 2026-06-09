@@ -58,7 +58,7 @@ def score_from_head_record(record, score_key):
     return 1.0
 
 
-def load_selected_heads(head_file, topk, score_key="score", score_normalize="rank_percentile"):
+def load_selected_heads(head_file, topk, score_key="score", score_normalize="rank_percentile", min_back_raw=0.0):
     with open(os.path.expanduser(head_file), "r", encoding="utf-8") as f:
         data = json.load(f)
     if isinstance(data, dict) and "heads" in data:
@@ -70,7 +70,13 @@ def load_selected_heads(head_file, topk, score_key="score", score_normalize="ran
         return heads, {f"{l}-{h}": 1.0 for l, h in heads}
     else:
         raise ValueError(f"Unsupported head file format: {head_file}")
-    top = records[:topk]
+    top_records = records[:topk]
+    if min_back_raw > 0:
+        top = [x for x in top_records if not isinstance(x, dict) or "back_raw" not in x or float(x["back_raw"]) >= float(min_back_raw)]
+        if len(top) < len(top_records):
+            print(f"[head-filter] kept {len(top)}/{len(top_records)} heads with back_raw >= {min_back_raw}")
+    else:
+        top = top_records
     heads = [[int(x["layer"]), int(x["head"])] if isinstance(x, dict) else [int(x[0]), int(x[1])] for x in top]
     if records and isinstance(records[0], dict):
         score_records = records if score_normalize in ("logminmax", "rank_percentile") else top
@@ -128,7 +134,7 @@ def _update_stats(config, layer_idx, head_idx, scale, text_mass, head_score, ext
 
 
 def _maybe_reset_dynamic_trace(config, layer_idx):
-    if getattr(config, "intervention", "none") != "dynamic":
+    if getattr(config, "intervention", "none") not in ("dynamic", "late_boost"):
         return
     if not bool(getattr(config, "log_dynamic_trace", False)):
         return
@@ -174,7 +180,7 @@ def _append_dynamic_trace(
 
 
 def _maybe_print_dynamic_trace(config, layer_idx):
-    if getattr(config, "intervention", "none") != "dynamic":
+    if getattr(config, "intervention", "none") not in ("dynamic", "late_boost"):
         return
     if not bool(getattr(config, "log_dynamic_trace", False)):
         return
@@ -205,6 +211,11 @@ def _maybe_print_dynamic_trace(config, layer_idx):
             "redistribute": getattr(config, "dynamic_redistribute", "renorm"),
             "strength": float(getattr(config, "dynamic_strength", 1.0)),
             "tau": float(getattr(config, "dynamic_tau", 0.5)),
+            "late_boost_start": int(getattr(config, "dynamic_late_boost_start", -1)),
+            "late_boost_end": int(getattr(config, "dynamic_late_boost_end", 128)),
+            "late_boost_mode": getattr(config, "dynamic_late_boost_mode", "linear"),
+            "late_tau": float(getattr(config, "dynamic_late_tau", -1.0)),
+            "effective_tau": float(getattr(config, "_dynamic_effective_tau", getattr(config, "dynamic_tau", 0.5))),
             "exp_sharpness": float(getattr(config, "dynamic_exp_sharpness", 6.0)),
             "mean_suppression": mean("suppression", buffer),
             "mean_scale": mean("scale", buffer),
@@ -221,7 +232,8 @@ def _maybe_print_dynamic_trace(config, layer_idx):
 
 
 def _apply_dynamic_intervention(attn_weights, config, layer_idx):
-    if getattr(config, "intervention", "none") != "dynamic":
+    mode = getattr(config, "intervention", "none")
+    if mode not in ("dynamic", "late_boost"):
         return attn_weights
     _maybe_reset_dynamic_trace(config, layer_idx)
     selected = _heads_for_layer(config, layer_idx)
@@ -241,6 +253,10 @@ def _apply_dynamic_intervention(attn_weights, config, layer_idx):
     score_power = float(getattr(config, "dynamic_score_power", 1.0))
     tau = float(getattr(config, "dynamic_tau", 0.9))
     sharpness = float(getattr(config, "dynamic_exp_sharpness", 8.0))
+    late_boost_start = int(getattr(config, "dynamic_late_boost_start", -1))
+    late_boost_end = int(getattr(config, "dynamic_late_boost_end", 128))
+    late_boost_mode = getattr(config, "dynamic_late_boost_mode", "linear")
+    late_tau = float(getattr(config, "dynamic_late_tau", -1.0))
     context_mode = getattr(config, "dynamic_context_mode", "ratio_exp")
     redistribute = getattr(config, "dynamic_redistribute", "renorm")
     renorm = bool(getattr(config, "dynamic_renorm", True))
@@ -248,6 +264,17 @@ def _apply_dynamic_intervention(attn_weights, config, layer_idx):
     eps = 1e-6
 
     pending = []
+    generation_step = int(getattr(config, "_dynamic_trace_step", 0))
+    effective_tau = tau
+    if mode == "late_boost" and late_boost_start >= 0 and late_tau >= 0.0 and generation_step >= late_boost_start:
+        if late_boost_mode == "linear":
+            late_end = max(late_boost_end, late_boost_start + 1)
+            progress = min(max((generation_step - late_boost_start) / max(late_end - late_boost_start, 1), 0.0), 1.0)
+            effective_tau = tau + progress * (late_tau - tau)
+        else:
+            effective_tau = late_tau
+    config._dynamic_effective_tau = effective_tau
+
     for head, head_score in selected:
         head = int(head)
         if head >= attn_weights.size(1):
@@ -260,13 +287,13 @@ def _apply_dynamic_intervention(attn_weights, config, layer_idx):
         score_prior = (max(float(head_score), 0.0) if use_head_scores else 1.0) ** max(score_power, 0.0)
         if context_mode == "ratio_exp":
             context_source = ratio
-            context_prior = torch.exp(max(sharpness, 0.0) * (ratio - tau))
+            context_prior = torch.exp(max(sharpness, 0.0) * (ratio - effective_tau))
         elif context_mode == "ratio_power":
             context_source = ratio
             context_prior = ratio.pow(max(ratio_power, 0.0))
         elif context_mode == "text_exp":
             context_source = text_context
-            context_prior = torch.exp(max(sharpness, 0.0) * (text_context - tau))
+            context_prior = torch.exp(max(sharpness, 0.0) * (text_context - effective_tau))
         else:
             context_source = text_context
             context_prior = text_context.pow(max(ratio_power, 0.0))
@@ -398,7 +425,7 @@ def patch_llama_attention_once():
 def attach_intervention_config(model, args):
     if args.head_source != "file":
         raise ValueError("VILA dynamic currently expects --head-source file")
-    heads, score_map = load_selected_heads(args.head_file, args.topk, args.head_score_key, args.head_score_normalize)
+    heads, score_map = load_selected_heads(args.head_file, args.topk, args.head_score_key, args.head_score_normalize, args.min_head_back_raw)
     cfg = model.llm.config
     cfg.intervention = args.intervention
     cfg.intervention_heads = heads
@@ -408,6 +435,10 @@ def attach_intervention_config(model, args):
     cfg.dynamic_score_power = args.dynamic_score_power
     cfg.dynamic_tau = args.dynamic_tau
     cfg.dynamic_exp_sharpness = args.dynamic_exp_sharpness
+    cfg.dynamic_late_boost_start = args.dynamic_late_boost_start
+    cfg.dynamic_late_boost_end = args.dynamic_late_boost_end if args.dynamic_late_boost_end > 0 else args.max_new_tokens
+    cfg.dynamic_late_boost_mode = args.dynamic_late_boost_mode
+    cfg.dynamic_late_tau = args.dynamic_late_tau
     cfg.dynamic_context_mode = args.dynamic_context_mode
     cfg.dynamic_redistribute = args.dynamic_redistribute
     cfg.dynamic_renorm = args.dynamic_renorm
@@ -442,6 +473,10 @@ def set_sample_span_config(model, input_ids, inputs_embeds, question_id):
 def generate_dynamic(model, image_path, prompt_text, generation_config, question_id):
     from eval_scripts.eval_caption import prepare_vila_inputs
     input_ids, inputs_embeds, attention_mask = prepare_vila_inputs(model, image_path, prompt_text)
+    model_input_prompt = model.tokenizer.decode(
+        input_ids[0].detach().cpu().tolist(),
+        skip_special_tokens=False,
+    )
     set_sample_span_config(model, input_ids, inputs_embeds, question_id)
     output_ids = model.llm.generate(
         inputs_embeds=inputs_embeds,
@@ -454,7 +489,7 @@ def generate_dynamic(model, image_path, prompt_text, generation_config, question
         return_dict_in_generate=False,
     )
     caption = model.tokenizer.decode(output_ids[0], skip_special_tokens=True).strip()
-    return caption
+    return caption, model_input_prompt
 
 
 def finalize_bucket(bucket):
@@ -545,7 +580,7 @@ def eval_model(args):
         for sample_idx, line in tqdm(enumerate(questions, start=1), total=len(questions)):
             image_path = os.path.join(args.image_folder, line["image"])
             with torch.inference_mode():
-                text = generate_dynamic(model, image_path, line["text"], generation_config, line["question_id"])
+                text, model_input_prompt = generate_dynamic(model, image_path, line["text"], generation_config, line["question_id"])
             print(f"[{sample_idx}/{len(questions)}] question_id={line['question_id']}")
             print(text)
             ans_file.write(json.dumps({
@@ -555,7 +590,10 @@ def eval_model(args):
                 "text": text,
                 "answer_id": str(uuid.uuid4()),
                 "model_id": args.model_name,
-                "metadata": {"model_path": args.model_path},
+                "metadata": {
+                    "model_path": args.model_path,
+                    "model_input_prompt": model_input_prompt,
+                },
             }, ensure_ascii=False) + "\n")
             ans_file.flush()
     save_intervention_stats(model, args)
@@ -583,10 +621,11 @@ if __name__ == "__main__":
     parser.add_argument("--sample-id-file", type=str, default="")
     parser.add_argument("--save-sample-id-file", type=str, default="")
     parser.add_argument("--resume", action="store_true")
-    parser.add_argument("--intervention", type=str, default="dynamic", choices=["none", "dynamic"])
+    parser.add_argument("--intervention", type=str, default="dynamic", choices=["none", "dynamic", "late_boost"])
     parser.add_argument("--head-source", type=str, default="file")
     parser.add_argument("--head-file", type=str, required=True)
     parser.add_argument("--topk", type=int, default=100)
+    parser.add_argument("--min-head-back-raw", type=float, default=0.0)
     parser.add_argument("--head-score-key", type=str, default="global__itext_all__C_toi_HminusG")
     parser.add_argument("--head-score-normalize", type=str, default="rank_percentile")
     parser.add_argument("--use-head-scores", action="store_true")
@@ -595,6 +634,10 @@ if __name__ == "__main__":
     parser.add_argument("--dynamic-score-power", type=float, default=1.0)
     parser.add_argument("--dynamic-tau", type=float, default=0.9)
     parser.add_argument("--dynamic-exp-sharpness", type=float, default=8.0)
+    parser.add_argument("--dynamic-late-boost-start", type=int, default=0)
+    parser.add_argument("--dynamic-late-boost-end", type=int, default=128)
+    parser.add_argument("--dynamic-late-boost-mode", type=str, default="linear", choices=["linear", "step"])
+    parser.add_argument("--dynamic-late-tau", type=float, default=0.80)
     parser.add_argument("--dynamic-context-mode", type=str, default="ratio_exp")
     parser.add_argument("--dynamic-redistribute", type=str, default="renorm")
     parser.add_argument("--dynamic-renorm", dest="dynamic_renorm", action="store_true", default=True)

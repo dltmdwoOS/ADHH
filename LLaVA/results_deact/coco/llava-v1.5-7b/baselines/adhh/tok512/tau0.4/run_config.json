@@ -1,0 +1,99 @@
+{
+  "model_path": "liuhaotian/llava-v1.5-7b",
+  "dataset": "coco",
+  "num_samples": 500,
+  "seed": 42,
+  "intervention": "adhh",
+  "head_source": "file",
+  "topk": 20,
+  "text_threshold": 0.4,
+  "text_scale": 0.5,
+  "use_head_scores": false,
+  "head_file": "./results_deact/coco/llava-v1.5-7b/baselines/adhh/attribution_result.json",
+  "head_score_key": "score",
+  "head_score_normalize": "minmax",
+  "log_intervention_stats": false,
+  "intervention_stats_file": "",
+  "selected_heads": [
+    [
+      16,
+      29
+    ],
+    [
+      20,
+      12
+    ],
+    [
+      26,
+      9
+    ],
+    [
+      13,
+      31
+    ],
+    [
+      30,
+      9
+    ],
+    [
+      18,
+      9
+    ],
+    [
+      15,
+      10
+    ],
+    [
+      19,
+      18
+    ],
+    [
+      14,
+      16
+    ],
+    [
+      17,
+      0
+    ],
+    [
+      26,
+      28
+    ],
+    [
+      20,
+      5
+    ],
+    [
+      18,
+      26
+    ],
+    [
+      15,
+      24
+    ],
+    [
+      15,
+      25
+    ],
+    [
+      19,
+      27
+    ],
+    [
+      31,
+      26
+    ],
+    [
+      22,
+      20
+    ],
+    [
+      15,
+      9
+    ],
+    [
+      27,
+      29
+    ]
+  ]
+}

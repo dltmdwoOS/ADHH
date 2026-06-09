@@ -115,7 +115,7 @@ def _maybe_trace_txtattn_last_row(attn_weights, config, layer_idx):
 
 
 def _maybe_reset_dynamic_trace(config, layer_idx):
-    if getattr(config, "intervention", "none") not in ("dynamic", "dynamic"):
+    if getattr(config, "intervention", "none") not in ("dynamic", "late_boost"):
         return
     if not bool(getattr(config, "log_dynamic_trace", False)):
         return
@@ -146,7 +146,7 @@ def _append_dynamic_trace(config, layer_idx, head_idx, head_score, score_prior, 
 
 
 def _maybe_print_dynamic_trace(config, layer_idx):
-    if getattr(config, "intervention", "none") not in ("dynamic", "dynamic"):
+    if getattr(config, "intervention", "none") not in ("dynamic", "late_boost"):
         return
     if not bool(getattr(config, "log_dynamic_trace", False)):
         return
@@ -239,10 +239,25 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
     dynamic_score_power = float(getattr(config, "dynamic_score_power", 1.0))
     dynamic_tau = float(getattr(config, "dynamic_tau", 0.5))
     dynamic_exp_sharpness = float(getattr(config, "dynamic_exp_sharpness", 6.0))
+    dynamic_late_boost_start = int(getattr(config, "dynamic_late_boost_start", -1))
+    dynamic_late_boost_end = int(getattr(config, "dynamic_late_boost_end", 128))
+    dynamic_late_boost_mode = getattr(config, "dynamic_late_boost_mode", "linear")
+    dynamic_late_tau = float(getattr(config, "dynamic_late_tau", -1.0))
     dynamic_context_mode = getattr(config, "dynamic_context_mode", "ratio_exp")
     dynamic_redistribute = getattr(config, "dynamic_redistribute", "renorm")
+    dynamic_renorm = bool(getattr(config, "dynamic_renorm", True))
     use_head_scores = bool(getattr(config, "use_head_scores", False))
     eps = 1e-6
+    generation_step = int(getattr(config, "_dynamic_trace_step", 0))
+    effective_dynamic_tau = dynamic_tau
+    if mode == "late_boost" and dynamic_late_boost_start >= 0 and dynamic_late_tau >= 0.0 and generation_step >= dynamic_late_boost_start:
+        if dynamic_late_boost_mode == "linear":
+            late_end = max(dynamic_late_boost_end, dynamic_late_boost_start + 1)
+            progress = min(max((generation_step - dynamic_late_boost_start) / max(late_end - dynamic_late_boost_start, 1), 0.0), 1.0)
+            effective_dynamic_tau = dynamic_tau + progress * (dynamic_late_tau - dynamic_tau)
+        else:
+            effective_dynamic_tau = dynamic_late_tau
+    config._dynamic_effective_tau = effective_dynamic_tau
 
     for head, head_score in selected:
         if int(head) >= int(attn_weights.size(1)):
@@ -261,10 +276,10 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
             context_prior = ratio.pow(max(dynamic_ratio_power, 0.0))
         elif dynamic_context_mode == "ratio_exp":
             context_source = ratio
-            context_prior = torch.exp(max(dynamic_exp_sharpness, 0.0) * (ratio - dynamic_tau))
+            context_prior = torch.exp(max(dynamic_exp_sharpness, 0.0) * (ratio - effective_dynamic_tau))
         elif dynamic_context_mode == "text_exp":
             context_source = text_context
-            context_prior = torch.exp(max(dynamic_exp_sharpness, 0.0) * (text_context - dynamic_tau))
+            context_prior = torch.exp(max(dynamic_exp_sharpness, 0.0) * (text_context - effective_dynamic_tau))
         else:
             context_source = text_context
             context_prior = text_context.pow(max(dynamic_ratio_power, 0.0))
@@ -273,7 +288,7 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
         scale = 1.0 - suppression
         scaled_text_slice = text_slice * scale.unsqueeze(-1)
 
-        if dynamic_redistribute in ("system", "system_only", "vision", "vision_only"):
+        if dynamic_redistribute in ("system", "system_only", "vision", "vision_only", "sysvis"):
             removed_mass = (text_mass - scaled_text_slice.sum(dim=-1)).clamp_min(0.0)
             if dynamic_redistribute in ("system", "system_only") and img_start > 0:
                 target_slice = attn_weights[:, head, -1, :img_start]
@@ -283,6 +298,13 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
                 target_slice = attn_weights[:, head, -1, img_start:img_end]
                 target_mass = target_slice.sum(dim=-1).clamp_min(eps)
                 attn_weights[:, head, -1, img_start:img_end] = target_slice + target_slice * (removed_mass / target_mass).unsqueeze(-1)
+            elif dynamic_redistribute == "sysvis" and img_end > img_start:
+                target_mass = (attn_weights[:, head, -1, :img_start].sum(dim=-1) + attn_weights[:, head, -1, img_start:img_end].sum(dim=-1)).clamp_min(eps)
+                if img_start > 0:
+                    target_slice = attn_weights[:, head, -1, :img_start]
+                    attn_weights[:, head, -1, :img_start] = target_slice + (target_slice / target_mass.unsqueeze(-1)) * removed_mass.unsqueeze(-1)
+                target_slice = attn_weights[:, head, -1, img_start:img_end]
+                attn_weights[:, head, -1, img_start:img_end] = target_slice + (target_slice / target_mass.unsqueeze(-1)) * removed_mass.unsqueeze(-1)
 
         attn_weights[:, head, -1, text_start:] = scaled_text_slice
         _update_intervention_stats(config, layer_idx, head, mode, scale, text_mass, head_score, {
@@ -294,8 +316,9 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
         })
         _append_dynamic_trace(config, layer_idx, head, head_score, score_prior, text_mass, img_mass, ratio, context_source, context_prior, suppression, scale)
 
-    denom = attn_weights[:, :, -1, :].sum(dim=-1, keepdim=True).clamp_min(eps)
-    attn_weights[:, :, -1, :] = attn_weights[:, :, -1, :] / denom
+    if dynamic_renorm:
+        denom = attn_weights[:, :, -1, :].sum(dim=-1, keepdim=True).clamp_min(eps)
+        attn_weights[:, :, -1, :] = attn_weights[:, :, -1, :] / denom
     _maybe_print_dynamic_trace(config, layer_idx)
     return attn_weights
 
@@ -471,8 +494,13 @@ def configure_dynamic_intervention(model, heads, scores, img_start_pos, img_leng
         cfg.dynamic_score_power = args.dynamic_score_power
         cfg.dynamic_tau = args.dynamic_tau
         cfg.dynamic_exp_sharpness = args.dynamic_exp_sharpness
+        cfg.dynamic_late_boost_start = args.dynamic_late_boost_start
+        cfg.dynamic_late_boost_end = args.dynamic_late_boost_end if args.dynamic_late_boost_end > 0 else getattr(args, "max_new_tokens", 128)
+        cfg.dynamic_late_boost_mode = args.dynamic_late_boost_mode
+        cfg.dynamic_late_tau = args.dynamic_late_tau
         cfg.dynamic_context_mode = args.dynamic_context_mode
         cfg.dynamic_redistribute = args.dynamic_redistribute
+        cfg.dynamic_renorm = args.dynamic_renorm
         cfg.use_head_scores = args.use_head_scores
         cfg.log_intervention_stats = args.log_intervention_stats
         cfg._intervention_stats = shared_stats

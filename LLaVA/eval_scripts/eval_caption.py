@@ -577,6 +577,62 @@ def extract_txtattn_trace_for_sample(
     }
 
 
+
+def extract_txtattn_last_row_trace_for_sample(
+    question_id,
+    image_file,
+    caption,
+    generated_ids_only,
+    trace_steps,
+    step_labels,
+    writer,
+    stats,
+):
+    if not trace_steps:
+        return {"num_steps": 0, "num_records": 0, "trace_mode": "last_row"}
+    num_steps = min(len(trace_steps), int(generated_ids_only.shape[1]), len(step_labels))
+    num_records = 0
+    for step_idx in range(num_steps):
+        trace_step = trace_steps[step_idx] or {}
+        head_values = trace_step.get("head_values", [])
+        label = step_labels[step_idx]
+        buckets = buckets_from_txtattn_record(label)
+        stats.update(buckets, head_values)
+        i_text_values = [x["I_text"] for x in head_values]
+        record = {
+            "question_id": int(question_id),
+            "image": image_file,
+            "step_idx": int(step_idx),
+            "token_id": label["token_id"],
+            "token_text": label["token_text"],
+            "is_object": label["is_object"],
+            "is_hallucinated": label["is_hallucinated"],
+            "is_non_hallucinated": label["is_non_hallucinated"],
+            "objects": label["objects"],
+            "hallucinated_objects": label["hallucinated_objects"],
+            "non_hallucinated_objects": label["non_hallucinated_objects"],
+            "layout": trace_step.get("layout", {}),
+            "mean_I_text": float(sum(i_text_values) / max(len(i_text_values), 1)),
+            "max_I_text": float(max(i_text_values)) if i_text_values else None,
+            "head_values": head_values,
+            "trace_mode": "last_row",
+        }
+        writer.write(json.dumps(record, ensure_ascii=False) + "\n")
+        num_records += 1
+    return {
+        "num_steps": int(num_steps),
+        "num_records": int(num_records),
+        "trace_mode": "last_row",
+        "trace_note": "Lightweight trace captured from the last query row. I_text uses image_end:.",
+    }
+
+
+def group_heads_by_layer(heads):
+    heads_by_layer = {}
+    for layer_idx, head_idx in heads:
+        heads_by_layer.setdefault(int(layer_idx), []).append(int(head_idx))
+    return heads_by_layer
+
 def build_token_mask_debug(tokenizer, input_ids, generated_ids_only, image_len, special_token_ids):
     prompt_ids = input_ids[0].detach().cpu().tolist()
     generated_ids = generated_ids_only[0].detach().cpu().tolist()
@@ -779,17 +835,17 @@ class CustomDataset(Dataset):
         image_tensor = process_images([image], self.image_processor, self.model_config)[0]
         input_ids = tokenizer_image_token(prompt, self.tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
 
-        return input_ids, image_tensor, image.size
+        return input_ids, image_tensor, image.size, prompt
 
     def __len__(self):
         return len(self.questions)
 
 
 def collate_fn(batch):
-    input_ids, image_tensors, image_sizes = zip(*batch)
+    input_ids, image_tensors, image_sizes, model_input_prompts = zip(*batch)
     input_ids = torch.stack(input_ids, dim=0)
     image_tensors = torch.stack(image_tensors, dim=0)
-    return input_ids, image_tensors, image_sizes
+    return input_ids, image_tensors, image_sizes, model_input_prompts
 
 
 def create_data_loader(
@@ -976,7 +1032,7 @@ def eval_model(args):
                 print(f"[resume] replayed {replayed_records} existing txt-attn trace records from {txtattn_output_file}")
         txtattn_mode = "a" if args.resume else "w"
         txtattn_writer = open(txtattn_output_file, txtattn_mode, encoding="utf-8")
-        print(f"[txtattn] tracing {len(txtattn_heads)} heads -> {txtattn_output_file}")
+        print(f"[txtattn] tracing {len(txtattn_heads)} heads with mode={args.txtattn_trace_mode} -> {txtattn_output_file}")
 
     sample_dir = None
     mask_debug_dir = None
@@ -987,16 +1043,34 @@ def eval_model(args):
             mask_debug_dir = os.path.join(args.output_path, "token_mask_debug")
             os.makedirs(mask_debug_dir, exist_ok=True)
 
-    for sample_idx, ((input_ids, image_tensor, image_sizes), line) in tqdm(
+    for sample_idx, ((input_ids, image_tensor, image_sizes, model_input_prompts), line) in tqdm(
         enumerate(zip(data_loader, questions), start=1),
         total=len(questions),
     ):
         question_id = line["question_id"]
         cur_prompt = line["text"]
         image_file = line["image"]
+        model_input_prompt = model_input_prompts[0]
 
         input_ids = input_ids.to(device="cuda", non_blocking=True)
         image_tensor = image_tensor.to(dtype=torch.float16, device="cuda", non_blocking=True)
+
+        if args.enable_txtattn_trace and args.txtattn_trace_mode == "last_row":
+            prompt_ids = input_ids[0].detach().cpu().tolist()
+            image_positions = [idx for idx, token_id in enumerate(prompt_ids) if int(token_id) == IMAGE_TOKEN_INDEX]
+            if len(image_positions) == 1:
+                model.config.prompt_after_image_len = len(prompt_ids) - image_positions[0] - 1
+            model.config.img_start_pos = int(getattr(model.config, "img_start_pos", 35))
+            model.config.img_length = int(getattr(model.config, "img_length", 576))
+            model.config.enable_txtattn_last_row_trace = True
+            model.config.txtattn_trace_heads_by_layer = group_heads_by_layer(txtattn_heads)
+            model.config._txtattn_last_row_buffer = []
+            model.config._txtattn_trace_current_step = 0
+        else:
+            model.config.enable_txtattn_last_row_trace = False
+            model.config.txtattn_trace_heads_by_layer = {}
+
+        output_attentions = args.enable_attention_analysis or (args.enable_txtattn_trace and args.txtattn_trace_mode == "full")
 
         with torch.inference_mode():
             output_dict = model.generate(
@@ -1009,7 +1083,7 @@ def eval_model(args):
                 num_beams=args.num_beams,
                 max_new_tokens=args.max_new_tokens,
                 use_cache=True,
-                output_attentions=(args.enable_attention_analysis or args.enable_txtattn_trace),
+                output_attentions=output_attentions,
                 output_scores=False,
                 output_hidden_states=False,
                 return_dict_in_generate=True,
@@ -1021,7 +1095,7 @@ def eval_model(args):
         print(f"[{sample_idx}/{len(questions)}] question_id={question_id}")
         print(outputs)
 
-        metadata = {}
+        metadata = {"model_input_prompt": model_input_prompt}
         step_labels = None
         gt_objects = set()
         if args.enable_attention_analysis or args.enable_txtattn_trace:
@@ -1078,20 +1152,35 @@ def eval_model(args):
             metadata["attention_analysis"] = compact_sample
 
         if args.enable_txtattn_trace:
-            trace_summary = extract_txtattn_trace_for_sample(
-                question_id=question_id,
-                image_file=image_file,
-                caption=outputs,
-                input_ids=input_ids,
-                generated_ids_only=generated_ids_only,
-                attentions=output_dict.attentions,
-                step_labels=step_labels,
-                special_token_ids=special_token_ids,
-                heads=txtattn_heads,
-                writer=txtattn_writer,
-                stats=txtattn_stats,
-            )
+            if args.txtattn_trace_mode == "full":
+                trace_summary = extract_txtattn_trace_for_sample(
+                    question_id=question_id,
+                    image_file=image_file,
+                    caption=outputs,
+                    input_ids=input_ids,
+                    generated_ids_only=generated_ids_only,
+                    attentions=output_dict.attentions,
+                    step_labels=step_labels,
+                    special_token_ids=special_token_ids,
+                    heads=txtattn_heads,
+                    writer=txtattn_writer,
+                    stats=txtattn_stats,
+                )
+            else:
+                trace_steps = list(getattr(model.config, "_txtattn_last_row_buffer", []) or [])
+                trace_summary = extract_txtattn_last_row_trace_for_sample(
+                    question_id=question_id,
+                    image_file=image_file,
+                    caption=outputs,
+                    generated_ids_only=generated_ids_only,
+                    trace_steps=trace_steps,
+                    step_labels=step_labels,
+                    writer=txtattn_writer,
+                    stats=txtattn_stats,
+                )
             metadata["txtattn_trace"] = trace_summary
+            model.config.enable_txtattn_last_row_trace = False
+            model.config._txtattn_last_row_buffer = []
 
         ans_id = shortuuid.uuid()
         ans_file.write(
@@ -1124,6 +1213,7 @@ def eval_model(args):
         summary["config"] = {
             "txtattn_head_file": args.txtattn_head_file,
             "txtattn_topk": args.txtattn_topk,
+            "txtattn_trace_mode": args.txtattn_trace_mode,
             "num_samples": args.num_samples,
             "max_new_tokens": args.max_new_tokens,
             "note": "I_text is sum of attention over image_end:, matching the text slice used by intervention code.",
@@ -1185,6 +1275,7 @@ if __name__ == "__main__":
     )
 
     parser.add_argument("--enable-txtattn-trace", action="store_true")
+    parser.add_argument("--txtattn-trace-mode", choices=["full", "last_row"], default="full")
     parser.add_argument("--txtattn-head-file", type=str, default="")
     parser.add_argument("--txtattn-topk", type=int, default=20)
     parser.add_argument("--txtattn-output-file", type=str, default="")

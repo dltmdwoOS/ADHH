@@ -141,14 +141,28 @@ def score_from_head_record(record, score_key):
     return 1.0
 
 
-def load_selected_heads(head_file, topk, score_key="score", score_normalize="minmax"):
+def load_selected_heads(head_file, topk, score_key="score", score_normalize="minmax", min_back_raw=0.0):
     with open(head_file, "r") as f:
         data = json.load(f)
+
+    def keep_record(record):
+        if not isinstance(record, dict) or min_back_raw <= 0:
+            return True
+        if "back_raw" not in record:
+            return True
+        return float(record["back_raw"]) >= float(min_back_raw)
+
+    def select_records(records):
+        top_records = records[:topk]
+        selected = [x for x in top_records if keep_record(x)]
+        if len(selected) < len(top_records):
+            print(f"[head-filter] kept {len(selected)}/{len(top_records)} heads with back_raw >= {min_back_raw}")
+        return selected
 
     if isinstance(data, dict):
         if "heads" in data and isinstance(data["heads"], list):
             records = data["heads"]
-            top = records[:topk]
+            top = select_records(records)
             heads = [[int(x["layer"]), int(x["head"])] for x in top]
             score_records = records if score_normalize in ("logminmax", "rank_percentile") else top
             raw_scores = [score_from_head_record(x, score_key) for x in score_records]
@@ -175,7 +189,7 @@ def load_selected_heads(head_file, topk, score_key="score", score_normalize="min
 
     if isinstance(data, list) and len(data) > 0 and isinstance(data[0], dict):
         records = data
-        top = records[:topk]
+        top = select_records(records)
         heads = [[int(x["layer"]), int(x["head"])] for x in top]
         score_records = records if score_normalize in ("logminmax", "rank_percentile") else top
         raw_scores = [score_from_head_record(x, score_key) for x in score_records]
@@ -212,6 +226,7 @@ def resolve_head_config(args):
             args.topk,
             score_key=args.head_score_key,
             score_normalize=args.head_score_normalize,
+            min_back_raw=args.min_head_back_raw,
         )
     else:
         raise ValueError(f"Unsupported head_source: {args.head_source}")
@@ -332,17 +347,17 @@ class CustomDataset(Dataset):
         image = Image.open(os.path.join(self.image_folder, image_file)).convert("RGB")
         image_tensor = process_images([image], self.image_processor, self.model_config)[0]
         input_ids = tokenizer_image_token(prompt, self.tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
-        return input_ids, image_tensor, image.size
+        return input_ids, image_tensor, image.size, prompt
 
     def __len__(self):
         return len(self.questions)
 
 
 def collate_fn(batch):
-    input_ids, image_tensors, image_sizes = zip(*batch)
+    input_ids, image_tensors, image_sizes, model_input_prompts = zip(*batch)
     input_ids = torch.stack(input_ids, dim=0)
     image_tensors = torch.stack(image_tensors, dim=0)
-    return input_ids, image_tensors, image_sizes
+    return input_ids, image_tensors, image_sizes, model_input_prompts
 
 
 def create_data_loader(
@@ -379,8 +394,13 @@ def attach_intervention_config(model, args):
     model.config.dynamic_score_power = args.dynamic_score_power
     model.config.dynamic_tau = args.dynamic_tau
     model.config.dynamic_exp_sharpness = args.dynamic_exp_sharpness
+    model.config.dynamic_late_boost_start = args.dynamic_late_boost_start
+    model.config.dynamic_late_boost_end = args.dynamic_late_boost_end if args.dynamic_late_boost_end > 0 else args.max_new_tokens
+    model.config.dynamic_late_boost_mode = args.dynamic_late_boost_mode
+    model.config.dynamic_late_tau = args.dynamic_late_tau
     model.config.dynamic_context_mode = args.dynamic_context_mode
     model.config.dynamic_redistribute = args.dynamic_redistribute
+    model.config.dynamic_renorm = args.dynamic_renorm
     model.config.use_head_scores = args.use_head_scores
     model.config.log_dynamic_trace = args.log_dynamic_trace
     model.config.dynamic_trace_topn = args.dynamic_trace_topn
@@ -412,12 +432,19 @@ def save_run_config(args, head_cfg):
         "dynamic_score_power": args.dynamic_score_power,
         "dynamic_tau": args.dynamic_tau,
         "dynamic_exp_sharpness": args.dynamic_exp_sharpness,
+        "dynamic_late_boost_start": args.dynamic_late_boost_start,
+        "dynamic_late_boost_end": args.dynamic_late_boost_end if args.dynamic_late_boost_end > 0 else args.max_new_tokens,
+        "dynamic_late_boost_mode": args.dynamic_late_boost_mode,
+        "dynamic_late_tau": args.dynamic_late_tau,
         "dynamic_context_mode": args.dynamic_context_mode,
         "dynamic_redistribute": args.dynamic_redistribute,
+        "dynamic_renorm": args.dynamic_renorm,
         "use_head_scores": args.use_head_scores,
         "head_file": args.head_file,
         "head_score_key": args.head_score_key,
         "head_score_normalize": args.head_score_normalize,
+        "min_head_back_raw": args.min_head_back_raw,
+        "selected_head_count": len(head_cfg["heads"]),
         "log_intervention_stats": args.log_intervention_stats,
         "intervention_stats_file": args.intervention_stats_file,
         "log_dynamic_trace": args.log_dynamic_trace,
@@ -575,12 +602,18 @@ def save_intervention_stats(model, args):
         "dynamic_score_power": args.dynamic_score_power,
         "dynamic_tau": args.dynamic_tau,
         "dynamic_exp_sharpness": args.dynamic_exp_sharpness,
+        "dynamic_late_boost_start": args.dynamic_late_boost_start,
+        "dynamic_late_boost_end": args.dynamic_late_boost_end if args.dynamic_late_boost_end > 0 else args.max_new_tokens,
+        "dynamic_late_boost_mode": args.dynamic_late_boost_mode,
+        "dynamic_late_tau": args.dynamic_late_tau,
         "dynamic_context_mode": args.dynamic_context_mode,
         "dynamic_redistribute": args.dynamic_redistribute,
+        "dynamic_renorm": args.dynamic_renorm,
         "use_head_scores": args.use_head_scores,
         "head_file": args.head_file,
         "head_score_key": args.head_score_key,
         "head_score_normalize": args.head_score_normalize,
+        "min_head_back_raw": args.min_head_back_raw,
         "resume": args.resume,
         "log_dynamic_trace": args.log_dynamic_trace,
         "dynamic_trace_topn": args.dynamic_trace_topn,
@@ -634,13 +667,14 @@ def eval_model(args):
     model.config.log_intervention_stats = args.log_intervention_stats
     model.config._intervention_stats = {"overall": {}, "by_head": {}}
 
-    for (input_ids, image_tensor, image_sizes), line in tqdm(
+    for (input_ids, image_tensor, image_sizes, model_input_prompts), line in tqdm(
         zip(data_loader, questions),
         total=len(questions)
     ):
         question_id = line["question_id"]
         cur_prompt = line["text"]
         image_file = line["image"]
+        model_input_prompt = model_input_prompts[0]
 
         model.config.dynamic_trace_sample_id = question_id
         model.config._dynamic_trace_step = 0
@@ -681,6 +715,7 @@ def eval_model(args):
             "metadata": {
                 "intervention": args.intervention,
                 "topk": args.topk,
+                "model_input_prompt": model_input_prompt,
             }
         }) + "\n")
         ans_file.flush()
@@ -719,7 +754,7 @@ if __name__ == "__main__":
     parser.add_argument("--num-workers", type=int, default=4)
 
     parser.add_argument("--intervention", type=str, default="dynamic",
-                        choices=["none", "dynamic"])
+                        choices=["none", "dynamic", "late_boost"])
     parser.add_argument("--topk", type=int, default=20)
 
     parser.add_argument("--dynamic-strength", type=float, default=1.0,
@@ -734,9 +769,20 @@ if __name__ == "__main__":
                         help="Center point for exponential dynamic context modes.")
     parser.add_argument("--dynamic-exp-sharpness", type=float, default=6.0,
                         help="Sharpness k in exp(k * (context - tau)).")
+    parser.add_argument("--dynamic-late-boost-start", type=int, default=0,
+                        help="If >= 0, begin late-step tau scheduling from this generated-token step.")
+    parser.add_argument("--dynamic-late-boost-end", type=int, default=128,
+                        help="Generated-token step where linear late tau reaches --dynamic-late-tau; <=0 uses --max_new_tokens.")
+    parser.add_argument("--dynamic-late-boost-mode", type=str, default="linear", choices=["linear", "step"],
+                        help="Late tau schedule: linear decays from base tau to late tau, step switches immediately.")
+    parser.add_argument("--dynamic-late-tau", type=float, default=0.80,
+                        help="Final late-step tau for late_boost; use a negative value to disable scheduling.")
     parser.add_argument("--dynamic-redistribute", type=str, default="renorm",
-                        choices=["renorm", "system", "system_only", "vision", "vision_only"],
+                        choices=["none", "renorm", "system", "system_only", "vision", "vision_only", "sysvis"],
                         help="Where to explicitly move the text attention mass removed by dynamic. renorm keeps the original row-renormalization behavior.")
+    parser.add_argument("--no-dynamic-renorm", dest="dynamic_renorm", action="store_false",
+                        help="Skip the final attention-row renormalization after dynamic text suppression.")
+    parser.set_defaults(dynamic_renorm=True)
     parser.add_argument("--use-head-scores", action="store_true")
     parser.add_argument("--log-dynamic-trace", action="store_true",
                         help="Print per-decoding-step dynamic suppression summaries to decode.log.")
@@ -759,6 +805,8 @@ if __name__ == "__main__":
     parser.add_argument("--head-score-key", type=str, default="score")
     parser.add_argument("--head-score-normalize", type=str, default="minmax",
                         choices=["minmax", "raw", "logminmax", "rank_percentile"])
+    parser.add_argument("--min-head-back-raw", type=float, default=0.0,
+                        help="For ranked head files with a back_raw field, drop heads inside requested top-k whose back_raw is below this value.")
     parser.add_argument("--log-intervention-stats", action="store_true")
     parser.add_argument("--intervention-stats-file", type=str, default="")
 

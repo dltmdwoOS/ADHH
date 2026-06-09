@@ -80,7 +80,7 @@ def score_from_head_record(record, score_key):
     return 1.0
 
 
-def load_selected_heads(head_file, topk, score_key="score", score_normalize="minmax"):
+def load_selected_heads(head_file, topk, score_key="score", score_normalize="minmax", min_back_raw=0.0):
     with open(os.path.expanduser(head_file), "r", encoding="utf-8") as f:
         data = json.load(f)
     if isinstance(data, dict) and "heads" in data:
@@ -90,7 +90,13 @@ def load_selected_heads(head_file, topk, score_key="score", score_normalize="min
     else:
         raise ValueError(f"Unsupported head file format: {head_file}")
 
-    top = records[:topk]
+    top_records = records[:topk]
+    if min_back_raw > 0:
+        top = [x for x in top_records if not isinstance(x, dict) or "back_raw" not in x or float(x["back_raw"]) >= float(min_back_raw)]
+        if len(top) < len(top_records):
+            print(f"[head-filter] kept {len(top)}/{len(top_records)} heads with back_raw >= {min_back_raw}")
+    else:
+        top = top_records
     heads = [[int(x["layer"]), int(x["head"])] if isinstance(x, dict) else [int(x[0]), int(x[1])] for x in top]
     if top and isinstance(top[0], dict):
         score_records = records if score_normalize in ("logminmax", "rank_percentile") else top
@@ -262,12 +268,18 @@ def save_run_config(args, heads):
         "head_file": args.head_file,
         "head_score_key": args.head_score_key,
         "head_score_normalize": args.head_score_normalize,
+        "min_head_back_raw": args.min_head_back_raw,
+        "selected_head_count": len(heads),
         "use_head_scores": args.use_head_scores,
         "dynamic_strength": args.dynamic_strength,
         "dynamic_ratio_power": args.dynamic_ratio_power,
         "dynamic_score_power": args.dynamic_score_power,
         "dynamic_tau": args.dynamic_tau,
         "dynamic_exp_sharpness": args.dynamic_exp_sharpness,
+        "dynamic_late_boost_start": args.dynamic_late_boost_start,
+        "dynamic_late_boost_end": args.dynamic_late_boost_end if args.dynamic_late_boost_end > 0 else args.max_new_tokens,
+        "dynamic_late_boost_mode": args.dynamic_late_boost_mode,
+        "dynamic_late_tau": args.dynamic_late_tau,
         "dynamic_context_mode": args.dynamic_context_mode,
         "dynamic_redistribute": args.dynamic_redistribute,
         "log_dynamic_trace": args.log_dynamic_trace,
@@ -296,12 +308,17 @@ def save_intervention_stats(model, args):
         "dynamic_score_power": args.dynamic_score_power,
         "dynamic_tau": args.dynamic_tau,
         "dynamic_exp_sharpness": args.dynamic_exp_sharpness,
+        "dynamic_late_boost_start": args.dynamic_late_boost_start,
+        "dynamic_late_boost_end": args.dynamic_late_boost_end if args.dynamic_late_boost_end > 0 else args.max_new_tokens,
+        "dynamic_late_boost_mode": args.dynamic_late_boost_mode,
+        "dynamic_late_tau": args.dynamic_late_tau,
         "dynamic_context_mode": args.dynamic_context_mode,
         "dynamic_redistribute": args.dynamic_redistribute,
         "use_head_scores": args.use_head_scores,
         "head_file": args.head_file,
         "head_score_key": args.head_score_key,
         "head_score_normalize": args.head_score_normalize,
+        "min_head_back_raw": args.min_head_back_raw,
     }
     save_json(out_file, stats)
 
@@ -327,7 +344,7 @@ def eval_model(args):
 
     if args.head_source != "file" or not args.head_file:
         raise ValueError("Qwen dynamic currently requires --head-source file --head-file")
-    heads, score_map = load_selected_heads(args.head_file, args.topk, args.head_score_key, args.head_score_normalize)
+    heads, score_map = load_selected_heads(args.head_file, args.topk, args.head_score_key, args.head_score_normalize, args.min_head_back_raw)
     save_run_config(args, heads)
 
     sampled_ids = load_or_sample_ids(args)
@@ -376,7 +393,10 @@ def eval_model(args):
             "text": output_text,
             "answer_id": shortuuid.uuid(),
             "model_id": args.model_path,
-            "metadata": {"intervention": args.intervention},
+            "metadata": {
+                "intervention": args.intervention,
+                "model_input_prompt": text,
+            },
         }, ensure_ascii=False) + "\n")
         ans_file.flush()
         del inputs, generated, gen_only, input_ids
@@ -408,12 +428,13 @@ def main():
     parser.add_argument("--prompt-text", default="Please describe this image in detail.")
     parser.add_argument("--sample-id-file", default="")
     parser.add_argument("--save-sample-id-file", default="")
-    parser.add_argument("--intervention", choices=["none", "dynamic"], default="dynamic")
+    parser.add_argument("--intervention", choices=["none", "dynamic", "late_boost"], default="dynamic")
     parser.add_argument("--head-source", choices=["file"], default="file")
     parser.add_argument("--head-file", default="")
     parser.add_argument("--head-score-key", default="score")
     parser.add_argument("--head-score-normalize", choices=["minmax", "raw", "logminmax", "rank_percentile"], default="rank_percentile")
     parser.add_argument("--topk", type=int, default=100)
+    parser.add_argument("--min-head-back-raw", type=float, default=0.0)
     parser.add_argument("--use-head-scores", action="store_true")
     parser.add_argument("--dynamic-strength", type=float, default=1.0)
     parser.add_argument("--dynamic-ratio-power", type=float, default=1.0)
@@ -421,7 +442,13 @@ def main():
     parser.add_argument("--dynamic-context-mode", choices=["ratio_exp", "ratio_power", "text_exp", "text_power"], default="ratio_exp")
     parser.add_argument("--dynamic-tau", type=float, default=0.9)
     parser.add_argument("--dynamic-exp-sharpness", type=float, default=8.0)
-    parser.add_argument("--dynamic-redistribute", choices=["renorm", "system", "system_only", "vision", "vision_only"], default="renorm")
+    parser.add_argument("--dynamic-late-boost-start", type=int, default=0)
+    parser.add_argument("--dynamic-late-boost-end", type=int, default=128)
+    parser.add_argument("--dynamic-late-boost-mode", choices=["linear", "step"], default="linear")
+    parser.add_argument("--dynamic-late-tau", type=float, default=0.80)
+    parser.add_argument("--dynamic-redistribute", choices=["renorm", "none", "system", "system_only", "vision", "vision_only", "sysvis"], default="renorm")
+    parser.add_argument("--dynamic-renorm", dest="dynamic_renorm", action="store_true", default=True)
+    parser.add_argument("--no-dynamic-renorm", dest="dynamic_renorm", action="store_false")
     parser.add_argument("--log-dynamic-trace", action="store_true")
     parser.add_argument("--dynamic-trace-topn", type=int, default=10)
     parser.add_argument("--dynamic-trace-every", type=int, default=5)

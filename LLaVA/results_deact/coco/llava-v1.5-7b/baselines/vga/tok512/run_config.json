@@ -1,0 +1,20 @@
+{
+  "method": "VGA",
+  "model_name": "llava-v1.5-7b",
+  "model_path": "liuhaotian/llava-v1.5-7b",
+  "sample_id_file": "./results/coco/shared_samples/val_seed42_n500.json",
+  "num_samples": 500,
+  "seed": 42,
+  "conv_mode": "vicuna_v1",
+  "max_new_tokens": 512,
+  "vga_start_layer": 2,
+  "vga_end_layer": 15,
+  "vga_attn_coef": 0.2,
+  "vga_head_balancing": "simg",
+  "vga_cd_alpha": 0.02,
+  "vga_use_add": "true",
+  "vga_attn_norm": "false",
+  "vga_sampling": "false",
+  "num_chunks": 2,
+  "gpu_list": "0 1"
+}
