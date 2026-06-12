@@ -1,0 +1,199 @@
+{
+  "summary_file": "./results_deact/coco/llava-v1.5-13b/resources/l10_l17_train_n500/txtattn_summary.json",
+  "head_file": "./results_deact/coco/llava-v1.5-13b/resources/l10_l17_train_n500/surrogate_score_zoo/ranked_heads_global__itext_all__C_toi_HminusG_signed.json",
+  "topk": 100,
+  "topk_list": [
+    100
+  ],
+  "num_heads_total": 320,
+  "num_heads_used": 100,
+  "method": "selected_head_all_q66_q33_ratio",
+  "calibration_bucket": "all",
+  "calibration_scope": "selected_head",
+  "hi_quantile": "q66",
+  "lo_quantile": "q33",
+  "ratio_definition": "I_text / (I_text + image_attn + eps), approximated from per-head bucket means in txtattn_summary.json",
+  "recommended_tau_hi": 0.91,
+  "recommended_tau_hi_str": "0.91",
+  "recommended_tau_lo": 0.78,
+  "recommended_tau_lo_str": "0.78",
+  "recommended_tau": 0.91,
+  "recommended_tau_str": "0.91",
+  "round_step": 0.01,
+  "round_mode": "floor",
+  "selected_head_ratio_stats": {
+    "all": {
+      "count": 100,
+      "mean": 0.8149768120565498,
+      "q25": 0.7454673294210021,
+      "q33": 0.7899002780863588,
+      "q50": 0.8466470338681142,
+      "q66": 0.9130439560412156,
+      "q75": 0.9322450000571394,
+      "q90": 0.9590909703015501
+    },
+    "object": {
+      "count": 100,
+      "mean": 0.8057063244591077,
+      "q25": 0.7175388232687937,
+      "q33": 0.7658809911745282,
+      "q50": 0.8472103961869796,
+      "q66": 0.9073722503986045,
+      "q75": 0.9272924050332576,
+      "q90": 0.9697964038274283
+    },
+    "hallucinated": {
+      "count": 100,
+      "mean": 0.8455337108003477,
+      "q25": 0.7719499585619174,
+      "q33": 0.8190861060841267,
+      "q50": 0.8945950575415731,
+      "q66": 0.9320520377353432,
+      "q75": 0.9432125583084362,
+      "q90": 0.9714137462447284
+    },
+    "non_hallucinated": {
+      "count": 100,
+      "mean": 0.7989151633196205,
+      "q25": 0.7092325173046785,
+      "q33": 0.7535966019686529,
+      "q50": 0.8367690681058362,
+      "q66": 0.9016640828807391,
+      "q75": 0.9258564607866429,
+      "q90": 0.9694851211949286
+    }
+  },
+  "selected_head_by_topk": {
+    "100": {
+      "topk": 100,
+      "num_heads_used": 100,
+      "ratio_stats": {
+        "all": {
+          "count": 100,
+          "mean": 0.8149768120565498,
+          "q25": 0.7454673294210021,
+          "q33": 0.7899002780863588,
+          "q50": 0.8466470338681142,
+          "q66": 0.9130439560412156,
+          "q75": 0.9322450000571394,
+          "q90": 0.9590909703015501
+        },
+        "object": {
+          "count": 100,
+          "mean": 0.8057063244591077,
+          "q25": 0.7175388232687937,
+          "q33": 0.7658809911745282,
+          "q50": 0.8472103961869796,
+          "q66": 0.9073722503986045,
+          "q75": 0.9272924050332576,
+          "q90": 0.9697964038274283
+        },
+        "hallucinated": {
+          "count": 100,
+          "mean": 0.8455337108003477,
+          "q25": 0.7719499585619174,
+          "q33": 0.8190861060841267,
+          "q50": 0.8945950575415731,
+          "q66": 0.9320520377353432,
+          "q75": 0.9432125583084362,
+          "q90": 0.9714137462447284
+        },
+        "non_hallucinated": {
+          "count": 100,
+          "mean": 0.7989151633196205,
+          "q25": 0.7092325173046785,
+          "q33": 0.7535966019686529,
+          "q50": 0.8367690681058362,
+          "q66": 0.9016640828807391,
+          "q75": 0.9258564607866429,
+          "q90": 0.9694851211949286
+        }
+      },
+      "calibration": {
+        "bucket": "all",
+        "hi_quantile": "q66",
+        "lo_quantile": "q33",
+        "hi_raw": 0.9130439560412156,
+        "lo_raw": 0.7899002780863588,
+        "tau_hi": 0.91,
+        "tau_hi_str": "0.91",
+        "tau_lo": 0.78,
+        "tau_lo_str": "0.78"
+      }
+    }
+  },
+  "all_head_ratio_stats": {
+    "all": {
+      "count": 320,
+      "mean": 0.7791650926858744,
+      "q25": 0.6814123148836609,
+      "q33": 0.7285925339905758,
+      "q50": 0.8147815779036973,
+      "q66": 0.8758264861253258,
+      "q75": 0.9105378912843428,
+      "q90": 0.9513883966655935
+    },
+    "object": {
+      "count": 320,
+      "mean": 0.766445822018622,
+      "q25": 0.6588765240893921,
+      "q33": 0.7096437832053673,
+      "q50": 0.8041263704082593,
+      "q66": 0.8755905909183108,
+      "q75": 0.9047887445803918,
+      "q90": 0.9535213186203482
+    },
+    "hallucinated": {
+      "count": 320,
+      "mean": 0.7936501082306919,
+      "q25": 0.7204824130080763,
+      "q33": 0.7522551278424916,
+      "q50": 0.8323462360490301,
+      "q66": 0.8916193048580082,
+      "q75": 0.9215918740857273,
+      "q90": 0.9574682883352212
+    },
+    "non_hallucinated": {
+      "count": 320,
+      "mean": 0.7613666087045373,
+      "q25": 0.6508906673938228,
+      "q33": 0.702793538415869,
+      "q50": 0.7971674441524805,
+      "q66": 0.8740656812911355,
+      "q75": 0.9009201751711061,
+      "q90": 0.9529011764132634
+    }
+  },
+  "layer_all_calibration": {
+    "bucket": "all",
+    "hi_quantile": "q66",
+    "lo_quantile": "q33",
+    "hi_raw": 0.8758264861253258,
+    "lo_raw": 0.7285925339905758,
+    "tau_hi": 0.87,
+    "tau_hi_str": "0.87",
+    "tau_lo": 0.72,
+    "tau_lo_str": "0.72"
+  },
+  "selected_head_calibration": {
+    "bucket": "all",
+    "hi_quantile": "q66",
+    "lo_quantile": "q33",
+    "hi_raw": 0.9130439560412156,
+    "lo_raw": 0.7899002780863588,
+    "tau_hi": 0.91,
+    "tau_hi_str": "0.91",
+    "tau_lo": 0.78,
+    "tau_lo_str": "0.78"
+  },
+  "selection_note": "top-100 selected heads from ./results_deact/coco/llava-v1.5-13b/resources/l10_l17_train_n500/surrogate_score_zoo/ranked_heads_global__itext_all__C_toi_HminusG_signed.json",
+  "notes": [
+    "This script reports both selected-head and layer-all ratio statistics when --head-file is provided.",
+    "Because txtattn_summary stores finalized per-head means rather than every raw step value, these quantiles are an approximation over head-level calibration means, not raw per-step quantiles.",
+    "recommended_tau is kept as an alias for tau_hi for backward compatibility with older pipeline code."
+  ],
+  "missing_selected_heads": [],
+  "missing_selected_heads_by_topk": {
+    "100": []
+  }
+}

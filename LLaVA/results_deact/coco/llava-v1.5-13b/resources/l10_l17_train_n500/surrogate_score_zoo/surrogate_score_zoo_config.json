@@ -1,0 +1,11 @@
+{
+  "summary_file": "./results_deact/coco/llava-v1.5-13b/resources/l10_l17_train_n500/txtattn_summary.json",
+  "output_dir": "./results_deact/coco/llava-v1.5-13b/resources/l10_l17_train_n500/surrogate_score_zoo",
+  "num_heads": 320,
+  "num_scores": 2,
+  "scores": [
+    "global__itext_all__C_toi_HminusG",
+    "global__itext_all__C_toi_HminusG_signed"
+  ],
+  "note": "This compact zoo emits only the TOI rank-fused rankings used by the paper-facing head-pool controls and dynamic intervention."
+}
