@@ -42,3 +42,14 @@ adhh_default_amber_image_folder() {
     printf '%s\n' "$(adhh_default_data_path)/AMBER/images"
   fi
 }
+
+adhh_python_bin() {
+  local candidate="${PYTHON_BIN:-${PYTHON:-python}}"
+  if command -v "${candidate}" >/dev/null 2>&1; then
+    printf '%s\n' "${candidate}"
+  elif command -v python3 >/dev/null 2>&1; then
+    printf '%s\n' "python3"
+  else
+    printf '%s\n' "${candidate}"
+  fi
+}
