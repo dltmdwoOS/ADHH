@@ -1,0 +1,48 @@
+{
+  "by_pool": {
+    "layer_matched_random": {
+      "grounded": {
+        "count": 200,
+        "mean_logprob_drop": 0.013456688182704965,
+        "median_logprob_drop": -9.96813178062439e-05,
+        "flip_rate": 0.08
+      },
+      "hallucinated": {
+        "count": 200,
+        "mean_logprob_drop": 0.07770153277888311,
+        "median_logprob_drop": 0.04281783103942871,
+        "flip_rate": 0.165
+      },
+      "selectivity": {
+        "logprob_gap_hall_minus_grounded": 0.06424484459617814,
+        "flip_gap_hall_minus_grounded": 0.085
+      }
+    }
+  },
+  "config": {
+    "model_path": "liuhaotian/llava-v1.5-7b",
+    "model_base": null,
+    "image_folder": "../dataset/coco/val2014",
+    "probe_file": "./results_prove_threshold_sweep/head_pool_control/llava-v1.5-7b/coco/l9_l16/global__itext_all__C_toi_HminusG_signed/k100_h200_g200_probe_base_firstsubtok_norenorm_thr0.4/adhh-adhh_top30_preserved_k20_alt-adhh_alt_n3000_reproduced/actuation_probes.jsonl",
+    "head_file": "./results_l9_l16/coco/llava-v1.5-7b_base_original_qa_n500_txtattn_l9_l16_allheads/surrogate_score_zoo/ranked_heads_global__itext_all__C_toi_HminusG_signed.json",
+    "reproduced_adhh_file": "./results/coco/llava-v1.5-7b_reproduced_adhh_zero_ablation_top30.json",
+    "adhh_alt_file": "../LLaVA_backup/results/coco/llava_3000/identify_attention_head/ranked_hal_heads.json",
+    "restrict_layers": "9:16",
+    "output_dir": "./results_prove_threshold_sweep/head_pool_control/llava-v1.5-7b/coco/l9_l16/global__itext_all__C_toi_HminusG_signed/k100_h200_g200_probe_base_firstsubtok_norenorm_thr0.4/adhh-adhh_top30_preserved_k20_alt-adhh_alt_n3000_reproduced/pool_layer_matched_random",
+    "conv_mode": "vicuna_v1",
+    "topk": 100,
+    "adhh_topk": 20,
+    "pools": "layer_matched_random",
+    "random_seed": 42,
+    "img_start_pos": 35,
+    "img_length": 576,
+    "probe_text_scale": 0.0,
+    "probe_threshold": 0.4,
+    "probe_thresholding": true,
+    "renorm": false,
+    "aggregate_target_tokens": false,
+    "max_probes": 0
+  },
+  "num_probe_records": 400,
+  "num_output_rows": 400
+}

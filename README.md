@@ -17,12 +17,30 @@ This paper solves the following problems:
 In the following, we provide code for the attribution, analysis, and intervention of hallucination heads based on LLaVA v1.5-7B model in the `LLaVA` folder.
 
 ### Setup
-
+- Environment
+```
+sudo apt-get update
+sudo apt-get install -y openjdk-17-jre
+sudo apt-get install -y openjdk-17-jdk
+```
 ```
 cd LLaVA
 pip install -e .
+cd ..
+pip install -r requirements.txt
 ```
-
+```
+python
+import nltk
+nltk.download('punkt_tab')
+```
+- Dataset (COCO)
+```
+bash download_coco.sh false true true
+```
+```
+cd LLaVA/ # Return to `LLaVA/`
+```
 ### Identify Hallucination Heads
 
 Dowload coco train2014 and val2014 images from [here](https://cocodataset.org/#download) and put them in `dataset/coco`.

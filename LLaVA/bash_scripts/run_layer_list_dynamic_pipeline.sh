@@ -14,22 +14,36 @@ set -euo pipefail
 #   EXPERIMENT_GROUP=ablations ABLATION_NAME=q DYNAMIC_PRESETS="1.0 8.0 1.0;1.0 10.0 1.0" bash ...
 #   DRY_RUN=true bash ...
 
+source "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/_paths.sh"
+
 model_name=${MODEL_NAME:-llava-v1.5-7b}
 model_path=${MODEL_PATH:-liuhaotian/llava-v1.5-7b}
 dataset=${DATASET:-coco}
-data_path=${DATA_PATH:-../dataset}
+data_path=${DATA_PATH:-$(adhh_default_data_path)}
 seed=${SEED:-42}
 num_samples=${NUM_SAMPLES:-500}
 train_num_samples=${TRAIN_NUM_SAMPLES:-500}
 max_new_tokens=${MAX_NEW_TOKENS:-128}
-results_root=${RESULTS_ROOT:-./results_deact}
-experiment_group=${EXPERIMENT_GROUP:-ablations}
-ablation_name=${ABLATION_NAME:-token_length}
-shared_image_folder=${SHARED_IMAGE_FOLDER:-./shared_images/seed${seed}_${num_samples}}
+results_root=${RESULTS_ROOT:-$(adhh_default_results_root)}
+experiment_group=${EXPERIMENT_GROUP:-ablation}
+ablation_name=${ABLATION_NAME:-redistribution}
+shared_image_folder=${SHARED_IMAGE_FOLDER:-${results_root}/${dataset}/${model_name}/shared_images/seed${seed}_${num_samples}}
+compact_results_layout=${COMPACT_RESULTS_LAYOUT:-true}
 
 # Source summary must contain all heads covering every requested layer list.
 # Existing filtered summaries under results_deact/resources are reused when present.
-source_summary=${SOURCE_SUMMARY:-./results/${dataset}/${model_name}_base_original_qa_n${train_num_samples}_txtattn_l0_l31_allheads/txtattn_summary.json}
+default_source_summary=${results_root}/analysis/offline_calibration_and_layer_localization/${model_name}/txtattn_summary.json
+packaged_source_summary=$(adhh_default_results_root)/analysis/offline_calibration_and_layer_localization/${model_name}/txtattn_summary.json
+legacy_source_summary=./results/${dataset}/${model_name}_base_original_qa_n${train_num_samples}_txtattn_l0_l31_allheads/txtattn_summary.json
+if [[ -n "${SOURCE_SUMMARY:-}" ]]; then
+  source_summary=${SOURCE_SUMMARY}
+elif [[ -f "${default_source_summary}" ]]; then
+  source_summary=${default_source_summary}
+elif [[ -f "${packaged_source_summary}" ]]; then
+  source_summary=${packaged_source_summary}
+else
+  source_summary=${legacy_source_summary}
+fi
 
 # Space-separated layer specs. Each spec can be a comma-separated explicit list
 # (e.g. 9,10,11,12,13,15,16) or a compact range (e.g. 9:16).
@@ -48,8 +62,8 @@ dynamic_late_boost_start=${DYNAMIC_LATE_BOOST_START:-0}
 dynamic_late_boost_end=${DYNAMIC_LATE_BOOST_END:-${max_new_tokens}}
 dynamic_late_boost_mode=${DYNAMIC_LATE_BOOST_MODE:-linear}
 dynamic_late_tau=${DYNAMIC_LATE_TAU:-0.80}
-read -r -a dynamic_redistribute_list <<< "${DYNAMIC_REDISTRIBUTES:-none}"
-dynamic_renorm=${DYNAMIC_RENORM:-false}
+read -r -a dynamic_redistribute_list <<< "${DYNAMIC_REDISTRIBUTES:-sysvis vision}"
+dynamic_renorm=${DYNAMIC_RENORM:-true}
 IFS=';' read -r -a dynamic_tau_list <<< "${DYNAMIC_TAUS:-0.90}"
 AUTO_DYNAMIC_TAU=${AUTO_DYNAMIC_TAU:-true}
 auto_dynamic_tau=${AUTO_DYNAMIC_TAU}
@@ -64,13 +78,15 @@ read -r -a topk_list <<< "${TOPK_LIST:-100}"
 auto_tau_topk=${AUTO_TAU_TOPK:-${topk_list[0]}}
 
 # Presets are separated by semicolon, each preset is: strength exp_sharpness score_power.
-IFS=';' read -r -a dynamic_presets <<< "${DYNAMIC_PRESETS:-1.0 8.0 1.0; 1.0 10.0 1.0}"
+IFS=';' read -r -a dynamic_presets <<< "${DYNAMIC_PRESETS:-1.0 10.0 1.0}"
 
-log_dynamic_trace=${LOG_DYNAMIC_TRACE:-true}
+log_dynamic_trace=${LOG_DYNAMIC_TRACE:-false}
 dynamic_trace_topn=${DYNAMIC_TRACE_TOPN:-10}
 dynamic_trace_every=${DYNAMIC_TRACE_EVERY:-5}
+log_intervention_stats=${LOG_INTERVENTION_STATS:-false}
 resume=${RESUME:-true}
 dry_run=${DRY_RUN:-false}
+force_rebuild_stats=${FORCE_REBUILD_STATS:-false}
 
 read -r -a gpu_list <<< "${GPU_LIST:-0 1}"
 
@@ -149,6 +165,16 @@ update_slug() {
   fi
 }
 
+compact_update_slug() {
+  local update_name=$1
+  case "${update_name}" in
+    redir_system) echo "system" ;;
+    redir_sysvis) echo "sysvis" ;;
+    redir_vision) echo "vision" ;;
+    *) echo "${update_name}" ;;
+  esac
+}
+
 build_result_path() {
   local layer_slug_name=$1
   local topk=$2
@@ -178,6 +204,32 @@ build_result_path() {
   if [[ "${base_group}" == "main" ]]; then
     echo "${model_root}/main/${layer_slug_name}/k${topk}/${update_name}/tok${max_new_tokens}/q${q_slug}_tau${hi_slug}-${lo_slug}"
   elif [[ "${base_group}" == "ablations" ]]; then
+    if [[ "${compact_results_layout}" == "true" ]]; then
+      local compact_update
+      compact_update=$(compact_update_slug "${update_name}")
+      case "${ablation_name}" in
+        q)
+          echo "${results_root}/ablation/q/q${q_slug}"
+          ;;
+        topk)
+          echo "${results_root}/ablation/topk/k${topk}"
+          ;;
+        attention_update|redistribution|redir)
+          echo "${results_root}/ablation/redistribution/${compact_update}"
+          ;;
+        layer_selection|layers)
+          echo "${results_root}/ablation/layer_selection/${layer_slug_name}"
+          ;;
+        token_length|max_tokens|tokens)
+          echo "${results_root}/ablation/token_length/tok${max_new_tokens}"
+          ;;
+        *)
+          local name=${ablation_name:-custom}
+          echo "${results_root}/ablation/${name}/${layer_slug_name}/k${topk}/${update_name}/tok${max_new_tokens}/s${s_slug}_q${q_slug}_tau${hi_slug}-${lo_slug}_p${p_slug}"
+          ;;
+      esac
+      return
+    fi
     case "${ablation_name}" in
       q)
         echo "${model_root}/ablations/q/${layer_slug_name}/k${topk}/${update_name}/tok${max_new_tokens}/tau${hi_slug}-${lo_slug}/q${q_slug}"
@@ -274,12 +326,16 @@ prepare_layer_spec() {
       --layers "${layer_spec}"
   fi
 
-  echo "[layers ${layer_spec}] building surrogate score zoo -> ${surrogate_dir}"
-  run_cmd "${python_bin}" eval_scripts/compute_surrogate_score_zoo.py \
-    --summary-file "${filtered_summary}" \
-    --output-dir "${surrogate_dir}"
-
   local head_file=${surrogate_dir}/ranked_heads_${head_score_key}.json
+  if [[ "${force_rebuild_stats}" != "true" && -f "${head_file}" ]]; then
+    echo "[layers ${layer_spec}] reusing surrogate head file: ${head_file}"
+  else
+    echo "[layers ${layer_spec}] building surrogate score zoo -> ${surrogate_dir}"
+    run_cmd "${python_bin}" eval_scripts/compute_surrogate_score_zoo.py \
+      --summary-file "${filtered_summary}" \
+      --output-dir "${surrogate_dir}"
+  fi
+
   if [[ "${dry_run}" != "true" && ! -f "${head_file}" ]]; then
     echo "Missing requested head file after surrogate build: ${head_file}" >&2
     exit 1
@@ -287,19 +343,23 @@ prepare_layer_spec() {
 
   if [[ "${auto_dynamic_tau}" == "true" ]]; then
     local tau_file=${stats_root}/dynamic_tau_estimate.json
-    echo "[layers ${layer_spec}] estimating dynamic tau_hi/tau_lo for top-${auto_tau_topk} -> ${tau_file}"
-    run_cmd "${python_bin}" eval_scripts/estimate_dynamic_tau.py \
-      --summary-file "${filtered_summary}" \
-      --head-file "${head_file}" \
-      --topk "${auto_tau_topk}" \
-      --topk-list "${auto_tau_topk_list}" \
-      --calibration-scope "${auto_tau_calibration_scope}" \
-      --calibration-bucket "${auto_tau_calibration_bucket}" \
-      --hi-quantile "${auto_tau_hi_quantile}" \
-      --lo-quantile "${auto_tau_lo_quantile}" \
-      --output-file "${tau_file}" \
-      --round-step "${auto_tau_round_step}" \
-      --round-mode "${auto_tau_round_mode}"
+    if [[ "${force_rebuild_stats}" != "true" && -f "${tau_file}" ]]; then
+      echo "[layers ${layer_spec}] reusing dynamic tau estimate: ${tau_file}"
+    else
+      echo "[layers ${layer_spec}] estimating dynamic tau_hi/tau_lo for top-${auto_tau_topk} -> ${tau_file}"
+      run_cmd "${python_bin}" eval_scripts/estimate_dynamic_tau.py \
+        --summary-file "${filtered_summary}" \
+        --head-file "${head_file}" \
+        --topk "${auto_tau_topk}" \
+        --topk-list "${auto_tau_topk_list}" \
+        --calibration-scope "${auto_tau_calibration_scope}" \
+        --calibration-bucket "${auto_tau_calibration_bucket}" \
+        --hi-quantile "${auto_tau_hi_quantile}" \
+        --lo-quantile "${auto_tau_lo_quantile}" \
+        --output-file "${tau_file}" \
+        --round-step "${auto_tau_round_step}" \
+        --round-mode "${auto_tau_round_mode}"
+    fi
   fi
 }
 
@@ -318,6 +378,11 @@ run_dynamic_job() {
   local model_root=${results_root}/${dataset}/${model_name}
   local stats_root=${model_root}/resources/${layer_slug_name}_train_n${train_num_samples}
   local head_file=${stats_root}/surrogate_score_zoo/ranked_heads_${head_score_key}.json
+  local effective_dynamic_redistribute=${dynamic_redistribute}
+  local effective_dynamic_renorm=${dynamic_renorm}
+  if [[ "${dynamic_redistribute}" == "renorm" ]]; then
+    effective_dynamic_renorm=true
+  fi
   local result_path
   result_path=$(build_result_path "${layer_slug_name}" "${topk}" "${dynamic_strength}" "${dynamic_exp_sharpness}" "${dynamic_score_power}" "${dynamic_tau}" "${dynamic_redistribute}" "${dynamic_late_tau_job}")
   mkdir -p "${result_path}" "${shared_image_folder}"
@@ -346,17 +411,22 @@ run_dynamic_job() {
     )
   fi
 
+  local stats_args=()
+  if [[ "${log_intervention_stats}" == "true" ]]; then
+    stats_args+=(--log-intervention-stats)
+  fi
+
   local resume_args=()
   if [[ "${resume}" == "true" ]]; then
     resume_args+=(--resume)
   fi
 
   local renorm_args=()
-  if [[ "${dynamic_renorm}" != "true" ]]; then
+  if [[ "${effective_dynamic_renorm}" != "true" ]]; then
     renorm_args+=(--no-dynamic-renorm)
   fi
 
-  echo "[GPU ${gpu}] intervention=${intervention} layers=${layer_spec} topk=${topk} min_back_raw=${min_head_back_raw} s=${dynamic_strength} q=${dynamic_exp_sharpness} tau=${dynamic_tau} p=${dynamic_score_power} redistribute=${dynamic_redistribute} renorm=${dynamic_renorm} late_mode=${dynamic_late_boost_mode} late_start=${dynamic_late_boost_start} late_end=${dynamic_late_boost_end} late_tau=${dynamic_late_tau_job}"
+  echo "[GPU ${gpu}] intervention=${intervention} layers=${layer_spec} topk=${topk} min_back_raw=${min_head_back_raw} s=${dynamic_strength} q=${dynamic_exp_sharpness} tau=${dynamic_tau} p=${dynamic_score_power} redistribute=${effective_dynamic_redistribute} renorm=${effective_dynamic_renorm} late_mode=${dynamic_late_boost_mode} late_start=${dynamic_late_boost_start} late_end=${dynamic_late_boost_end} late_tau=${dynamic_late_tau_job}"
 
   if [[ "${dry_run}" == "true" ]]; then
     echo "[dry-run] would write ${result_path}"
@@ -388,11 +458,11 @@ run_dynamic_job() {
     --dynamic-late-boost-mode "${dynamic_late_boost_mode}" \
     --dynamic-late-tau "${dynamic_late_tau_job}" \
     --dynamic-score-power "${dynamic_score_power}" \
-    --dynamic-redistribute "${dynamic_redistribute}" \
+    --dynamic-redistribute "${effective_dynamic_redistribute}" \
     "${renorm_args[@]}" \
     "${score_args[@]}" \
     "${trace_args[@]}" \
-    --log-intervention-stats \
+    "${stats_args[@]}" \
     --sample-id-file "${sample_id_file}" \
     "${resume_args[@]}" \
     >> "${result_path}/decode.log" 2>&1
@@ -403,7 +473,7 @@ run_dynamic_job() {
     --caption_file captions_val2014.json \
     > "${result_path}/chair.log" 2>&1
 
-  echo "[GPU ${gpu}] done intervention=${intervention} layers=${layer_spec} topk=${topk} s=${dynamic_strength} q=${dynamic_exp_sharpness} tau=${dynamic_tau} p=${dynamic_score_power} redistribute=${dynamic_redistribute} renorm=${dynamic_renorm} late_mode=${dynamic_late_boost_mode} late_start=${dynamic_late_boost_start} late_end=${dynamic_late_boost_end} late_tau=${dynamic_late_tau_job}"
+  echo "[GPU ${gpu}] done intervention=${intervention} layers=${layer_spec} topk=${topk} s=${dynamic_strength} q=${dynamic_exp_sharpness} tau=${dynamic_tau} p=${dynamic_score_power} redistribute=${effective_dynamic_redistribute} renorm=${effective_dynamic_renorm} late_mode=${dynamic_late_boost_mode} late_start=${dynamic_late_boost_start} late_end=${dynamic_late_boost_end} late_tau=${dynamic_late_tau_job}"
 }
 
 for layer_spec in "${layer_specs[@]}"; do

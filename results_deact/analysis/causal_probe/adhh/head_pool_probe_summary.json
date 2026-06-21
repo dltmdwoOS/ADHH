@@ -1,0 +1,47 @@
+{
+  "by_pool": {
+    "adhh_alt": {
+      "grounded": {
+        "count": 200,
+        "mean_logprob_drop": 0.38851279689079093,
+        "median_logprob_drop": 0.03493225574493408,
+        "flip_rate": 0.255
+      },
+      "hallucinated": {
+        "count": 200,
+        "mean_logprob_drop": 1.37380950231076,
+        "median_logprob_drop": 1.1449192762374878,
+        "flip_rate": 0.665
+      },
+      "selectivity": {
+        "logprob_gap_hall_minus_grounded": 0.985296705419969,
+        "flip_gap_hall_minus_grounded": 0.41000000000000003
+      }
+    }
+  },
+  "config": {
+    "model_path": "liuhaotian/llava-v1.5-7b",
+    "model_base": null,
+    "image_folder": "../dataset/coco/val2014",
+    "probe_file": "./results_prove_fixed/probe_base_renormfalse_firstsubtok_adhh_top30_preserved_adhh_alt_backup_top100/l9_l16/coco_200/llava-v1.5-7b_head_pool_control_k100_global__itext_all__C_toi_HminusG_signed/actuation_probes_h200_g200.jsonl",
+    "head_file": "./results_l9_l16/coco/llava-v1.5-7b_base_original_qa_n500_txtattn_l9_l16_allheads/surrogate_score_zoo/ranked_heads_global__itext_all__C_toi_HminusG_signed.json",
+    "reproduced_adhh_file": "./results/coco/llava-v1.5-7b_reproduced_adhh_zero_ablation_top30.json",
+    "adhh_alt_file": "./results/coco/llava-v1.5-7b_reproduced_adhh_zero_ablation_backup_ranked_top100.json",
+    "restrict_layers": "9:16",
+    "output_dir": "./results_prove_fixed/probe_base_renormfalse_firstsubtok_adhh_top30_preserved_adhh_alt_backup_top100/l9_l16/coco_200/llava-v1.5-7b_head_pool_control_k100_global__itext_all__C_toi_HminusG_signed/pool_adhh_alt",
+    "conv_mode": "vicuna_v1",
+    "topk": 100,
+    "pools": "adhh_alt",
+    "random_seed": 42,
+    "img_start_pos": 35,
+    "img_length": 576,
+    "probe_text_scale": 0.0,
+    "probe_threshold": 0.4,
+    "probe_thresholding": true,
+    "renorm": false,
+    "aggregate_target_tokens": false,
+    "max_probes": 0
+  },
+  "num_probe_records": 400,
+  "num_output_rows": 400
+}

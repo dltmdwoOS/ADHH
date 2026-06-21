@@ -450,6 +450,63 @@ def _heads_for_layer(config, layer_idx):
     return out
 
 
+def _apply_tarac_intervention(attn_weights, config, layer_idx):
+    if getattr(config, "intervention", "none") != "tarac":
+        return attn_weights
+    if layer_idx is None:
+        return attn_weights
+
+    layer_idx = int(layer_idx)
+    start_layer = int(getattr(config, "tarac_start_layer", 9))
+    end_layer = int(getattr(config, "tarac_end_layer", 16))
+    if layer_idx < start_layer or layer_idx >= end_layer:
+        return attn_weights
+
+    img_start = getattr(config, "img_start_pos", None)
+    img_length = getattr(config, "img_length", None)
+    if img_start is None or img_length is None:
+        return attn_weights
+
+    img_start = int(img_start)
+    img_end = img_start + int(img_length)
+    kv_len = int(attn_weights.size(-1))
+    if img_start < 0 or img_start >= kv_len:
+        return attn_weights
+    img_end = min(img_end, kv_len)
+    if img_end <= img_start:
+        return attn_weights
+
+    alpha = min(max(float(getattr(config, "tarac_alpha", 0.5)), 0.0), 1.0)
+    beta = float(getattr(config, "tarac_beta", 0.5))
+    eps = 1e-6
+
+    current = attn_weights[:, :, -1, img_start:img_end].max(dim=1).values
+    memory = getattr(config, "_tarac_attn_memory", None)
+    if memory is None:
+        memory = {}
+        config._tarac_attn_memory = memory
+
+    previous = memory.get(layer_idx)
+    if (
+        previous is None
+        or previous.shape != current.shape
+        or previous.device != current.device
+        or previous.dtype != current.dtype
+    ):
+        accumulated = current
+    else:
+        accumulated = alpha * current + (1.0 - alpha) * previous
+
+    memory[layer_idx] = accumulated.detach()
+    attn_weights[:, :, -1, img_start:img_end] = (
+        attn_weights[:, :, -1, img_start:img_end]
+        + beta * accumulated.unsqueeze(1).to(attn_weights.dtype)
+    )
+    denom = attn_weights[:, :, -1, :].sum(dim=-1, keepdim=True).clamp_min(eps)
+    attn_weights[:, :, -1, :] = attn_weights[:, :, -1, :] / denom
+    return attn_weights
+
+
 def _maybe_reset_ds_rho_trace(config, layer_idx):
     if getattr(config, "intervention", "none") != "ds":
         return
@@ -667,8 +724,10 @@ def _update_intervention_stats(config, layer_idx, head_idx, mode, scale, text_ma
 
 def _apply_text_intervention(attn_weights, config, layer_idx):
     mode = getattr(config, "intervention", "none")
-    if mode == "none":
+    if mode in ("none", "pai", "vaf"):
         return attn_weights
+    if mode == "tarac":
+        return _apply_tarac_intervention(attn_weights, config, layer_idx)
 
     _maybe_reset_ds_rho_trace(config, layer_idx)
     _maybe_reset_dynamic_trace(config, layer_idx)
@@ -714,6 +773,7 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
     use_head_scores = bool(getattr(config, "use_head_scores", False))
 
     eps = 1e-6
+    collect_stats = bool(getattr(config, "log_intervention_stats", False))
     pending_stats = []
     generation_step = int(getattr(config, "_dynamic_trace_step", 0))
     effective_dynamic_tau = dynamic_tau
@@ -947,10 +1007,11 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
         else:
             continue
 
-        row_before = attn_weights[:, head, -1, :]
-        sys_mass_before = row_before[:, :img_start].sum(dim=-1)
-        vision_mass_before = row_before[:, img_start:img_end].sum(dim=-1)
-        row_sum_before = row_before.sum(dim=-1)
+        if collect_stats:
+            row_before = attn_weights[:, head, -1, :]
+            sys_mass_before = row_before[:, :img_start].sum(dim=-1)
+            vision_mass_before = row_before[:, img_start:img_end].sum(dim=-1)
+            row_sum_before = row_before.sum(dim=-1)
 
         scaled_text_slice = text_slice * scale.unsqueeze(-1)
         removed_mass = (text_mass - scaled_text_slice.sum(dim=-1)).clamp_min(0.0)
@@ -971,21 +1032,22 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
 
         attn_weights[:, head, -1, text_start:] = scaled_text_slice
 
-        pending_stat = {
-            "layer_idx": layer_idx,
-            "head": head,
-            "mode": mode,
-            "scale": scale,
-            "text_mass": text_mass,
-            "head_score": head_score,
-            "extra": stat_extra,
-            "sys_mass_before": sys_mass_before,
-            "vision_mass_before": vision_mass_before,
-            "text_mass_before": text_mass,
-            "row_sum_before": row_sum_before,
-            "removed_text_mass": removed_mass,
-        }
-        pending_stats.append(pending_stat)
+        if collect_stats:
+            pending_stat = {
+                "layer_idx": layer_idx,
+                "head": head,
+                "mode": mode,
+                "scale": scale,
+                "text_mass": text_mass,
+                "head_score": head_score,
+                "extra": stat_extra,
+                "sys_mass_before": sys_mass_before,
+                "vision_mass_before": vision_mass_before,
+                "text_mass_before": text_mass,
+                "row_sum_before": row_sum_before,
+                "removed_text_mass": removed_mass,
+            }
+            pending_stats.append(pending_stat)
 
     should_renorm = (
         (mode in ("dynamic", "late_boost", "linear", "exp", "threshold_exp", "center_exp", "linear_tail_exp") and dynamic_renorm)
@@ -996,27 +1058,82 @@ def _apply_text_intervention(attn_weights, config, layer_idx):
         denom = attn_weights[:, :, -1, :].sum(dim=-1, keepdim=True).clamp_min(eps)
         attn_weights[:, :, -1, :] = attn_weights[:, :, -1, :] / denom
 
-    for pending_stat in pending_stats:
-        head = pending_stat["head"]
-        row_after = attn_weights[:, head, -1, :]
-        extra = dict(pending_stat["extra"] or {})
-        extra.update({
-            "sys_mass_before": pending_stat["sys_mass_before"],
-            "vision_mass_before": pending_stat["vision_mass_before"],
-            "text_mass_before": pending_stat["text_mass_before"],
-            "row_sum_before": pending_stat["row_sum_before"],
-            "removed_text_mass": pending_stat["removed_text_mass"],
-            "sys_mass_after": row_after[:, :img_start].sum(dim=-1),
-            "vision_mass_after": row_after[:, img_start:img_end].sum(dim=-1),
-            "text_mass_after": row_after[:, text_start:].sum(dim=-1),
-            "row_sum_after": row_after.sum(dim=-1),
-        })
-        _update_intervention_stats(
-            config, pending_stat["layer_idx"], head, pending_stat["mode"],
-            pending_stat["scale"], pending_stat["text_mass"], pending_stat["head_score"], extra
-        )
+    if collect_stats:
+        for pending_stat in pending_stats:
+            head = pending_stat["head"]
+            row_after = attn_weights[:, head, -1, :]
+            extra = dict(pending_stat["extra"] or {})
+            extra.update({
+                "sys_mass_before": pending_stat["sys_mass_before"],
+                "vision_mass_before": pending_stat["vision_mass_before"],
+                "text_mass_before": pending_stat["text_mass_before"],
+                "row_sum_before": pending_stat["row_sum_before"],
+                "removed_text_mass": pending_stat["removed_text_mass"],
+                "sys_mass_after": row_after[:, :img_start].sum(dim=-1),
+                "vision_mass_after": row_after[:, img_start:img_end].sum(dim=-1),
+                "text_mass_after": row_after[:, text_start:].sum(dim=-1),
+                "row_sum_after": row_after.sum(dim=-1),
+            })
+            _update_intervention_stats(
+                config, pending_stat["layer_idx"], head, pending_stat["mode"],
+                pending_stat["scale"], pending_stat["text_mass"], pending_stat["head_score"], extra
+            )
     _maybe_print_ds_rho_trace(config, layer_idx)
     _maybe_print_dynamic_trace(config, layer_idx)
+    return attn_weights
+
+
+def _apply_visual_baseline_pre_softmax(attn_weights, config, layer_idx):
+    mode = getattr(config, "intervention", "none")
+    if mode not in ("pai", "vaf"):
+        return attn_weights
+    if mode == "pai" and bool(getattr(config, "pai_cfg_active", False)):
+        return attn_weights
+
+    if layer_idx is None:
+        return attn_weights
+    layer_idx = int(layer_idx)
+    start_layer = int(getattr(config, "baseline_start_layer", 0))
+    end_layer = int(getattr(config, "baseline_end_layer", getattr(config, "num_hidden_layers", 0)))
+    if layer_idx < start_layer or layer_idx >= end_layer:
+        return attn_weights
+
+    img_start = getattr(config, "img_start_pos", None)
+    img_length = getattr(config, "img_length", None)
+    if img_start is None or img_length is None:
+        return attn_weights
+
+    img_start = int(img_start)
+    img_end = img_start + int(img_length)
+    kv_len = int(attn_weights.size(-1))
+    if img_start < 0 or img_start >= kv_len:
+        return attn_weights
+    img_end = min(img_end, kv_len)
+    if img_end <= img_start:
+        return attn_weights
+
+    if mode == "pai":
+        alpha = float(getattr(config, "pai_alpha", 0.2))
+        attn_weights[:, :, -1, img_start:img_end] = (
+            attn_weights[:, :, -1, img_start:img_end].abs() * alpha
+            + attn_weights[:, :, -1, img_start:img_end]
+        )
+        return attn_weights
+
+    enh_para = float(getattr(config, "vaf_enh_para", 1.15))
+    sup_para = float(getattr(config, "vaf_sup_para", 0.95))
+    q_len = int(attn_weights.size(-2))
+    if q_len > img_end:
+        query_slice = slice(img_end, None)
+    else:
+        query_slice = slice(None)
+    attn_weights[:, :, query_slice, img_start:img_end] = (
+        enh_para * attn_weights[:, :, query_slice, img_start:img_end]
+    )
+    if img_start > 0:
+        attn_weights[:, :, query_slice, :img_start] = (
+            sup_para * attn_weights[:, :, query_slice, :img_start]
+        )
     return attn_weights
 
 
@@ -1068,6 +1185,7 @@ def _maybe_trace_txtattn_last_row(attn_weights, config, layer_idx):
     i_text = selected_rows[:, img_end:].sum(dim=-1)
     generated_txt_attn = selected_rows[:, generated_start:].sum(dim=-1)
     txt_img_ratio = i_text / (image_attn + 1e-12)
+    online_ratio = i_text / (i_text + image_attn + 1e-12)
 
     buffer = getattr(config, "_txtattn_last_row_buffer", None)
     if buffer is None:
@@ -1097,6 +1215,7 @@ def _maybe_trace_txtattn_last_row(attn_weights, config, layer_idx):
     i_text = i_text.detach().cpu().tolist()
     generated_txt_attn = generated_txt_attn.detach().cpu().tolist()
     txt_img_ratio = txt_img_ratio.detach().cpu().tolist()
+    online_ratio = online_ratio.detach().cpu().tolist()
     for idx, head in enumerate(heads):
         record["head_values"].append({
             "layer": int(layer_idx),
@@ -1105,6 +1224,7 @@ def _maybe_trace_txtattn_last_row(attn_weights, config, layer_idx):
             "generated_txt_attn": float(generated_txt_attn[idx]),
             "image_attn": float(image_attn[idx]),
             "txt_img_ratio": float(txt_img_ratio[idx]),
+            "online_ratio": float(online_ratio[idx]),
         })
 
     maybe_advance_step()
@@ -1254,6 +1374,8 @@ class LlamaAttention(nn.Module):
                     f"Attention mask should be of size {(bsz, 1, q_len, kv_seq_len)}, but is {attention_mask.size()}"
                 )
             attn_weights = attn_weights + attention_mask
+
+        attn_weights = _apply_visual_baseline_pre_softmax(attn_weights, self.config, self.layer_idx)
 
         # upcast attention to fp32
         attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
@@ -1589,6 +1711,7 @@ class LlamaSdpaAttention(LlamaAttention):
             last_row_weights = torch.matmul(query_states[:, :, -1:, :], key_states.transpose(2, 3)) / math.sqrt(self.head_dim)
             if attention_mask is not None:
                 last_row_weights = last_row_weights + attention_mask[:, :, -1:, :]
+            last_row_weights = _apply_visual_baseline_pre_softmax(last_row_weights, self.config, self.layer_idx)
             last_row_weights = nn.functional.softmax(last_row_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
             if intervention_active:
                 last_row_weights = _apply_text_intervention(last_row_weights, self.config, self.layer_idx)

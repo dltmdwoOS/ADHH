@@ -1,0 +1,44 @@
+{
+  "official_command": [
+    "/venv/ha/bin/python",
+    "inference.py",
+    "--inference_data",
+    "/workspace/Hallucination-Attribution/LLaVA/results_deact/amber/llava-v1.5-7b/greedy/tok512/amber_responses.json",
+    "--evaluation_type",
+    "g"
+  ],
+  "official_cwd": "/workspace/Hallucination-Attribution/third_party/AMBER",
+  "returncode": 0,
+  "stdout_file": "./results_deact/amber/llava-v1.5-7b/greedy/tok512/amber_official_eval_stdout.txt",
+  "stderr_file": "./results_deact/amber/llava-v1.5-7b/greedy/tok512/amber_official_eval_stderr.txt",
+  "metrics": {
+    "CHAIR": 7.8,
+    "Cover": 51.8,
+    "Hal": 35.7,
+    "Cog": 4.3,
+    "ObjectPrecision": 0.8760556383507203,
+    "ObjectRecall": 0.6315129811996419,
+    "ObjectF1": 0.7339506815107689,
+    "AMBER": 0.8279753407553845
+  },
+  "generative_object_metrics": {
+    "metrics": {
+      "ObjectPrecision": 0.8760556383507203,
+      "ObjectRecall": 0.6315129811996419,
+      "ObjectF1": 0.7339506815107689,
+      "AMBER": 0.8279753407553845
+    },
+    "counts": {
+      "num_samples": 1004,
+      "tp_total": 3527,
+      "pred_total": 4026,
+      "gt_total": 5585
+    },
+    "config": {
+      "definition": "generative object-set metric; not AMBER discriminative Acc/Prec/Rec/F1",
+      "similarity_score": 0.8,
+      "semantic_similarity_enabled": true,
+      "amber_formula": "(1 - CHAIR + ObjectF1) / 2, with CHAIR and ObjectF1 in [0, 1]"
+    }
+  }
+}

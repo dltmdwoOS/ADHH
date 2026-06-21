@@ -1,0 +1,117 @@
+{
+  "model_path": "liuhaotian/llava-v1.5-7b",
+  "dataset": "coco",
+  "num_samples": 500,
+  "seed": 42,
+  "resume": true,
+  "intervention": "late_boost",
+  "head_source": "file",
+  "topk": 20,
+  "text_threshold": 0.0,
+  "text_scale": 0.5,
+  "dynamic_strength": 1.0,
+  "dynamic_ratio_power": 1.0,
+  "dynamic_score_power": 1.0,
+  "dynamic_tau": 0.95,
+  "dynamic_exp_sharpness": 10.0,
+  "dynamic_late_boost_start": 0,
+  "dynamic_late_boost_end": 128,
+  "dynamic_late_boost_mode": "linear",
+  "dynamic_late_tau": 0.82,
+  "dynamic_context_mode": "ratio_exp",
+  "dynamic_redistribute": "none",
+  "dynamic_renorm": false,
+  "use_head_scores": true,
+  "head_file": "./results_deact/coco/llava-v1.5-7b/resources/l9_l16_train_n500/surrogate_score_zoo/ranked_heads_global__itext_all__C_toi_HminusG_signed.json",
+  "head_score_key": "global__itext_all__C_toi_HminusG_signed",
+  "head_score_normalize": "rank_percentile",
+  "min_head_back_raw": 0.0,
+  "selected_head_count": 20,
+  "log_intervention_stats": true,
+  "intervention_stats_file": "",
+  "log_dynamic_trace": true,
+  "dynamic_trace_topn": 10,
+  "dynamic_trace_every": 5,
+  "selected_heads": [
+    [
+      14,
+      16
+    ],
+    [
+      14,
+      20
+    ],
+    [
+      16,
+      2
+    ],
+    [
+      15,
+      25
+    ],
+    [
+      12,
+      24
+    ],
+    [
+      15,
+      4
+    ],
+    [
+      11,
+      7
+    ],
+    [
+      16,
+      6
+    ],
+    [
+      16,
+      17
+    ],
+    [
+      9,
+      27
+    ],
+    [
+      16,
+      9
+    ],
+    [
+      13,
+      17
+    ],
+    [
+      9,
+      31
+    ],
+    [
+      14,
+      19
+    ],
+    [
+      15,
+      24
+    ],
+    [
+      14,
+      29
+    ],
+    [
+      15,
+      13
+    ],
+    [
+      12,
+      6
+    ],
+    [
+      10,
+      24
+    ],
+    [
+      14,
+      22
+    ]
+  ]
+}

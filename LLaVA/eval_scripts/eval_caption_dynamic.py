@@ -7,10 +7,12 @@ import argparse
 
 import shortuuid
 import torch
+import torch.nn.functional as F
 
 from tqdm import tqdm
 from PIL import Image
-from transformers import set_seed
+from transformers import LogitsProcessor, set_seed
+from transformers.generation.logits_process import LogitsProcessorList
 from pycocotools.coco import COCO
 from torch.utils.data import Dataset, DataLoader
 
@@ -25,6 +27,61 @@ from llava.model.builder import load_pretrained_model
 from llava.utils import disable_torch_init
 from llava.mm_utils import tokenizer_image_token, process_images, get_model_name_from_path
 
+
+class PAITextCFGLogitsProcessor(LogitsProcessor):
+    def __init__(self, guidance_scale, uncond_input_ids, model):
+        self.guidance_scale = float(guidance_scale)
+        self.uncond_input_ids = uncond_input_ids
+        self.model = model
+        self.uncond_outputs = None
+
+    def __call__(self, input_ids, scores):
+        scores = F.log_softmax(scores, dim=-1)
+        if self.guidance_scale == 1.0:
+            return scores
+
+        if self.uncond_outputs is None:
+            uncond = self.uncond_input_ids
+            if uncond.shape[0] != input_ids.shape[0]:
+                repeat = int(math.ceil(input_ids.shape[0] / uncond.shape[0]))
+                uncond = uncond.repeat(repeat, 1)[: input_ids.shape[0]]
+            try:
+                self.model.config.pai_cfg_active = True
+                self.uncond_outputs = self.model(uncond, use_cache=True)
+            finally:
+                self.model.config.pai_cfg_active = False
+        else:
+            try:
+                self.model.config.pai_cfg_active = True
+                self.uncond_outputs = self.model(
+                    input_ids[:, -1:],
+                    use_cache=True,
+                    past_key_values=self.uncond_outputs.past_key_values,
+                )
+            finally:
+                self.model.config.pai_cfg_active = False
+
+        unconditional_logits = F.log_softmax(self.uncond_outputs.logits[:, -1, :], dim=-1)
+        cutoff = torch.log(torch.tensor(0.1, device=scores.device, dtype=scores.dtype)) + scores.max(dim=-1, keepdim=True).values
+        refined = self.guidance_scale * (scores - unconditional_logits) + unconditional_logits
+        return refined.masked_fill(scores < cutoff, -float("inf"))
+
+
+def build_text_only_input_ids(input_ids):
+    rows = []
+    for row in input_ids:
+        rows.append(row[row != IMAGE_TOKEN_INDEX])
+    max_len = max(int(row.shape[0]) for row in rows)
+    if all(int(row.shape[0]) == max_len for row in rows):
+        return torch.stack(rows, dim=0)
+    pad_id = 0
+    padded = []
+    for row in rows:
+        if int(row.shape[0]) < max_len:
+            pad = torch.full((max_len - int(row.shape[0]),), pad_id, dtype=row.dtype, device=row.device)
+            row = torch.cat([pad, row], dim=0)
+        padded.append(row)
+    return torch.stack(padded, dim=0)
 
 
 def load_completed_question_ids(answers_file):
@@ -57,7 +114,8 @@ def get_chunk(lst, n, k):
 
 
 def default_head_setup(model_path):
-    if model_path == "liuhaotian/llava-v1.5-7b":
+    model_path_l = str(model_path).lower()
+    if model_path == "liuhaotian/llava-v1.5-7b" or "llava-v1.5-7b" in model_path_l:
         return {
             "heads": [
                 [16, 29], [26, 9], [13, 31], [15, 10], [20, 12],
@@ -68,7 +126,7 @@ def default_head_setup(model_path):
             "img_start_pos": 35,
             "img_length": 576,
         }
-    elif model_path == "liuhaotian/llava-v1.5-13b":
+    elif model_path == "liuhaotian/llava-v1.5-13b" or "llava-v1.5-13b" in model_path_l:
         return {
             "heads": [
                 [0, 8], [29, 27], [23, 18], [20, 11], [36, 26], [19, 37], [22, 16], [22, 34], [21, 31], [20, 34],
@@ -79,7 +137,7 @@ def default_head_setup(model_path):
             "img_start_pos": 35,
             "img_length": 576,
         }
-    elif model_path == "liuhaotian/llava-v1.6-34b":
+    elif model_path == "liuhaotian/llava-v1.6-34b" or "llava-v1.6-34b" in model_path_l:
         return {
             "heads": [
                 [45, 34], [43, 4], [43, 48], [44, 29], [35, 47],
@@ -404,6 +462,19 @@ def attach_intervention_config(model, args):
     model.config.dynamic_trace_every = args.dynamic_trace_every
     model.config._dynamic_trace_step = 0
     model.config._dynamic_trace_buffer = []
+    model.config.baseline_start_layer = args.baseline_start_layer
+    model.config.baseline_end_layer = args.baseline_end_layer
+    model.config.pai_alpha = args.pai_alpha
+    model.config.pai_gamma = args.pai_gamma
+    model.config.pai_use_cfg = args.pai_use_cfg
+    model.config.pai_cfg_active = bool(args.pai_use_cfg)
+    model.config.vaf_enh_para = args.vaf_enh_para
+    model.config.vaf_sup_para = args.vaf_sup_para
+    model.config.tarac_alpha = args.tarac_alpha
+    model.config.tarac_beta = args.tarac_beta
+    model.config.tarac_start_layer = args.tarac_start_layer
+    model.config.tarac_end_layer = args.tarac_end_layer
+    model.config._tarac_attn_memory = {}
 
     # backward compatibility
     model.config.hal_attention_heads = head_cfg["heads"]
@@ -442,6 +513,17 @@ def save_run_config(args, head_cfg):
         "head_score_normalize": args.head_score_normalize,
         "min_head_back_raw": args.min_head_back_raw,
         "selected_head_count": len(head_cfg["heads"]),
+        "baseline_start_layer": args.baseline_start_layer,
+        "baseline_end_layer": args.baseline_end_layer,
+        "pai_alpha": args.pai_alpha,
+        "pai_gamma": args.pai_gamma,
+        "pai_use_cfg": args.pai_use_cfg,
+        "vaf_enh_para": args.vaf_enh_para,
+        "vaf_sup_para": args.vaf_sup_para,
+        "tarac_alpha": args.tarac_alpha,
+        "tarac_beta": args.tarac_beta,
+        "tarac_start_layer": args.tarac_start_layer,
+        "tarac_end_layer": args.tarac_end_layer,
         "log_intervention_stats": args.log_intervention_stats,
         "intervention_stats_file": args.intervention_stats_file,
         "log_dynamic_trace": args.log_dynamic_trace,
@@ -615,6 +697,17 @@ def save_intervention_stats(model, args):
         "log_dynamic_trace": args.log_dynamic_trace,
         "dynamic_trace_topn": args.dynamic_trace_topn,
         "dynamic_trace_every": args.dynamic_trace_every,
+        "baseline_start_layer": args.baseline_start_layer,
+        "baseline_end_layer": args.baseline_end_layer,
+        "pai_alpha": args.pai_alpha,
+        "pai_gamma": args.pai_gamma,
+        "pai_use_cfg": args.pai_use_cfg,
+        "vaf_enh_para": args.vaf_enh_para,
+        "vaf_sup_para": args.vaf_sup_para,
+        "tarac_alpha": args.tarac_alpha,
+        "tarac_beta": args.tarac_beta,
+        "tarac_start_layer": args.tarac_start_layer,
+        "tarac_end_layer": args.tarac_end_layer,
     }
 
     with open(out_file, "w") as f:
@@ -672,11 +765,22 @@ def eval_model(args):
         model.config.dynamic_trace_sample_id = question_id
         model.config._dynamic_trace_step = 0
         model.config._dynamic_trace_buffer = []
+        model.config._tarac_attn_memory = {}
 
         input_ids = input_ids.to(device='cuda', non_blocking=True)
         image_tensor = image_tensor.to(dtype=torch.float16, device='cuda', non_blocking=True)
 
         with torch.inference_mode():
+            logits_processor = None
+            if args.intervention == "pai" and args.pai_use_cfg:
+                logits_processor = LogitsProcessorList([
+                    PAITextCFGLogitsProcessor(
+                        args.pai_gamma,
+                        build_text_only_input_ids(input_ids),
+                        model,
+                    )
+                ])
+
             output_dict = model.generate(
                 input_ids,
                 images=image_tensor,
@@ -689,10 +793,13 @@ def eval_model(args):
                 use_cache=True,
                 output_attentions=True,
                 return_dict_in_generate=True,
+                logits_processor=logits_processor,
             )
 
         output_ids = output_dict["sequences"]
         outputs = tokenizer.batch_decode(output_ids, skip_special_tokens=True)[0].strip()
+        raw_outputs = tokenizer.batch_decode(output_ids, skip_special_tokens=False)[0]
+        output_token_ids = output_ids[0].detach().cpu().tolist()
         print(question_id, outputs)
 
         ans_id = shortuuid.uuid()
@@ -701,11 +808,21 @@ def eval_model(args):
             "image": image_file,
             "prompt": cur_prompt,
             "text": outputs,
+            "text_raw": raw_outputs,
+            "output_token_ids": output_token_ids,
+            "output_token_count": len(output_token_ids),
             "answer_id": ans_id,
             "model_id": model_name,
             "metadata": {
                 "intervention": args.intervention,
                 "topk": args.topk,
+                "baseline_start_layer": args.baseline_start_layer,
+                "baseline_end_layer": args.baseline_end_layer,
+                "pai_alpha": args.pai_alpha,
+                "pai_gamma": args.pai_gamma,
+                "pai_use_cfg": args.pai_use_cfg,
+                "vaf_enh_para": args.vaf_enh_para,
+                "vaf_sup_para": args.vaf_sup_para,
                 "model_input_prompt": model_input_prompt,
             }
         }) + "\n")
@@ -740,8 +857,30 @@ if __name__ == "__main__":
     parser.add_argument("--num-workers", type=int, default=4)
 
     parser.add_argument("--intervention", type=str, default="dynamic",
-                        choices=["none", "dynamic", "late_boost", "linear", "exp", "threshold_exp", "center_exp", "linear_tail_exp"])
+                        choices=["none", "dynamic", "late_boost", "linear", "exp", "threshold_exp", "center_exp", "linear_tail_exp", "pai", "vaf", "tarac"])
     parser.add_argument("--topk", type=int, default=20)
+    parser.add_argument("--baseline-start-layer", type=int, default=0,
+                        help="Inclusive first decoder layer for PAI/VAF pre-softmax visual intervention.")
+    parser.add_argument("--baseline-end-layer", type=int, default=32,
+                        help="Exclusive final decoder layer for PAI/VAF pre-softmax visual intervention.")
+    parser.add_argument("--pai-alpha", type=float, default=0.2,
+                        help="PAI image-token attention-logit amplification coefficient.")
+    parser.add_argument("--pai-gamma", type=float, default=1.1,
+                        help="PAI text-only CFG/logits-refine guidance scale.")
+    parser.add_argument("--pai-use-cfg", action="store_true",
+                        help="Enable PAI text-only logits refine, matching the official CHAIR command.")
+    parser.add_argument("--vaf-enh-para", type=float, default=1.15,
+                        help="VAF image-token attention-logit multiplier.")
+    parser.add_argument("--vaf-sup-para", type=float, default=0.95,
+                        help="VAF system-token attention-logit multiplier.")
+    parser.add_argument("--tarac-alpha", type=float, default=0.5,
+                        help="TARAC memory update factor alpha.")
+    parser.add_argument("--tarac-beta", type=float, default=0.5,
+                        help="TARAC accumulated image-attention injection coefficient beta.")
+    parser.add_argument("--tarac-start-layer", type=int, default=9,
+                        help="Inclusive first decoder layer for TARAC.")
+    parser.add_argument("--tarac-end-layer", type=int, default=16,
+                        help="Exclusive final decoder layer for TARAC.")
 
     parser.add_argument("--dynamic-strength", type=float, default=1.0,
                         help="Maximum continuous suppression strength before clipping.")
