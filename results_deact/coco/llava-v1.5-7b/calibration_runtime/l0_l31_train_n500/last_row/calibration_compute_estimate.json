@@ -1,0 +1,47 @@
+{
+  "kind": "rough_flops_estimate_from_runtime_artifacts",
+  "assumptions": {
+    "multiply_add_counts_as_flops": 2,
+    "llama_layers": 32,
+    "hidden_size": 4096,
+    "intermediate_size": 11008,
+    "vocab_size": 32000,
+    "effective_prefill_sequence_length": 625,
+    "first_generated_token_from_prefill_logits": true,
+    "vision_estimate": "rough CLIP ViT-L/14-336 plus LLaVA 2-layer projector; not profiler-measured",
+    "excludes": [
+      "CPU tokenization/decoding/CHAIR labeling FLOPs",
+      "Python overhead",
+      "CUDA kernel implementation details"
+    ]
+  },
+  "runtime": {
+    "num_images": 500,
+    "generated_tokens": 56981,
+    "mean_generated_tokens": 113.962,
+    "trace_seconds": 3778.1301341056824,
+    "total_seconds": 3778.4834821224213,
+    "tokens_per_second_trace": 15.081799190987347,
+    "seconds_per_image_trace": 7.556260268211365
+  },
+  "flops": {
+    "language_prefill_total": 4231823360000000,
+    "language_decode_total": 766582269149184,
+    "language_total": 4998405629149184,
+    "vision_projector_total": 260774608896000,
+    "total_with_rough_vision_projector": 5259180238045184
+  },
+  "tflops_total_work": {
+    "language_prefill": 4231.82336,
+    "language_decode": 766.582269149184,
+    "language_total": 4998.405629149184,
+    "vision_projector_total": 260.774608896,
+    "total_with_rough_vision_projector": 5259.180238045184
+  },
+  "effective_tflops_per_second_wall_clock": {
+    "language_only_trace_seconds": 1.3229839766576363,
+    "language_plus_rough_vision_trace_seconds": 1.392006111851433,
+    "language_only_total_seconds": 1.3228602567137642,
+    "language_plus_rough_vision_total_seconds": 1.3918759372453409
+  }
+}

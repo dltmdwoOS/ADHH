@@ -16,7 +16,7 @@ result_path=${RESULT_PATH:-./results/$dataset/${model_name}_base_original_qa_n${
 analysis_path=$result_path/analysis
 txtattn_head_file=${TXTATTN_HEAD_FILE:-./results/coco/llava-v1.5-7b_base_original_qa_n3000/surrogate_hh_scores/candidate_heads_l0_l31.json}
 txtattn_topk=${TXTATTN_TOPK:-0}
-gpu_list_raw=${GPU_LIST:-"0 1"}
+gpu_list_raw=${GPU_LIST:-"0"}
 read -r -a gpu_list <<< "$gpu_list_raw"
 num_chunks=${NUM_CHUNKS:-${#gpu_list[@]}}
 resume=${RESUME:-true}

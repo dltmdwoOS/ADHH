@@ -1,0 +1,29 @@
+{
+  "model_name": "llava-v1.5-7b",
+  "model_path": "liuhaotian/llava-v1.5-7b",
+  "dataset": "coco",
+  "data_path": "/workspace/ADHH/dataset",
+  "image_folder": "/workspace/ADHH/dataset/coco/train2014",
+  "caption_file": "/workspace/ADHH/dataset/coco/annotations/captions_train2014.json",
+  "seed": 42,
+  "train_num_samples": 500,
+  "max_new_tokens": 128,
+  "gpu": "0",
+  "num_workers": 4,
+  "layer_spec": "0:31",
+  "layer_slug": "l0_l31",
+  "num_heads_per_layer": 32,
+  "head_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/calibration_runtime/l0_l31_train_n500/last_row/candidate_heads_l0_l31.json",
+  "sample_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/shared_samples/train_seed42_n500.json",
+  "trace_mode": "last_row",
+  "keep_trace": false,
+  "txtattn_output_file": "/dev/null",
+  "summary_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/calibration_runtime/l0_l31_train_n500/last_row/txtattn_summary.json",
+  "surrogate_dir": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/calibration_runtime/l0_l31_train_n500/last_row/surrogate_score_zoo",
+  "tau_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/calibration_runtime/l0_l31_train_n500/last_row/dynamic_tau_estimate.json",
+  "notes": [
+    "This benchmark measures calibration trace collection and head-selection postprocess only.",
+    "It uses last-row txt-attn tracing without full output_attentions, attention-analysis, or pre-token analysis.",
+    "The txt_img_ratio definition follows the current text-side actuator definition: I_text / image_attn."
+  ]
+}

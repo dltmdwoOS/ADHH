@@ -1,0 +1,199 @@
+{
+  "summary_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/calibration_runtime/l0_l31_train_n500/last_row/txtattn_summary.json",
+  "head_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/calibration_runtime/l0_l31_train_n500/last_row/surrogate_score_zoo/ranked_heads_global__itext_all__C_toi_HminusG_signed.json",
+  "topk": 100,
+  "topk_list": [
+    100
+  ],
+  "num_heads_total": 1024,
+  "num_heads_used": 100,
+  "method": "selected_head_all_q66_q33_ratio",
+  "calibration_bucket": "all",
+  "calibration_scope": "selected_head",
+  "hi_quantile": "q66",
+  "lo_quantile": "q33",
+  "ratio_definition": "I_text / (I_text + image_attn + eps), approximated from per-head bucket means in txtattn_summary.json",
+  "recommended_tau_hi": 0.93,
+  "recommended_tau_hi_str": "0.93",
+  "recommended_tau_lo": 0.8300000000000001,
+  "recommended_tau_lo_str": "0.83",
+  "recommended_tau": 0.93,
+  "recommended_tau_str": "0.93",
+  "round_step": 0.01,
+  "round_mode": "floor",
+  "selected_head_ratio_stats": {
+    "all": {
+      "count": 100,
+      "mean": 0.8551578843895261,
+      "q25": 0.8003372211367165,
+      "q33": 0.8314638943793111,
+      "q50": 0.891469547970964,
+      "q66": 0.9319697780000684,
+      "q75": 0.9472277438045793,
+      "q90": 0.9625399787933898
+    },
+    "object": {
+      "count": 100,
+      "mean": 0.8692900731587473,
+      "q25": 0.8097358995016439,
+      "q33": 0.8501614983504068,
+      "q50": 0.9026171310578697,
+      "q66": 0.9523245596109604,
+      "q75": 0.9609567907003043,
+      "q90": 0.9733050768475411
+    },
+    "hallucinated": {
+      "count": 100,
+      "mean": 0.907297952292702,
+      "q25": 0.8661898902744295,
+      "q33": 0.9012100077055365,
+      "q50": 0.935956261986582,
+      "q66": 0.9628499519631427,
+      "q75": 0.9684140664670403,
+      "q90": 0.9781186911387879
+    },
+    "non_hallucinated": {
+      "count": 100,
+      "mean": 0.861569461785039,
+      "q25": 0.7991265432369276,
+      "q33": 0.8373574697909123,
+      "q50": 0.8994295625033328,
+      "q66": 0.9505496890229188,
+      "q75": 0.9594819933314739,
+      "q90": 0.9710680395597293
+    }
+  },
+  "selected_head_by_topk": {
+    "100": {
+      "topk": 100,
+      "num_heads_used": 100,
+      "ratio_stats": {
+        "all": {
+          "count": 100,
+          "mean": 0.8551578843895261,
+          "q25": 0.8003372211367165,
+          "q33": 0.8314638943793111,
+          "q50": 0.891469547970964,
+          "q66": 0.9319697780000684,
+          "q75": 0.9472277438045793,
+          "q90": 0.9625399787933898
+        },
+        "object": {
+          "count": 100,
+          "mean": 0.8692900731587473,
+          "q25": 0.8097358995016439,
+          "q33": 0.8501614983504068,
+          "q50": 0.9026171310578697,
+          "q66": 0.9523245596109604,
+          "q75": 0.9609567907003043,
+          "q90": 0.9733050768475411
+        },
+        "hallucinated": {
+          "count": 100,
+          "mean": 0.907297952292702,
+          "q25": 0.8661898902744295,
+          "q33": 0.9012100077055365,
+          "q50": 0.935956261986582,
+          "q66": 0.9628499519631427,
+          "q75": 0.9684140664670403,
+          "q90": 0.9781186911387879
+        },
+        "non_hallucinated": {
+          "count": 100,
+          "mean": 0.861569461785039,
+          "q25": 0.7991265432369276,
+          "q33": 0.8373574697909123,
+          "q50": 0.8994295625033328,
+          "q66": 0.9505496890229188,
+          "q75": 0.9594819933314739,
+          "q90": 0.9710680395597293
+        }
+      },
+      "calibration": {
+        "bucket": "all",
+        "hi_quantile": "q66",
+        "lo_quantile": "q33",
+        "hi_raw": 0.9319697780000684,
+        "lo_raw": 0.8314638943793111,
+        "tau_hi": 0.93,
+        "tau_hi_str": "0.93",
+        "tau_lo": 0.8300000000000001,
+        "tau_lo_str": "0.83"
+      }
+    }
+  },
+  "all_head_ratio_stats": {
+    "all": {
+      "count": 1024,
+      "mean": 0.6957835238439136,
+      "q25": 0.5745366174289331,
+      "q33": 0.6250572647721787,
+      "q50": 0.7220403313934921,
+      "q66": 0.8223661512662614,
+      "q75": 0.8646306069238475,
+      "q90": 0.9370980861799915
+    },
+    "object": {
+      "count": 1024,
+      "mean": 0.6779710709996343,
+      "q25": 0.5452732780814813,
+      "q33": 0.5950787482606165,
+      "q50": 0.6943000966112581,
+      "q66": 0.8041211633417759,
+      "q75": 0.8546061271632476,
+      "q90": 0.9428303578718755
+    },
+    "hallucinated": {
+      "count": 1024,
+      "mean": 0.7109832625171056,
+      "q25": 0.5887787331579737,
+      "q33": 0.6449789868947684,
+      "q50": 0.7366074463988663,
+      "q66": 0.82803672580703,
+      "q75": 0.8701308056136332,
+      "q90": 0.9467949586027073
+    },
+    "non_hallucinated": {
+      "count": 1024,
+      "mean": 0.6709517683979114,
+      "q25": 0.5352951463802351,
+      "q33": 0.5842817707026574,
+      "q50": 0.6892784039082746,
+      "q66": 0.8007973067996664,
+      "q75": 0.8534671564996912,
+      "q90": 0.9435617531375885
+    }
+  },
+  "layer_all_calibration": {
+    "bucket": "all",
+    "hi_quantile": "q66",
+    "lo_quantile": "q33",
+    "hi_raw": 0.8223661512662614,
+    "lo_raw": 0.6250572647721787,
+    "tau_hi": 0.8200000000000001,
+    "tau_hi_str": "0.82",
+    "tau_lo": 0.62,
+    "tau_lo_str": "0.62"
+  },
+  "selected_head_calibration": {
+    "bucket": "all",
+    "hi_quantile": "q66",
+    "lo_quantile": "q33",
+    "hi_raw": 0.9319697780000684,
+    "lo_raw": 0.8314638943793111,
+    "tau_hi": 0.93,
+    "tau_hi_str": "0.93",
+    "tau_lo": 0.8300000000000001,
+    "tau_lo_str": "0.83"
+  },
+  "selection_note": "top-100 selected heads from /workspace/ADHH/results_deact/coco/llava-v1.5-7b/calibration_runtime/l0_l31_train_n500/last_row/surrogate_score_zoo/ranked_heads_global__itext_all__C_toi_HminusG_signed.json",
+  "notes": [
+    "This script reports both selected-head and layer-all ratio statistics when --head-file is provided.",
+    "Because txtattn_summary stores finalized per-head means rather than every raw step value, these quantiles are an approximation over head-level calibration means, not raw per-step quantiles.",
+    "recommended_tau is kept as an alias for tau_hi for backward compatibility with older pipeline code."
+  ],
+  "missing_selected_heads": [],
+  "missing_selected_heads_by_topk": {
+    "100": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "total_seconds": 3778.4834821224213,
+  "stages": [
+    {
+      "stage": "trace_summary",
+      "seconds": 3778.1301341056824
+    },
+    {
+      "stage": "surrogate_score_zoo",
+      "seconds": 0.23221707344055176
+    },
+    {
+      "stage": "dynamic_tau_estimate",
+      "seconds": 0.12113094329833984
+    }
+  ],
+  "config_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/calibration_runtime/l0_l31_train_n500/last_row/calibration_benchmark_config.json",
+  "summary_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/calibration_runtime/l0_l31_train_n500/last_row/txtattn_summary.json",
+  "ranked_head_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/calibration_runtime/l0_l31_train_n500/last_row/surrogate_score_zoo/ranked_heads_global__itext_all__C_toi_HminusG_signed.json",
+  "tau_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/calibration_runtime/l0_l31_train_n500/last_row/dynamic_tau_estimate.json"
+}

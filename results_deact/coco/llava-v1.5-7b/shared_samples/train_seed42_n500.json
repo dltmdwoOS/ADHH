@@ -1,0 +1,2502 @@
+[
+  {
+    "question_id": 243829,
+    "image": "COCO_train2014_000000243829.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 151124,
+    "image": "COCO_train2014_000000151124.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 222970,
+    "image": "COCO_train2014_000000222970.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 79957,
+    "image": "COCO_train2014_000000079957.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 538776,
+    "image": "COCO_train2014_000000538776.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 365452,
+    "image": "COCO_train2014_000000365452.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 204979,
+    "image": "COCO_train2014_000000204979.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 524180,
+    "image": "COCO_train2014_000000524180.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 351298,
+    "image": "COCO_train2014_000000351298.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 197118,
+    "image": "COCO_train2014_000000197118.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 556838,
+    "image": "COCO_train2014_000000556838.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 402908,
+    "image": "COCO_train2014_000000402908.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 114925,
+    "image": "COCO_train2014_000000114925.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 73096,
+    "image": "COCO_train2014_000000073096.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 321852,
+    "image": "COCO_train2014_000000321852.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 49027,
+    "image": "COCO_train2014_000000049027.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 251754,
+    "image": "COCO_train2014_000000251754.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 526696,
+    "image": "COCO_train2014_000000526696.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 52168,
+    "image": "COCO_train2014_000000052168.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 415458,
+    "image": "COCO_train2014_000000415458.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 42614,
+    "image": "COCO_train2014_000000042614.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 318637,
+    "image": "COCO_train2014_000000318637.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 210973,
+    "image": "COCO_train2014_000000210973.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 434549,
+    "image": "COCO_train2014_000000434549.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 5862,
+    "image": "COCO_train2014_000000005862.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 364416,
+    "image": "COCO_train2014_000000364416.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 115132,
+    "image": "COCO_train2014_000000115132.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 555183,
+    "image": "COCO_train2014_000000555183.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 8813,
+    "image": "COCO_train2014_000000008813.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 65426,
+    "image": "COCO_train2014_000000065426.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 510914,
+    "image": "COCO_train2014_000000510914.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 2902,
+    "image": "COCO_train2014_000000002902.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 399399,
+    "image": "COCO_train2014_000000399399.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 82766,
+    "image": "COCO_train2014_000000082766.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 401299,
+    "image": "COCO_train2014_000000401299.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 527557,
+    "image": "COCO_train2014_000000527557.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 483794,
+    "image": "COCO_train2014_000000483794.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 288797,
+    "image": "COCO_train2014_000000288797.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 275723,
+    "image": "COCO_train2014_000000275723.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 134799,
+    "image": "COCO_train2014_000000134799.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 81042,
+    "image": "COCO_train2014_000000081042.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 50463,
+    "image": "COCO_train2014_000000050463.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 128729,
+    "image": "COCO_train2014_000000128729.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 54003,
+    "image": "COCO_train2014_000000054003.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 128222,
+    "image": "COCO_train2014_000000128222.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 172276,
+    "image": "COCO_train2014_000000172276.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 250881,
+    "image": "COCO_train2014_000000250881.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 339130,
+    "image": "COCO_train2014_000000339130.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 370543,
+    "image": "COCO_train2014_000000370543.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 107609,
+    "image": "COCO_train2014_000000107609.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 80495,
+    "image": "COCO_train2014_000000080495.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 78412,
+    "image": "COCO_train2014_000000078412.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 189295,
+    "image": "COCO_train2014_000000189295.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 252730,
+    "image": "COCO_train2014_000000252730.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 335717,
+    "image": "COCO_train2014_000000335717.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 135508,
+    "image": "COCO_train2014_000000135508.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 488390,
+    "image": "COCO_train2014_000000488390.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 209304,
+    "image": "COCO_train2014_000000209304.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 185719,
+    "image": "COCO_train2014_000000185719.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 402243,
+    "image": "COCO_train2014_000000402243.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 39928,
+    "image": "COCO_train2014_000000039928.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 182571,
+    "image": "COCO_train2014_000000182571.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 407806,
+    "image": "COCO_train2014_000000407806.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 371412,
+    "image": "COCO_train2014_000000371412.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 44178,
+    "image": "COCO_train2014_000000044178.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 76934,
+    "image": "COCO_train2014_000000076934.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 130972,
+    "image": "COCO_train2014_000000130972.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 173520,
+    "image": "COCO_train2014_000000173520.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 274130,
+    "image": "COCO_train2014_000000274130.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 396296,
+    "image": "COCO_train2014_000000396296.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 505086,
+    "image": "COCO_train2014_000000505086.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 81819,
+    "image": "COCO_train2014_000000081819.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 532461,
+    "image": "COCO_train2014_000000532461.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 552962,
+    "image": "COCO_train2014_000000552962.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 102734,
+    "image": "COCO_train2014_000000102734.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 262984,
+    "image": "COCO_train2014_000000262984.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 276006,
+    "image": "COCO_train2014_000000276006.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 89714,
+    "image": "COCO_train2014_000000089714.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 275530,
+    "image": "COCO_train2014_000000275530.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 263006,
+    "image": "COCO_train2014_000000263006.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 517321,
+    "image": "COCO_train2014_000000517321.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 422305,
+    "image": "COCO_train2014_000000422305.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 101643,
+    "image": "COCO_train2014_000000101643.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 556481,
+    "image": "COCO_train2014_000000556481.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 206042,
+    "image": "COCO_train2014_000000206042.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 315808,
+    "image": "COCO_train2014_000000315808.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 552093,
+    "image": "COCO_train2014_000000552093.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 24972,
+    "image": "COCO_train2014_000000024972.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 452968,
+    "image": "COCO_train2014_000000452968.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 386085,
+    "image": "COCO_train2014_000000386085.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 578580,
+    "image": "COCO_train2014_000000578580.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 527858,
+    "image": "COCO_train2014_000000527858.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 208712,
+    "image": "COCO_train2014_000000208712.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 110187,
+    "image": "COCO_train2014_000000110187.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 542674,
+    "image": "COCO_train2014_000000542674.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 233902,
+    "image": "COCO_train2014_000000233902.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 24446,
+    "image": "COCO_train2014_000000024446.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 266001,
+    "image": "COCO_train2014_000000266001.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 117514,
+    "image": "COCO_train2014_000000117514.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 273103,
+    "image": "COCO_train2014_000000273103.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 18256,
+    "image": "COCO_train2014_000000018256.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 400245,
+    "image": "COCO_train2014_000000400245.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 305980,
+    "image": "COCO_train2014_000000305980.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 62648,
+    "image": "COCO_train2014_000000062648.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 213125,
+    "image": "COCO_train2014_000000213125.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 209092,
+    "image": "COCO_train2014_000000209092.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 124931,
+    "image": "COCO_train2014_000000124931.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 491117,
+    "image": "COCO_train2014_000000491117.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 314390,
+    "image": "COCO_train2014_000000314390.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 503985,
+    "image": "COCO_train2014_000000503985.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 378618,
+    "image": "COCO_train2014_000000378618.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 173754,
+    "image": "COCO_train2014_000000173754.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 72282,
+    "image": "COCO_train2014_000000072282.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 382441,
+    "image": "COCO_train2014_000000382441.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 336003,
+    "image": "COCO_train2014_000000336003.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 4421,
+    "image": "COCO_train2014_000000004421.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 407349,
+    "image": "COCO_train2014_000000407349.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 435322,
+    "image": "COCO_train2014_000000435322.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 50105,
+    "image": "COCO_train2014_000000050105.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 287695,
+    "image": "COCO_train2014_000000287695.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 178869,
+    "image": "COCO_train2014_000000178869.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 162747,
+    "image": "COCO_train2014_000000162747.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 458785,
+    "image": "COCO_train2014_000000458785.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 213174,
+    "image": "COCO_train2014_000000213174.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 40407,
+    "image": "COCO_train2014_000000040407.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 570569,
+    "image": "COCO_train2014_000000570569.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 337585,
+    "image": "COCO_train2014_000000337585.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 146481,
+    "image": "COCO_train2014_000000146481.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 569203,
+    "image": "COCO_train2014_000000569203.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 519076,
+    "image": "COCO_train2014_000000519076.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 133660,
+    "image": "COCO_train2014_000000133660.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 534702,
+    "image": "COCO_train2014_000000534702.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 351451,
+    "image": "COCO_train2014_000000351451.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 346726,
+    "image": "COCO_train2014_000000346726.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 219313,
+    "image": "COCO_train2014_000000219313.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 320812,
+    "image": "COCO_train2014_000000320812.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 259551,
+    "image": "COCO_train2014_000000259551.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 320117,
+    "image": "COCO_train2014_000000320117.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 546300,
+    "image": "COCO_train2014_000000546300.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 531948,
+    "image": "COCO_train2014_000000531948.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 130834,
+    "image": "COCO_train2014_000000130834.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 428602,
+    "image": "COCO_train2014_000000428602.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 365592,
+    "image": "COCO_train2014_000000365592.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 382142,
+    "image": "COCO_train2014_000000382142.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 24125,
+    "image": "COCO_train2014_000000024125.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 452014,
+    "image": "COCO_train2014_000000452014.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 241720,
+    "image": "COCO_train2014_000000241720.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 472913,
+    "image": "COCO_train2014_000000472913.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 291526,
+    "image": "COCO_train2014_000000291526.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 26662,
+    "image": "COCO_train2014_000000026662.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 423734,
+    "image": "COCO_train2014_000000423734.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 54082,
+    "image": "COCO_train2014_000000054082.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 138189,
+    "image": "COCO_train2014_000000138189.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 81576,
+    "image": "COCO_train2014_000000081576.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 481688,
+    "image": "COCO_train2014_000000481688.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 565600,
+    "image": "COCO_train2014_000000565600.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 98760,
+    "image": "COCO_train2014_000000098760.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 407318,
+    "image": "COCO_train2014_000000407318.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 470970,
+    "image": "COCO_train2014_000000470970.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 542033,
+    "image": "COCO_train2014_000000542033.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 529545,
+    "image": "COCO_train2014_000000529545.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 16735,
+    "image": "COCO_train2014_000000016735.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 6590,
+    "image": "COCO_train2014_000000006590.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 157371,
+    "image": "COCO_train2014_000000157371.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 526232,
+    "image": "COCO_train2014_000000526232.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 523766,
+    "image": "COCO_train2014_000000523766.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 205563,
+    "image": "COCO_train2014_000000205563.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 77557,
+    "image": "COCO_train2014_000000077557.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 9696,
+    "image": "COCO_train2014_000000009696.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 252943,
+    "image": "COCO_train2014_000000252943.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 388353,
+    "image": "COCO_train2014_000000388353.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 413754,
+    "image": "COCO_train2014_000000413754.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 132752,
+    "image": "COCO_train2014_000000132752.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 127296,
+    "image": "COCO_train2014_000000127296.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 462767,
+    "image": "COCO_train2014_000000462767.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 364522,
+    "image": "COCO_train2014_000000364522.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 393046,
+    "image": "COCO_train2014_000000393046.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 93655,
+    "image": "COCO_train2014_000000093655.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 471755,
+    "image": "COCO_train2014_000000471755.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 270112,
+    "image": "COCO_train2014_000000270112.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 105859,
+    "image": "COCO_train2014_000000105859.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 138521,
+    "image": "COCO_train2014_000000138521.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 497402,
+    "image": "COCO_train2014_000000497402.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 135796,
+    "image": "COCO_train2014_000000135796.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 467223,
+    "image": "COCO_train2014_000000467223.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 252384,
+    "image": "COCO_train2014_000000252384.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 380717,
+    "image": "COCO_train2014_000000380717.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 465247,
+    "image": "COCO_train2014_000000465247.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 251229,
+    "image": "COCO_train2014_000000251229.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 194223,
+    "image": "COCO_train2014_000000194223.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 210635,
+    "image": "COCO_train2014_000000210635.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 23487,
+    "image": "COCO_train2014_000000023487.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 366713,
+    "image": "COCO_train2014_000000366713.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 330575,
+    "image": "COCO_train2014_000000330575.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 182032,
+    "image": "COCO_train2014_000000182032.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 459401,
+    "image": "COCO_train2014_000000459401.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 140473,
+    "image": "COCO_train2014_000000140473.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 306724,
+    "image": "COCO_train2014_000000306724.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 163639,
+    "image": "COCO_train2014_000000163639.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 106025,
+    "image": "COCO_train2014_000000106025.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 97595,
+    "image": "COCO_train2014_000000097595.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 527865,
+    "image": "COCO_train2014_000000527865.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 51791,
+    "image": "COCO_train2014_000000051791.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 394759,
+    "image": "COCO_train2014_000000394759.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 326035,
+    "image": "COCO_train2014_000000326035.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 484091,
+    "image": "COCO_train2014_000000484091.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 573988,
+    "image": "COCO_train2014_000000573988.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 500060,
+    "image": "COCO_train2014_000000500060.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 463619,
+    "image": "COCO_train2014_000000463619.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 105339,
+    "image": "COCO_train2014_000000105339.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 229105,
+    "image": "COCO_train2014_000000229105.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 552072,
+    "image": "COCO_train2014_000000552072.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 287188,
+    "image": "COCO_train2014_000000287188.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 202499,
+    "image": "COCO_train2014_000000202499.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 286877,
+    "image": "COCO_train2014_000000286877.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 147775,
+    "image": "COCO_train2014_000000147775.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 279762,
+    "image": "COCO_train2014_000000279762.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 478778,
+    "image": "COCO_train2014_000000478778.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 417478,
+    "image": "COCO_train2014_000000417478.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 565684,
+    "image": "COCO_train2014_000000565684.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 336459,
+    "image": "COCO_train2014_000000336459.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 17697,
+    "image": "COCO_train2014_000000017697.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 285963,
+    "image": "COCO_train2014_000000285963.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 432053,
+    "image": "COCO_train2014_000000432053.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 139568,
+    "image": "COCO_train2014_000000139568.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 548168,
+    "image": "COCO_train2014_000000548168.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 324877,
+    "image": "COCO_train2014_000000324877.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 92549,
+    "image": "COCO_train2014_000000092549.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 61409,
+    "image": "COCO_train2014_000000061409.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 216686,
+    "image": "COCO_train2014_000000216686.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 314044,
+    "image": "COCO_train2014_000000314044.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 357294,
+    "image": "COCO_train2014_000000357294.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 54903,
+    "image": "COCO_train2014_000000054903.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 496920,
+    "image": "COCO_train2014_000000496920.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 481298,
+    "image": "COCO_train2014_000000481298.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 557602,
+    "image": "COCO_train2014_000000557602.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 310958,
+    "image": "COCO_train2014_000000310958.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 427382,
+    "image": "COCO_train2014_000000427382.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 465211,
+    "image": "COCO_train2014_000000465211.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 178031,
+    "image": "COCO_train2014_000000178031.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 324950,
+    "image": "COCO_train2014_000000324950.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 44998,
+    "image": "COCO_train2014_000000044998.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 243416,
+    "image": "COCO_train2014_000000243416.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 236574,
+    "image": "COCO_train2014_000000236574.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 181022,
+    "image": "COCO_train2014_000000181022.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 84648,
+    "image": "COCO_train2014_000000084648.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 352454,
+    "image": "COCO_train2014_000000352454.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 681,
+    "image": "COCO_train2014_000000000681.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 165916,
+    "image": "COCO_train2014_000000165916.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 67084,
+    "image": "COCO_train2014_000000067084.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 545573,
+    "image": "COCO_train2014_000000545573.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 117931,
+    "image": "COCO_train2014_000000117931.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 214119,
+    "image": "COCO_train2014_000000214119.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 409918,
+    "image": "COCO_train2014_000000409918.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 83600,
+    "image": "COCO_train2014_000000083600.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 190297,
+    "image": "COCO_train2014_000000190297.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 84183,
+    "image": "COCO_train2014_000000084183.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 57361,
+    "image": "COCO_train2014_000000057361.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 81117,
+    "image": "COCO_train2014_000000081117.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 279672,
+    "image": "COCO_train2014_000000279672.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 501651,
+    "image": "COCO_train2014_000000501651.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 72701,
+    "image": "COCO_train2014_000000072701.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 183537,
+    "image": "COCO_train2014_000000183537.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 371254,
+    "image": "COCO_train2014_000000371254.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 247603,
+    "image": "COCO_train2014_000000247603.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 46816,
+    "image": "COCO_train2014_000000046816.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 137173,
+    "image": "COCO_train2014_000000137173.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 487286,
+    "image": "COCO_train2014_000000487286.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 79367,
+    "image": "COCO_train2014_000000079367.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 207625,
+    "image": "COCO_train2014_000000207625.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 20446,
+    "image": "COCO_train2014_000000020446.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 218701,
+    "image": "COCO_train2014_000000218701.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 296651,
+    "image": "COCO_train2014_000000296651.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 449780,
+    "image": "COCO_train2014_000000449780.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 195826,
+    "image": "COCO_train2014_000000195826.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 538619,
+    "image": "COCO_train2014_000000538619.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 118937,
+    "image": "COCO_train2014_000000118937.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 72237,
+    "image": "COCO_train2014_000000072237.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 450477,
+    "image": "COCO_train2014_000000450477.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 491666,
+    "image": "COCO_train2014_000000491666.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 552814,
+    "image": "COCO_train2014_000000552814.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 113810,
+    "image": "COCO_train2014_000000113810.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 499958,
+    "image": "COCO_train2014_000000499958.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 75309,
+    "image": "COCO_train2014_000000075309.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 214676,
+    "image": "COCO_train2014_000000214676.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 552092,
+    "image": "COCO_train2014_000000552092.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 132973,
+    "image": "COCO_train2014_000000132973.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 232086,
+    "image": "COCO_train2014_000000232086.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 397294,
+    "image": "COCO_train2014_000000397294.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 348573,
+    "image": "COCO_train2014_000000348573.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 306353,
+    "image": "COCO_train2014_000000306353.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 121997,
+    "image": "COCO_train2014_000000121997.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 435042,
+    "image": "COCO_train2014_000000435042.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 252956,
+    "image": "COCO_train2014_000000252956.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 75114,
+    "image": "COCO_train2014_000000075114.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 123298,
+    "image": "COCO_train2014_000000123298.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 441652,
+    "image": "COCO_train2014_000000441652.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 130164,
+    "image": "COCO_train2014_000000130164.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 198786,
+    "image": "COCO_train2014_000000198786.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 96702,
+    "image": "COCO_train2014_000000096702.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 416610,
+    "image": "COCO_train2014_000000416610.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 442509,
+    "image": "COCO_train2014_000000442509.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 555457,
+    "image": "COCO_train2014_000000555457.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 228434,
+    "image": "COCO_train2014_000000228434.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 279804,
+    "image": "COCO_train2014_000000279804.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 225271,
+    "image": "COCO_train2014_000000225271.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 172637,
+    "image": "COCO_train2014_000000172637.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 53670,
+    "image": "COCO_train2014_000000053670.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 33341,
+    "image": "COCO_train2014_000000033341.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 85462,
+    "image": "COCO_train2014_000000085462.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 67752,
+    "image": "COCO_train2014_000000067752.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 365237,
+    "image": "COCO_train2014_000000365237.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 460995,
+    "image": "COCO_train2014_000000460995.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 238361,
+    "image": "COCO_train2014_000000238361.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 125335,
+    "image": "COCO_train2014_000000125335.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 103008,
+    "image": "COCO_train2014_000000103008.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 523267,
+    "image": "COCO_train2014_000000523267.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 557783,
+    "image": "COCO_train2014_000000557783.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 121168,
+    "image": "COCO_train2014_000000121168.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 517552,
+    "image": "COCO_train2014_000000517552.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 377510,
+    "image": "COCO_train2014_000000377510.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 410963,
+    "image": "COCO_train2014_000000410963.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 450653,
+    "image": "COCO_train2014_000000450653.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 283111,
+    "image": "COCO_train2014_000000283111.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 222871,
+    "image": "COCO_train2014_000000222871.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 499061,
+    "image": "COCO_train2014_000000499061.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 324006,
+    "image": "COCO_train2014_000000324006.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 153067,
+    "image": "COCO_train2014_000000153067.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 551961,
+    "image": "COCO_train2014_000000551961.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 39321,
+    "image": "COCO_train2014_000000039321.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 560858,
+    "image": "COCO_train2014_000000560858.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 513075,
+    "image": "COCO_train2014_000000513075.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 369267,
+    "image": "COCO_train2014_000000369267.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 211302,
+    "image": "COCO_train2014_000000211302.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 333433,
+    "image": "COCO_train2014_000000333433.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 471834,
+    "image": "COCO_train2014_000000471834.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 148474,
+    "image": "COCO_train2014_000000148474.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 77805,
+    "image": "COCO_train2014_000000077805.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 27750,
+    "image": "COCO_train2014_000000027750.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 241786,
+    "image": "COCO_train2014_000000241786.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 225268,
+    "image": "COCO_train2014_000000225268.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 204422,
+    "image": "COCO_train2014_000000204422.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 232143,
+    "image": "COCO_train2014_000000232143.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 44523,
+    "image": "COCO_train2014_000000044523.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 189656,
+    "image": "COCO_train2014_000000189656.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 87096,
+    "image": "COCO_train2014_000000087096.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 23906,
+    "image": "COCO_train2014_000000023906.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 420874,
+    "image": "COCO_train2014_000000420874.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 561653,
+    "image": "COCO_train2014_000000561653.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 227975,
+    "image": "COCO_train2014_000000227975.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 10714,
+    "image": "COCO_train2014_000000010714.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 126531,
+    "image": "COCO_train2014_000000126531.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 550476,
+    "image": "COCO_train2014_000000550476.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 540831,
+    "image": "COCO_train2014_000000540831.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 59718,
+    "image": "COCO_train2014_000000059718.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 214876,
+    "image": "COCO_train2014_000000214876.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 564663,
+    "image": "COCO_train2014_000000564663.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 571603,
+    "image": "COCO_train2014_000000571603.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 266939,
+    "image": "COCO_train2014_000000266939.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 179915,
+    "image": "COCO_train2014_000000179915.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 295630,
+    "image": "COCO_train2014_000000295630.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 124829,
+    "image": "COCO_train2014_000000124829.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 110324,
+    "image": "COCO_train2014_000000110324.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 502359,
+    "image": "COCO_train2014_000000502359.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 359133,
+    "image": "COCO_train2014_000000359133.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 260720,
+    "image": "COCO_train2014_000000260720.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 579731,
+    "image": "COCO_train2014_000000579731.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 491585,
+    "image": "COCO_train2014_000000491585.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 144449,
+    "image": "COCO_train2014_000000144449.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 402362,
+    "image": "COCO_train2014_000000402362.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 69314,
+    "image": "COCO_train2014_000000069314.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 285170,
+    "image": "COCO_train2014_000000285170.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 483692,
+    "image": "COCO_train2014_000000483692.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 433853,
+    "image": "COCO_train2014_000000433853.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 493484,
+    "image": "COCO_train2014_000000493484.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 176300,
+    "image": "COCO_train2014_000000176300.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 579947,
+    "image": "COCO_train2014_000000579947.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 83368,
+    "image": "COCO_train2014_000000083368.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 128932,
+    "image": "COCO_train2014_000000128932.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 219653,
+    "image": "COCO_train2014_000000219653.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 365768,
+    "image": "COCO_train2014_000000365768.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 90173,
+    "image": "COCO_train2014_000000090173.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 233804,
+    "image": "COCO_train2014_000000233804.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 381192,
+    "image": "COCO_train2014_000000381192.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 242089,
+    "image": "COCO_train2014_000000242089.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 22377,
+    "image": "COCO_train2014_000000022377.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 569196,
+    "image": "COCO_train2014_000000569196.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 322325,
+    "image": "COCO_train2014_000000322325.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 296631,
+    "image": "COCO_train2014_000000296631.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 173184,
+    "image": "COCO_train2014_000000173184.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 539198,
+    "image": "COCO_train2014_000000539198.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 125735,
+    "image": "COCO_train2014_000000125735.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 549098,
+    "image": "COCO_train2014_000000549098.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 122415,
+    "image": "COCO_train2014_000000122415.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 7855,
+    "image": "COCO_train2014_000000007855.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 315094,
+    "image": "COCO_train2014_000000315094.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 15514,
+    "image": "COCO_train2014_000000015514.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 569500,
+    "image": "COCO_train2014_000000569500.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 518083,
+    "image": "COCO_train2014_000000518083.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 343282,
+    "image": "COCO_train2014_000000343282.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 479550,
+    "image": "COCO_train2014_000000479550.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 408393,
+    "image": "COCO_train2014_000000408393.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 535661,
+    "image": "COCO_train2014_000000535661.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 524317,
+    "image": "COCO_train2014_000000524317.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 32689,
+    "image": "COCO_train2014_000000032689.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 370010,
+    "image": "COCO_train2014_000000370010.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 450647,
+    "image": "COCO_train2014_000000450647.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 508881,
+    "image": "COCO_train2014_000000508881.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 159723,
+    "image": "COCO_train2014_000000159723.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 297844,
+    "image": "COCO_train2014_000000297844.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 429455,
+    "image": "COCO_train2014_000000429455.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 572173,
+    "image": "COCO_train2014_000000572173.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 270166,
+    "image": "COCO_train2014_000000270166.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 217241,
+    "image": "COCO_train2014_000000217241.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 762,
+    "image": "COCO_train2014_000000000762.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 458804,
+    "image": "COCO_train2014_000000458804.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 278952,
+    "image": "COCO_train2014_000000278952.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 293880,
+    "image": "COCO_train2014_000000293880.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 29538,
+    "image": "COCO_train2014_000000029538.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 447182,
+    "image": "COCO_train2014_000000447182.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 507570,
+    "image": "COCO_train2014_000000507570.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 56452,
+    "image": "COCO_train2014_000000056452.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 425243,
+    "image": "COCO_train2014_000000425243.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 514245,
+    "image": "COCO_train2014_000000514245.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 58965,
+    "image": "COCO_train2014_000000058965.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 262954,
+    "image": "COCO_train2014_000000262954.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 277401,
+    "image": "COCO_train2014_000000277401.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 83873,
+    "image": "COCO_train2014_000000083873.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 201431,
+    "image": "COCO_train2014_000000201431.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 309771,
+    "image": "COCO_train2014_000000309771.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 259217,
+    "image": "COCO_train2014_000000259217.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 571125,
+    "image": "COCO_train2014_000000571125.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 151125,
+    "image": "COCO_train2014_000000151125.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 343066,
+    "image": "COCO_train2014_000000343066.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 406981,
+    "image": "COCO_train2014_000000406981.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 253233,
+    "image": "COCO_train2014_000000253233.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 10759,
+    "image": "COCO_train2014_000000010759.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 12756,
+    "image": "COCO_train2014_000000012756.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 535768,
+    "image": "COCO_train2014_000000535768.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 314376,
+    "image": "COCO_train2014_000000314376.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 186888,
+    "image": "COCO_train2014_000000186888.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 94842,
+    "image": "COCO_train2014_000000094842.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 503023,
+    "image": "COCO_train2014_000000503023.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 425117,
+    "image": "COCO_train2014_000000425117.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 394245,
+    "image": "COCO_train2014_000000394245.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 255886,
+    "image": "COCO_train2014_000000255886.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 505420,
+    "image": "COCO_train2014_000000505420.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 181566,
+    "image": "COCO_train2014_000000181566.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 303438,
+    "image": "COCO_train2014_000000303438.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 241457,
+    "image": "COCO_train2014_000000241457.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 92186,
+    "image": "COCO_train2014_000000092186.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 77639,
+    "image": "COCO_train2014_000000077639.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 406011,
+    "image": "COCO_train2014_000000406011.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 71330,
+    "image": "COCO_train2014_000000071330.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 211388,
+    "image": "COCO_train2014_000000211388.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 10484,
+    "image": "COCO_train2014_000000010484.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 311413,
+    "image": "COCO_train2014_000000311413.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 250518,
+    "image": "COCO_train2014_000000250518.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 15399,
+    "image": "COCO_train2014_000000015399.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 498943,
+    "image": "COCO_train2014_000000498943.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 159400,
+    "image": "COCO_train2014_000000159400.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 486187,
+    "image": "COCO_train2014_000000486187.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 395920,
+    "image": "COCO_train2014_000000395920.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 552245,
+    "image": "COCO_train2014_000000552245.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 206170,
+    "image": "COCO_train2014_000000206170.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 474859,
+    "image": "COCO_train2014_000000474859.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 447607,
+    "image": "COCO_train2014_000000447607.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 46728,
+    "image": "COCO_train2014_000000046728.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 503637,
+    "image": "COCO_train2014_000000503637.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 82735,
+    "image": "COCO_train2014_000000082735.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 194707,
+    "image": "COCO_train2014_000000194707.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 69200,
+    "image": "COCO_train2014_000000069200.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 468253,
+    "image": "COCO_train2014_000000468253.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 309615,
+    "image": "COCO_train2014_000000309615.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 89212,
+    "image": "COCO_train2014_000000089212.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 193011,
+    "image": "COCO_train2014_000000193011.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 126096,
+    "image": "COCO_train2014_000000126096.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 319393,
+    "image": "COCO_train2014_000000319393.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 381069,
+    "image": "COCO_train2014_000000381069.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 249166,
+    "image": "COCO_train2014_000000249166.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 468876,
+    "image": "COCO_train2014_000000468876.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 53317,
+    "image": "COCO_train2014_000000053317.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 420372,
+    "image": "COCO_train2014_000000420372.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 15930,
+    "image": "COCO_train2014_000000015930.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 545727,
+    "image": "COCO_train2014_000000545727.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 337314,
+    "image": "COCO_train2014_000000337314.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 298473,
+    "image": "COCO_train2014_000000298473.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 112444,
+    "image": "COCO_train2014_000000112444.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 179620,
+    "image": "COCO_train2014_000000179620.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 367058,
+    "image": "COCO_train2014_000000367058.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 382707,
+    "image": "COCO_train2014_000000382707.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 155047,
+    "image": "COCO_train2014_000000155047.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 135149,
+    "image": "COCO_train2014_000000135149.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 140816,
+    "image": "COCO_train2014_000000140816.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 450684,
+    "image": "COCO_train2014_000000450684.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 253903,
+    "image": "COCO_train2014_000000253903.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 209320,
+    "image": "COCO_train2014_000000209320.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 350815,
+    "image": "COCO_train2014_000000350815.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 207595,
+    "image": "COCO_train2014_000000207595.jpg",
+    "prompt": "Please describe this image in detail."
+  },
+  {
+    "question_id": 229522,
+    "image": "COCO_train2014_000000229522.jpg",
+    "prompt": "Please describe this image in detail."
+  }
+]
