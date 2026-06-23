@@ -13,8 +13,11 @@ num_samples=${NUM_SAMPLES:-500}
 warmup_samples=${WARMUP_SAMPLES:-8}
 max_new_tokens=${MAX_NEW_TOKENS:-128}
 gpu=${GPU:-0}
-methods=${METHODS:-greedy,adhh,deact}
-deact_redistribute=${DEACT_REDISTRIBUTE:-sysvis}
+methods=${METHODS:-adhh,deact}
+# Paper-main DEACT uses direct attenuation: remove text-side mass without
+# redistributing it and without row renormalization.
+deact_redistribute=${DEACT_REDISTRIBUTE:-none}
+deact_renorm=${DEACT_RENORM:-false}
 deact_topk=${DEACT_TOPK:-100}
 deact_q=${DEACT_Q:-10.0}
 deact_tau=${DEACT_TAU:-0.90}
@@ -25,7 +28,16 @@ python_bin=${PYTHON_BIN:-python3}
 
 sample_dir=${results_root}/${dataset}/${model_name}/shared_samples
 sample_id_file=${SAMPLE_ID_FILE:-${sample_dir}/val_seed${seed}_n${num_samples}.json}
-out_dir=${OUTPUT_DIR:-${results_root}/${dataset}/${model_name}/runtime/seed${seed}_n${num_samples}_tok${max_new_tokens}/${deact_redistribute}}
+if [[ "${deact_redistribute}" == "none" && "${deact_renorm}" != "true" ]]; then
+  deact_update_slug=direct
+elif [[ "${deact_redistribute}" == "none" && "${deact_renorm}" == "true" ]]; then
+  deact_update_slug=renorm
+elif [[ "${deact_redistribute}" == "renorm" ]]; then
+  deact_update_slug=renorm
+else
+  deact_update_slug="${deact_redistribute}"
+fi
+out_dir=${OUTPUT_DIR:-${results_root}/${dataset}/${model_name}/runtime/seed${seed}_n${num_samples}_tok${max_new_tokens}/${deact_update_slug}}
 deact_resource_dir=${results_root}/${dataset}/${model_name}/resources/l9_l16_train_n500
 deact_head_file=${DEACT_HEAD_FILE:-${deact_resource_dir}/surrogate_score_zoo/ranked_heads_global__itext_all__C_toi_HminusG_signed.json}
 deact_tau_file=${DEACT_TAU_FILE:-${deact_resource_dir}/dynamic_tau_estimate.json}
@@ -56,6 +68,11 @@ if [[ "${auto_tau}" == "true" ]]; then
 fi
 if [[ "${force_output_attentions}" == "true" ]]; then
   extra_args+=(--force-output-attentions)
+fi
+if [[ "${deact_renorm}" == "true" ]]; then
+  extra_args+=(--deact-renorm)
+else
+  extra_args+=(--no-deact-renorm)
 fi
 
 CUDA_VISIBLE_DEVICES="${gpu}" "${python_bin}" -m eval_scripts.benchmark_latency_memory \

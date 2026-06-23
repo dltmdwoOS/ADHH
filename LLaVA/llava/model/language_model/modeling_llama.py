@@ -631,18 +631,21 @@ def _append_dynamic_trace(
 def _maybe_print_dynamic_trace(config, layer_idx):
     if getattr(config, "intervention", "none") not in ("dynamic", "late_boost", "linear", "exp", "threshold_exp", "center_exp", "linear_tail_exp"):
         return
-    if not bool(getattr(config, "log_dynamic_trace", False)):
-        return
 
     num_layers = getattr(config, "num_hidden_layers", None)
     if num_layers is not None and int(layer_idx) != int(num_layers) - 1:
         return
 
     step = int(getattr(config, "_dynamic_trace_step", 0))
-    every = max(int(getattr(config, "dynamic_trace_every", 1)), 1)
     buffer = list(getattr(config, "_dynamic_trace_buffer", []) or [])
 
-    if step % every == 0 and buffer:
+    if bool(getattr(config, "log_dynamic_trace", False)) and buffer:
+        every = max(int(getattr(config, "dynamic_trace_every", 1)), 1)
+        should_print = step % every == 0
+    else:
+        should_print = False
+
+    if should_print:
         topn = max(int(getattr(config, "dynamic_trace_topn", 10)), 1)
         active = [x for x in buffer if x["suppression"] >= 0.05]
         strong = [x for x in buffer if x["suppression"] >= 0.5]
@@ -680,14 +683,95 @@ def _maybe_print_dynamic_trace(config, layer_idx):
     config._dynamic_trace_buffer = []
 
 
+def _update_intervention_histogram(bucket, suppression_f, bins):
+    bins = max(int(bins), 1)
+    hist = bucket.get("suppression_hist_counts")
+    if hist is None or len(hist) != bins + 1:
+        hist = [0 for _ in range(bins + 1)]
+    idx = torch.floor(suppression_f.clamp(0.0, 1.0) * bins).long().clamp(0, bins)
+    counts = torch.bincount(idx.detach().cpu(), minlength=bins + 1).tolist()
+    for i, value in enumerate(counts):
+        hist[i] += int(value)
+    bucket["suppression_hist_bins"] = bins
+    bucket["suppression_hist_counts"] = hist
+
+
+def _new_device_intervention_bucket(bins, device):
+    return {
+        "count": 0,
+        "scaled_count": torch.zeros((), device=device, dtype=torch.float32),
+        "near_zero_count": torch.zeros((), device=device, dtype=torch.float32),
+        "saturation_count": torch.zeros((), device=device, dtype=torch.float32),
+        "sum_scale": torch.zeros((), device=device, dtype=torch.float32),
+        "sum_suppression": torch.zeros((), device=device, dtype=torch.float32),
+        "sum_text_mass": torch.zeros((), device=device, dtype=torch.float32),
+        "min_scale": torch.full((), float("inf"), device=device, dtype=torch.float32),
+        "max_scale": torch.full((), float("-inf"), device=device, dtype=torch.float32),
+        "min_suppression": torch.full((), float("inf"), device=device, dtype=torch.float32),
+        "max_suppression": torch.full((), float("-inf"), device=device, dtype=torch.float32),
+        "suppression_hist_bins": int(bins),
+        "suppression_hist_counts": torch.zeros(int(bins) + 1, device=device, dtype=torch.float32),
+    }
+
+
+def _update_device_intervention_bucket(bucket, scale, text_mass, extra, bins):
+    scale_f = scale.detach().float()
+    text_f = text_mass.detach().float()
+    suppression_f = 1.0 - scale_f
+    n = int(scale_f.numel())
+
+    bucket["count"] = int(bucket.get("count", 0)) + n
+    bucket["scaled_count"] = bucket["scaled_count"] + (scale_f < 0.999).float().sum()
+    bucket["near_zero_count"] = bucket["near_zero_count"] + (scale_f <= 0.05).float().sum()
+    bucket["saturation_count"] = bucket["saturation_count"] + (scale_f <= 1e-6).float().sum()
+    bucket["sum_scale"] = bucket["sum_scale"] + scale_f.sum()
+    bucket["sum_suppression"] = bucket["sum_suppression"] + suppression_f.sum()
+    bucket["sum_text_mass"] = bucket["sum_text_mass"] + text_f.sum()
+    bucket["min_scale"] = torch.minimum(bucket["min_scale"], scale_f.min())
+    bucket["max_scale"] = torch.maximum(bucket["max_scale"], scale_f.max())
+    bucket["min_suppression"] = torch.minimum(bucket["min_suppression"], suppression_f.min())
+    bucket["max_suppression"] = torch.maximum(bucket["max_suppression"], suppression_f.max())
+
+    idx = torch.floor(suppression_f.clamp(0.0, 1.0) * int(bins)).long().clamp(0, int(bins))
+    bucket["suppression_hist_counts"] = bucket["suppression_hist_counts"] + torch.bincount(
+        idx.reshape(-1),
+        minlength=int(bins) + 1,
+    ).to(bucket["suppression_hist_counts"].dtype)
+
+    if extra:
+        for name, tensor in extra.items():
+            key = f"sum_{name}"
+            if key not in bucket:
+                bucket[key] = torch.zeros((), device=scale_f.device, dtype=torch.float32)
+            bucket[key] = bucket[key] + tensor.detach().float().sum()
+
+
 def _update_intervention_stats(config, layer_idx, head_idx, mode, scale, text_mass, head_score, extra=None):
     if not bool(getattr(config, "log_intervention_stats", False)):
         return
 
     stats = getattr(config, "_intervention_stats", None)
     if stats is None:
-        stats = {"overall": {}, "by_head": {}}
+        stats = {"overall": {}, "by_head": {}, "by_position": {}, "by_token_bucket": {}}
         config._intervention_stats = stats
+
+    hist_bins = int(getattr(config, "intervention_stats_bins", 100))
+    if bool(getattr(config, "intervention_stats_device_accum", False)):
+        device_stats = stats.setdefault("_device", {"overall": {}, "by_position": {}})
+        overall = device_stats["overall"].setdefault(
+            mode,
+            _new_device_intervention_bucket(hist_bins, scale.device),
+        )
+        _update_device_intervention_bucket(overall, scale, text_mass, extra, hist_bins)
+        if bool(getattr(config, "log_intervention_position_stats", False)):
+            step = int(getattr(config, "_dynamic_trace_step", 0))
+            pos_section = device_stats["by_position"].setdefault(mode, {})
+            pos_bucket = pos_section.setdefault(
+                str(step),
+                _new_device_intervention_bucket(hist_bins, scale.device),
+            )
+            _update_device_intervention_bucket(pos_bucket, scale, text_mass, extra, hist_bins)
+        return
 
     def update_bucket(bucket, values):
         n = int(scale.numel())
@@ -698,11 +782,15 @@ def _update_intervention_stats(config, layer_idx, head_idx, mode, scale, text_ma
         bucket["count"] = bucket.get("count", 0) + n
         bucket["scaled_count"] = bucket.get("scaled_count", 0) + int((scale_f < 0.999).sum().item())
         bucket["near_zero_count"] = bucket.get("near_zero_count", 0) + int((scale_f <= 0.05).sum().item())
+        bucket["saturation_count"] = bucket.get("saturation_count", 0) + int((scale_f <= 1e-6).sum().item())
         bucket["sum_scale"] = bucket.get("sum_scale", 0.0) + float(scale_f.sum().item())
         bucket["sum_suppression"] = bucket.get("sum_suppression", 0.0) + float(suppression_f.sum().item())
         bucket["sum_text_mass"] = bucket.get("sum_text_mass", 0.0) + float(text_f.sum().item())
         bucket["min_scale"] = min(bucket.get("min_scale", float("inf")), float(scale_f.min().item()))
         bucket["max_scale"] = max(bucket.get("max_scale", float("-inf")), float(scale_f.max().item()))
+        bucket["min_suppression"] = min(bucket.get("min_suppression", float("inf")), float(suppression_f.min().item()))
+        bucket["max_suppression"] = max(bucket.get("max_suppression", float("-inf")), float(suppression_f.max().item()))
+        _update_intervention_histogram(bucket, suppression_f, hist_bins)
 
         if extra:
             for name, tensor in extra.items():
@@ -720,6 +808,18 @@ def _update_intervention_stats(config, layer_idx, head_idx, mode, scale, text_ma
 
     update_bucket(overall, extra)
     update_bucket(by_head, extra)
+
+    if bool(getattr(config, "log_intervention_position_stats", False)):
+        step = int(getattr(config, "_dynamic_trace_step", 0))
+        pos_section = stats.setdefault("by_position", {}).setdefault(mode, {})
+        pos_bucket = pos_section.setdefault(str(step), {})
+        update_bucket(pos_bucket, extra)
+
+    if bool(getattr(config, "log_intervention_token_bucket_stats", False)):
+        step = int(getattr(config, "_dynamic_trace_step", 0))
+        current_steps = stats.setdefault("_current_sample_steps", {}).setdefault(mode, {})
+        step_bucket = current_steps.setdefault(str(step), {})
+        update_bucket(step_bucket, extra)
 
 
 def _apply_text_intervention(attn_weights, config, layer_idx):

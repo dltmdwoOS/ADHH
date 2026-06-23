@@ -375,6 +375,157 @@ def build_questions(args, sampled_ids):
     return questions
 
 
+def merge_raw_intervention_bucket(dst, src):
+    if not src:
+        return dst
+    for key, value in src.items():
+        if key == "suppression_hist_counts":
+            old = dst.get(key)
+            if old is None or len(old) != len(value):
+                old = [0 for _ in range(len(value))]
+            for i, count in enumerate(value):
+                old[i] += int(count)
+            dst[key] = old
+        elif key == "suppression_hist_bins":
+            dst[key] = int(value)
+        elif key.startswith("min_"):
+            dst[key] = min(float(dst.get(key, float("inf"))), float(value))
+        elif key.startswith("max_"):
+            dst[key] = max(float(dst.get(key, float("-inf"))), float(value))
+        elif isinstance(value, int):
+            dst[key] = int(dst.get(key, 0)) + int(value)
+        elif isinstance(value, float):
+            dst[key] = float(dst.get(key, 0.0)) + float(value)
+        else:
+            dst[key] = value
+    return dst
+
+
+def _find_token_span(text_lower, token, start_pos):
+    surface = {'``': '"', "''": '"'}.get(token, token)
+    idx = text_lower.find(surface, start_pos)
+    if idx < 0:
+        return None
+    return idx, idx + len(surface)
+
+
+def align_word_token_spans(caption, lower_tokens):
+    text_lower = caption.lower()
+    spans = []
+    cursor = 0
+    for token in lower_tokens:
+        span = _find_token_span(text_lower, token, cursor)
+        if span is None:
+            return None
+        spans.append(span)
+        cursor = span[1]
+    return spans
+
+
+def decode_prefix(tokenizer, token_ids):
+    try:
+        return tokenizer.decode(
+            token_ids,
+            skip_special_tokens=True,
+            clean_up_tokenization_spaces=False,
+        )
+    except TypeError:
+        return tokenizer.decode(token_ids, skip_special_tokens=True)
+
+
+def generated_token_char_spans(tokenizer, output_token_ids):
+    spans = []
+    prev = ""
+    for idx in range(len(output_token_ids)):
+        cur = decode_prefix(tokenizer, output_token_ids[: idx + 1])
+        start = len(prev)
+        end = len(cur)
+        if end > start:
+            spans.append((idx, start, end))
+        prev = cur
+    return spans
+
+
+def build_intervention_step_labels(
+    tokenizer,
+    output_token_ids,
+    caption,
+    question_id,
+    image_file,
+    chair,
+    window,
+):
+    if chair is None or not caption:
+        return {}
+    try:
+        import nltk
+        chair_out = chair.compute_chair([{
+            "image_id": int(question_id),
+            "image": image_file,
+            "caption": caption,
+        }])
+        sent = chair_out["sentences"][0]
+        raw_tokens = nltk.word_tokenize(caption.lower())
+    except Exception as exc:
+        print(f"[intervention-stats] token labeling failed for image_id={question_id}: {exc}")
+        return {}
+
+    word_spans = align_word_token_spans(caption, raw_tokens)
+    if word_spans is None:
+        return {}
+    token_spans = generated_token_char_spans(tokenizer, output_token_ids)
+    if not token_spans:
+        return {}
+
+    def overlapping_steps(raw_idxs):
+        steps = set()
+        for raw_idx in raw_idxs:
+            raw_idx = int(raw_idx)
+            if raw_idx < 0 or raw_idx >= len(word_spans):
+                continue
+            start, end = word_spans[raw_idx]
+            for step, tok_start, tok_end in token_spans:
+                if tok_start < end and tok_end > start:
+                    steps.add(step)
+        return steps
+
+    hall_exact = overlapping_steps(sent.get("hallucination_idxs", []))
+    ground_exact = overlapping_steps(sent.get("non_hallucination_idxs", []))
+    labels = {}
+
+    def add_label(step, label):
+        labels.setdefault(int(step), set()).add(label)
+
+    for step in hall_exact:
+        add_label(step, "hallucinated_exact")
+    for step in ground_exact:
+        add_label(step, "grounded_exact")
+
+    window = max(int(window), 0)
+    if window > 0:
+        for source, label in ((hall_exact, "hallucinated_window"), (ground_exact, "grounded_window")):
+            for step in source:
+                for near in range(max(0, step - window), step + window + 1):
+                    add_label(near, label)
+                    add_label(near, "object_window")
+    return labels
+
+
+def update_intervention_token_bucket_stats(raw_stats, step_labels):
+    if not raw_stats or "_current_sample_steps" not in raw_stats:
+        return
+    target = raw_stats.setdefault("by_token_bucket", {})
+    for mode, by_step in raw_stats.get("_current_sample_steps", {}).items():
+        mode_target = target.setdefault(mode, {})
+        for step_text, bucket in by_step.items():
+            labels = step_labels.get(int(step_text), None)
+            if not labels:
+                labels = {"other"}
+            for label in sorted(labels):
+                merge_raw_intervention_bucket(mode_target.setdefault(label, {}), bucket)
+    raw_stats["_current_sample_steps"] = {}
+
+
 class CustomDataset(Dataset):
     def __init__(self, questions, image_folder, tokenizer, image_processor, model_config, conv_mode):
         self.questions = questions
@@ -460,6 +611,10 @@ def attach_intervention_config(model, args):
     model.config.log_dynamic_trace = args.log_dynamic_trace
     model.config.dynamic_trace_topn = args.dynamic_trace_topn
     model.config.dynamic_trace_every = args.dynamic_trace_every
+    model.config.intervention_stats_bins = args.intervention_stats_bins
+    model.config.log_intervention_position_stats = args.log_intervention_position_stats
+    model.config.log_intervention_token_bucket_stats = args.log_intervention_token_bucket_stats
+    model.config.intervention_stats_device_accum = args.intervention_stats_device_accum
     model.config._dynamic_trace_step = 0
     model.config._dynamic_trace_buffer = []
     model.config.baseline_start_layer = args.baseline_start_layer
@@ -526,6 +681,12 @@ def save_run_config(args, head_cfg):
         "tarac_end_layer": args.tarac_end_layer,
         "log_intervention_stats": args.log_intervention_stats,
         "intervention_stats_file": args.intervention_stats_file,
+        "intervention_stats_bins": args.intervention_stats_bins,
+        "log_intervention_position_stats": args.log_intervention_position_stats,
+        "log_intervention_token_bucket_stats": args.log_intervention_token_bucket_stats,
+        "intervention_stats_token_window": args.intervention_stats_token_window,
+        "intervention_stats_device_accum": args.intervention_stats_device_accum,
+        "output_attentions": args.output_attentions,
         "log_dynamic_trace": args.log_dynamic_trace,
         "dynamic_trace_topn": args.dynamic_trace_topn,
         "dynamic_trace_every": args.dynamic_trace_every,
@@ -537,7 +698,67 @@ def save_run_config(args, head_cfg):
         json.dump(run_cfg, f, indent=2)
 
 
+def quantiles_from_hist(counts, bins, quantiles=(0.25, 0.50, 0.75, 0.90, 0.95, 0.99)):
+    if not counts or bins <= 0:
+        return {}
+    total = sum(int(x) for x in counts)
+    if total <= 0:
+        return {}
+    out = {}
+    cumulative = 0
+    q_items = sorted((float(q), f"q{int(round(float(q) * 100)):02d}") for q in quantiles)
+    q_idx = 0
+    for idx, count in enumerate(counts):
+        cumulative += int(count)
+        while q_idx < len(q_items) and cumulative >= q_items[q_idx][0] * total:
+            q, name = q_items[q_idx]
+            out[name] = min(max(idx / float(bins), 0.0), 1.0)
+            q_idx += 1
+    for _, name in q_items:
+        out.setdefault(name, 1.0)
+    return out
+
+
+def materialize_device_bucket(bucket):
+    out = {}
+    for key, value in bucket.items():
+        if torch.is_tensor(value):
+            value = value.detach().cpu()
+            if value.ndim == 0:
+                value = float(value.item())
+            else:
+                value = [int(x) for x in value.tolist()]
+        out[key] = value
+    for key in ("count", "scaled_count", "near_zero_count", "saturation_count"):
+        if key in out:
+            out[key] = int(out[key])
+    return out
+
+
+def merge_materialized_device_stats(raw_stats):
+    device_stats = (raw_stats or {}).pop("_device", None)
+    if not device_stats:
+        return raw_stats
+    overall = raw_stats.setdefault("overall", {})
+    for mode, bucket in device_stats.get("overall", {}).items():
+        merge_raw_intervention_bucket(
+            overall.setdefault(mode, {}),
+            materialize_device_bucket(bucket),
+        )
+    by_position = raw_stats.setdefault("by_position", {})
+    for mode, by_step in device_stats.get("by_position", {}).items():
+        mode_out = by_position.setdefault(mode, {})
+        for step, bucket in by_step.items():
+            merge_raw_intervention_bucket(
+                mode_out.setdefault(str(step), {}),
+                materialize_device_bucket(bucket),
+            )
+    return raw_stats
+
+
 def finalize_intervention_stats(raw_stats):
+    raw_stats = merge_materialized_device_stats(raw_stats or {})
+
     def finalize_bucket(bucket):
         out = dict(bucket)
         count = max(int(out.get("count", 0)), 1)
@@ -550,10 +771,15 @@ def finalize_intervention_stats(raw_stats):
 
         out["scaled_rate"] = out.get("scaled_count", 0) / count
         out["near_zero_rate"] = out.get("near_zero_count", 0) / count
+        out["saturation_rate"] = out.get("saturation_count", 0) / count
+        hist = out.get("suppression_hist_counts")
+        bins = int(out.get("suppression_hist_bins", 0) or 0)
+        if hist and bins > 0:
+            out["suppression_quantiles"] = quantiles_from_hist(hist, bins)
         return out
 
     if not raw_stats:
-        return {"overall": {}, "by_head": {}}
+        return {"overall": {}, "by_head": {}, "by_position": {}, "by_token_bucket": {}}
 
     return {
         "overall": {
@@ -563,6 +789,20 @@ def finalize_intervention_stats(raw_stats):
         "by_head": {
             key: finalize_bucket(bucket)
             for key, bucket in raw_stats.get("by_head", {}).items()
+        },
+        "by_position": {
+            mode: {
+                step: finalize_bucket(bucket)
+                for step, bucket in by_step.items()
+            }
+            for mode, by_step in raw_stats.get("by_position", {}).items()
+        },
+        "by_token_bucket": {
+            mode: {
+                label: finalize_bucket(bucket)
+                for label, bucket in by_label.items()
+            }
+            for mode, by_label in raw_stats.get("by_token_bucket", {}).items()
         },
     }
 
@@ -602,9 +842,21 @@ def merge_intervention_bucket(old, new):
             vals = [v for v in (old_value, new_value) if v is not None]
             if vals:
                 merged[key] = max(vals)
-        elif key in ("scaled_count", "near_zero_count"):
+        elif key == "suppression_hist_counts":
+            old_hist = old_value or []
+            new_hist = new_value or []
+            size = max(len(old_hist), len(new_hist))
+            merged[key] = [
+                int(old_hist[i]) if i < len(old_hist) else 0
+                for i in range(size)
+            ]
+            for i, value in enumerate(new_hist):
+                merged[key][i] += int(value)
+        elif key == "suppression_hist_bins":
+            merged[key] = int(new_value or old_value or 0)
+        elif key in ("scaled_count", "near_zero_count", "saturation_count"):
             merged[key] = int(old_value or 0) + int(new_value or 0)
-        elif key in ("scaled_rate", "near_zero_rate"):
+        elif key in ("scaled_rate", "near_zero_rate", "saturation_rate", "suppression_quantiles"):
             continue
         elif new_value is not None:
             merged[key] = new_value
@@ -614,6 +866,11 @@ def merge_intervention_bucket(old, new):
     merged["count"] = total_count
     merged["scaled_rate"] = merged.get("scaled_count", 0) / total_count
     merged["near_zero_rate"] = merged.get("near_zero_count", 0) / total_count
+    merged["saturation_rate"] = merged.get("saturation_count", 0) / total_count
+    hist = merged.get("suppression_hist_counts")
+    bins = int(merged.get("suppression_hist_bins", 0) or 0)
+    if hist and bins > 0:
+        merged["suppression_quantiles"] = quantiles_from_hist(hist, bins)
     return merged
 
 
@@ -623,7 +880,7 @@ def merge_intervention_stats(old_stats, new_stats):
     if not new_stats or total_intervention_count(new_stats) == 0:
         return old_stats
 
-    merged = {"overall": {}, "by_head": {}}
+    merged = {"overall": {}, "by_head": {}, "by_position": {}, "by_token_bucket": {}}
     for section in ("overall", "by_head"):
         old_section = old_stats.get(section, {})
         new_section = new_stats.get(section, {})
@@ -632,6 +889,18 @@ def merge_intervention_stats(old_stats, new_stats):
                 old_section.get(key),
                 new_section.get(key),
             )
+    for section in ("by_position", "by_token_bucket"):
+        old_section = old_stats.get(section, {})
+        new_section = new_stats.get(section, {})
+        for mode in sorted(set(old_section) | set(new_section)):
+            merged[section][mode] = {}
+            old_nested = old_section.get(mode, {})
+            new_nested = new_section.get(mode, {})
+            for key in sorted(set(old_nested) | set(new_nested)):
+                merged[section][mode][key] = merge_intervention_bucket(
+                    old_nested.get(key),
+                    new_nested.get(key),
+                )
     return merged
 
 
@@ -697,6 +966,11 @@ def save_intervention_stats(model, args):
         "log_dynamic_trace": args.log_dynamic_trace,
         "dynamic_trace_topn": args.dynamic_trace_topn,
         "dynamic_trace_every": args.dynamic_trace_every,
+        "intervention_stats_bins": args.intervention_stats_bins,
+        "log_intervention_position_stats": args.log_intervention_position_stats,
+        "log_intervention_token_bucket_stats": args.log_intervention_token_bucket_stats,
+        "intervention_stats_token_window": args.intervention_stats_token_window,
+        "intervention_stats_device_accum": args.intervention_stats_device_accum,
         "baseline_start_layer": args.baseline_start_layer,
         "baseline_end_layer": args.baseline_end_layer,
         "pai_alpha": args.pai_alpha,
@@ -751,7 +1025,23 @@ def eval_model(args):
     head_cfg = attach_intervention_config(model, args)
     save_run_config(args, head_cfg)
     model.config.log_intervention_stats = args.log_intervention_stats
-    model.config._intervention_stats = {"overall": {}, "by_head": {}}
+    model.config._intervention_stats = {
+        "overall": {},
+        "by_head": {},
+        "by_position": {},
+        "by_token_bucket": {},
+    }
+
+    chair_for_token_stats = None
+    if args.log_intervention_stats and args.log_intervention_token_bucket_stats:
+        if args.dataset != "coco":
+            print("[intervention-stats] token bucket stats are currently implemented for COCO/CHAIR only.")
+        else:
+            from eval_scripts.eval_utils.chair import CHAIR
+            chair_for_token_stats = CHAIR(
+                [int(q["question_id"]) for q in questions],
+                os.path.dirname(os.path.abspath(args.caption_file_path)),
+            )
 
     for (input_ids, image_tensor, image_sizes, model_input_prompts), line in tqdm(
         zip(data_loader, questions),
@@ -791,7 +1081,7 @@ def eval_model(args):
                 num_beams=args.num_beams,
                 max_new_tokens=args.max_new_tokens,
                 use_cache=True,
-                output_attentions=True,
+                output_attentions=args.output_attentions,
                 return_dict_in_generate=True,
                 logits_processor=logits_processor,
             )
@@ -800,7 +1090,22 @@ def eval_model(args):
         outputs = tokenizer.batch_decode(output_ids, skip_special_tokens=True)[0].strip()
         raw_outputs = tokenizer.batch_decode(output_ids, skip_special_tokens=False)[0]
         output_token_ids = output_ids[0].detach().cpu().tolist()
-        print(question_id, outputs)
+        if args.log_intervention_stats and args.log_intervention_token_bucket_stats:
+            step_labels = build_intervention_step_labels(
+                tokenizer=tokenizer,
+                output_token_ids=output_token_ids,
+                caption=outputs,
+                question_id=question_id,
+                image_file=image_file,
+                chair=chair_for_token_stats,
+                window=args.intervention_stats_token_window,
+            )
+            update_intervention_token_bucket_stats(
+                getattr(model.config, "_intervention_stats", None),
+                step_labels,
+            )
+        if not args.quiet:
+            print(question_id, outputs)
 
         ans_id = shortuuid.uuid()
         ans_file.write(json.dumps({
@@ -855,6 +1160,10 @@ if __name__ == "__main__":
     parser.add_argument("--max_new_tokens", type=int, default=128)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--num-workers", type=int, default=4)
+    parser.add_argument("--output-attentions", action="store_true",
+                        help="Return full attention tensors from generate. Not needed for DEACT intervention or intervention stats.")
+    parser.add_argument("--quiet", action="store_true",
+                        help="Do not print generated captions to stdout/decode.log.")
 
     parser.add_argument("--intervention", type=str, default="dynamic",
                         choices=["none", "dynamic", "late_boost", "linear", "exp", "threshold_exp", "center_exp", "linear_tail_exp", "pai", "vaf", "tarac"])
@@ -934,6 +1243,16 @@ if __name__ == "__main__":
                         help="For ranked head files with a back_raw field, drop heads inside the requested top-k whose back_raw is below this value.")
     parser.add_argument("--log-intervention-stats", action="store_true")
     parser.add_argument("--intervention-stats-file", type=str, default="")
+    parser.add_argument("--intervention-stats-bins", type=int, default=100,
+                        help="Histogram bins for suppression-delta quantile estimates in intervention_stats.json.")
+    parser.add_argument("--log-intervention-position-stats", action="store_true",
+                        help="Aggregate intervention stats by generated-token position.")
+    parser.add_argument("--log-intervention-token-bucket-stats", action="store_true",
+                        help="Aggregate intervention stats around CHAIR-counted grounded/hallucinated object tokens.")
+    parser.add_argument("--intervention-stats-token-window", type=int, default=2,
+                        help="Token window on either side of CHAIR-counted object tokens for token-bucket intervention stats.")
+    parser.add_argument("--intervention-stats-device-accum", action="store_true",
+                        help="Accumulate overall/position intervention stats on device and materialize at save time. This is much faster but does not collect by-head or token-bucket stats.")
 
     args = parser.parse_args()
     set_seed(args.seed)

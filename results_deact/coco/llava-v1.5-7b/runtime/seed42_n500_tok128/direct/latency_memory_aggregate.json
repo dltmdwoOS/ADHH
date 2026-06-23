@@ -1,0 +1,127 @@
+{
+  "experiment": "LLaVA-1.5-7B COCO latency/memory benchmark, n=500, seed42_n500_tok128",
+  "baseline_method": "greedy",
+  "notes": [
+    "Latency is timed only around model.generate with CUDA synchronization; CHAIR evaluation is post-hoc and excluded from latency.",
+    "Greedy was produced in a separate output directory from the earlier benchmark run, but its method_config is intervention=none and force_output_attentions was disabled in the run script/code path.",
+    "DEACT uses the paper main/direct setting: dynamic_redistribute=none and dynamic_renorm=false.",
+    "Peak memory deltas are CUDA allocated/reserved peaks after model load and warmup, relative to the pre-generation allocation baseline."
+  ],
+  "rows": [
+    {
+      "method": "greedy",
+      "source_dir": "results_deact/coco/llava-v1.5-7b/runtime/seed42_n500_tok128/sysvis/greedy",
+      "num_images": 500,
+      "warmup_samples": 8,
+      "total_seconds": 1891.041533665266,
+      "seconds_per_image": 3.782083067330532,
+      "tokens_per_second": 30.343595832494834,
+      "total_generated_tokens": 57381,
+      "mean_generated_tokens": 114.762,
+      "baseline_allocated_gb": 13.792094230651855,
+      "peak_allocated_gb": 14.53855562210083,
+      "peak_generation_delta_allocated_gb": 0.7464613914489746,
+      "peak_generation_delta_reserved_gb": 0.822265625,
+      "method_config": {
+        "method": "greedy",
+        "intervention": "none"
+      },
+      "chair": {
+        "CHAIRs": 0.534,
+        "CHAIRi": 0.14278269932256382,
+        "ObjectPrecision": 0.7469810235767682,
+        "ObjectRecall": 0.783001808318264,
+        "ObjectF1": 0.7645673925838727
+      },
+      "runtime_multiplier_vs_greedy": 1.0,
+      "tokens_per_second_multiplier_vs_greedy": 1.0,
+      "memory_alloc_delta_multiplier_vs_greedy": 1.0,
+      "memory_reserved_delta_multiplier_vs_greedy": 1.0,
+      "chair_s_delta_pp_vs_greedy": 0.0,
+      "chair_i_delta_pp_vs_greedy": 0.0,
+      "chair_s_relative_reduction_vs_greedy": 0.0,
+      "chair_i_relative_reduction_vs_greedy": 0.0
+    },
+    {
+      "method": "adhh",
+      "source_dir": "results_deact/coco/llava-v1.5-7b/runtime/seed42_n500_tok128/direct/adhh",
+      "num_images": 500,
+      "warmup_samples": 8,
+      "total_seconds": 1936.9646559138782,
+      "seconds_per_image": 3.8739293118277565,
+      "tokens_per_second": 30.858074677567867,
+      "total_generated_tokens": 59771,
+      "mean_generated_tokens": 119.542,
+      "baseline_allocated_gb": 13.792094230651855,
+      "peak_allocated_gb": 14.53855562210083,
+      "peak_generation_delta_allocated_gb": 0.7464613914489746,
+      "peak_generation_delta_reserved_gb": 0.822265625,
+      "method_config": {
+        "method": "adhh",
+        "intervention": "adhh",
+        "topk": 20,
+        "text_threshold": 0.4,
+        "head_source": "file",
+        "head_file": "/workspace/ADHH/LLaVA/results_deact/coco/llava-v1.5-7b/baselines/adhh_reproduced/attribution_result.json",
+        "selected_head_count": 20
+      },
+      "chair": {
+        "CHAIRs": 0.396,
+        "CHAIRi": 0.10038348748026167,
+        "ObjectPrecision": 0.8007889546351085,
+        "ObjectRecall": 0.7341772151898734,
+        "ObjectF1": 0.7660377358490565
+      },
+      "runtime_multiplier_vs_greedy": 1.0242845656380708,
+      "tokens_per_second_multiplier_vs_greedy": 1.0169551047250003,
+      "memory_alloc_delta_multiplier_vs_greedy": 1.0,
+      "memory_reserved_delta_multiplier_vs_greedy": 1.0,
+      "chair_s_delta_pp_vs_greedy": -13.8,
+      "chair_i_delta_pp_vs_greedy": -4.239921184230215,
+      "chair_s_relative_reduction_vs_greedy": 0.25842696629213485,
+      "chair_i_relative_reduction_vs_greedy": 0.2969492245451746
+    },
+    {
+      "method": "deact",
+      "source_dir": "results_deact/coco/llava-v1.5-7b/runtime/seed42_n500_tok128/direct/deact",
+      "num_images": 500,
+      "warmup_samples": 8,
+      "total_seconds": 2509.998857918661,
+      "seconds_per_image": 5.019997715837322,
+      "tokens_per_second": 20.98646373236996,
+      "total_generated_tokens": 52676,
+      "mean_generated_tokens": 105.352,
+      "baseline_allocated_gb": 13.792094230651855,
+      "peak_allocated_gb": 14.53855562210083,
+      "peak_generation_delta_allocated_gb": 0.7464613914489746,
+      "peak_generation_delta_reserved_gb": 0.822265625,
+      "method_config": {
+        "method": "deact",
+        "intervention": "late_boost",
+        "topk": 100,
+        "dynamic_tau": 0.9,
+        "dynamic_late_tau": 0.8,
+        "dynamic_exp_sharpness": 10.0,
+        "dynamic_redistribute": "none",
+        "dynamic_renorm": false,
+        "head_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/resources/l9_l16_train_n500/surrogate_score_zoo/ranked_heads_global__itext_all__C_toi_HminusG_signed.json",
+        "selected_head_count": 100
+      },
+      "chair": {
+        "CHAIRs": 0.316,
+        "CHAIRi": 0.07880664227413453,
+        "ObjectPrecision": 0.8447293447293447,
+        "ObjectRecall": 0.7148884870403858,
+        "ObjectF1": 0.7744041789095657
+      },
+      "runtime_multiplier_vs_greedy": 1.3273102749116863,
+      "tokens_per_second_multiplier_vs_greedy": 0.6916274474594616,
+      "memory_alloc_delta_multiplier_vs_greedy": 1.0,
+      "memory_reserved_delta_multiplier_vs_greedy": 1.0,
+      "chair_s_delta_pp_vs_greedy": -21.800000000000004,
+      "chair_i_delta_pp_vs_greedy": -6.397605704842929,
+      "chair_s_relative_reduction_vs_greedy": 0.4082397003745319,
+      "chair_i_relative_reduction_vs_greedy": 0.44806588859830593
+    }
+  ]
+}

@@ -84,6 +84,13 @@ log_dynamic_trace=${LOG_DYNAMIC_TRACE:-false}
 dynamic_trace_topn=${DYNAMIC_TRACE_TOPN:-10}
 dynamic_trace_every=${DYNAMIC_TRACE_EVERY:-5}
 log_intervention_stats=${LOG_INTERVENTION_STATS:-false}
+log_intervention_position_stats=${LOG_INTERVENTION_POSITION_STATS:-${log_intervention_stats}}
+log_intervention_token_bucket_stats=${LOG_INTERVENTION_TOKEN_BUCKET_STATS:-${log_intervention_stats}}
+intervention_stats_bins=${INTERVENTION_STATS_BINS:-100}
+intervention_stats_token_window=${INTERVENTION_STATS_TOKEN_WINDOW:-2}
+intervention_stats_device_accum=${INTERVENTION_STATS_DEVICE_ACCUM:-true}
+output_attentions=${OUTPUT_ATTENTIONS:-false}
+quiet_decode=${QUIET_DECODE:-false}
 resume=${RESUME:-true}
 dry_run=${DRY_RUN:-false}
 force_rebuild_stats=${FORCE_REBUILD_STATS:-false}
@@ -414,6 +421,27 @@ run_dynamic_job() {
   local stats_args=()
   if [[ "${log_intervention_stats}" == "true" ]]; then
     stats_args+=(--log-intervention-stats)
+    stats_args+=(--intervention-stats-bins "${intervention_stats_bins}")
+    if [[ "${intervention_stats_device_accum}" == "true" && "${log_intervention_token_bucket_stats}" != "true" ]]; then
+      stats_args+=(--intervention-stats-device-accum)
+    fi
+    if [[ "${log_intervention_position_stats}" == "true" ]]; then
+      stats_args+=(--log-intervention-position-stats)
+    fi
+    if [[ "${log_intervention_token_bucket_stats}" == "true" ]]; then
+      stats_args+=(
+        --log-intervention-token-bucket-stats
+        --intervention-stats-token-window "${intervention_stats_token_window}"
+      )
+    fi
+  fi
+  local attention_args=()
+  if [[ "${output_attentions}" == "true" ]]; then
+    attention_args+=(--output-attentions)
+  fi
+  local quiet_args=()
+  if [[ "${quiet_decode}" == "true" ]]; then
+    quiet_args+=(--quiet)
   fi
 
   local resume_args=()
@@ -461,6 +489,8 @@ run_dynamic_job() {
     --dynamic-redistribute "${effective_dynamic_redistribute}" \
     "${renorm_args[@]}" \
     "${score_args[@]}" \
+    "${attention_args[@]}" \
+    "${quiet_args[@]}" \
     "${trace_args[@]}" \
     "${stats_args[@]}" \
     --sample-id-file "${sample_id_file}" \

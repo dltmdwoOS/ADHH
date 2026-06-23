@@ -1,0 +1,73 @@
+{
+  "methods": [
+    {
+      "method": "adhh",
+      "model_name": "llava-v1.5-7b",
+      "num_images": 500,
+      "warmup_samples": 8,
+      "total_seconds": 1936.9646559138782,
+      "seconds_per_image": 3.8739293118277565,
+      "total_generated_tokens": 59771,
+      "tokens_per_second": 30.858074677567867,
+      "mean_generated_tokens": 119.542,
+      "force_output_attentions": false,
+      "baseline_allocated_gb": 13.792094230651855,
+      "baseline_reserved_gb": 13.8125,
+      "peak_allocated_gb": 14.53855562210083,
+      "peak_reserved_gb": 14.634765625,
+      "peak_generation_delta_allocated_gb": 0.7464613914489746,
+      "peak_generation_delta_reserved_gb": 0.822265625,
+      "method_config": {
+        "method": "adhh",
+        "intervention": "adhh",
+        "topk": 20,
+        "text_threshold": 0.4,
+        "head_source": "file",
+        "head_file": "/workspace/ADHH/LLaVA/results_deact/coco/llava-v1.5-7b/baselines/adhh_reproduced/attribution_result.json",
+        "selected_head_count": 20
+      },
+      "final_allocated_gb": 13.792095184326172,
+      "final_reserved_gb": 14.634765625,
+      "final_max_allocated_gb": 14.53855562210083,
+      "final_max_reserved_gb": 14.634765625,
+      "runtime_multiplier_vs_greedy": null,
+      "memory_delta_multiplier_vs_greedy": null
+    },
+    {
+      "method": "deact",
+      "model_name": "llava-v1.5-7b",
+      "num_images": 500,
+      "warmup_samples": 8,
+      "total_seconds": 2509.998857918661,
+      "seconds_per_image": 5.019997715837322,
+      "total_generated_tokens": 52676,
+      "tokens_per_second": 20.98646373236996,
+      "mean_generated_tokens": 105.352,
+      "force_output_attentions": false,
+      "baseline_allocated_gb": 13.792094230651855,
+      "baseline_reserved_gb": 13.8125,
+      "peak_allocated_gb": 14.53855562210083,
+      "peak_reserved_gb": 14.634765625,
+      "peak_generation_delta_allocated_gb": 0.7464613914489746,
+      "peak_generation_delta_reserved_gb": 0.822265625,
+      "method_config": {
+        "method": "deact",
+        "intervention": "late_boost",
+        "topk": 100,
+        "dynamic_tau": 0.9,
+        "dynamic_late_tau": 0.8,
+        "dynamic_exp_sharpness": 10.0,
+        "dynamic_redistribute": "none",
+        "dynamic_renorm": false,
+        "head_file": "/workspace/ADHH/results_deact/coco/llava-v1.5-7b/resources/l9_l16_train_n500/surrogate_score_zoo/ranked_heads_global__itext_all__C_toi_HminusG_signed.json",
+        "selected_head_count": 100
+      },
+      "final_allocated_gb": 13.792095184326172,
+      "final_reserved_gb": 14.634765625,
+      "final_max_allocated_gb": 14.53855562210083,
+      "final_max_reserved_gb": 14.634765625,
+      "runtime_multiplier_vs_greedy": null,
+      "memory_delta_multiplier_vs_greedy": null
+    }
+  ]
+}
