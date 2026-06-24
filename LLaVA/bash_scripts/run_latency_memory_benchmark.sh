@@ -14,6 +14,18 @@ warmup_samples=${WARMUP_SAMPLES:-8}
 max_new_tokens=${MAX_NEW_TOKENS:-128}
 gpu=${GPU:-0}
 methods=${METHODS:-adhh,deact}
+pai_alpha=${PAI_ALPHA:-0.5}
+pai_gamma=${PAI_GAMMA:-1.1}
+pai_start_layer=${PAI_START_LAYER:-2}
+pai_end_layer=${PAI_END_LAYER:-32}
+vaf_enh_para=${VAF_ENH_PARA:-1.15}
+vaf_sup_para=${VAF_SUP_PARA:-0.95}
+vaf_start_layer=${VAF_START_LAYER:-9}
+vaf_end_layer=${VAF_END_LAYER:-15}
+tarac_alpha=${TARAC_ALPHA:-0.5}
+tarac_beta=${TARAC_BETA:-0.5}
+tarac_start_layer=${TARAC_START_LAYER:-9}
+tarac_end_layer=${TARAC_END_LAYER:-16}
 # Paper-main DEACT uses direct attenuation: remove text-side mass without
 # redistributing it and without row renormalization.
 deact_redistribute=${DEACT_REDISTRIBUTE:-none}
@@ -24,6 +36,7 @@ deact_tau=${DEACT_TAU:-0.90}
 deact_late_tau=${DEACT_LATE_TAU:-0.80}
 auto_tau=${DEACT_AUTO_TAU:-true}
 force_output_attentions=${FORCE_OUTPUT_ATTENTIONS:-false}
+attn_implementation=${ATTN_IMPLEMENTATION:-eager}
 python_bin=${PYTHON_BIN:-python3}
 
 sample_dir=${results_root}/${dataset}/${model_name}/shared_samples
@@ -88,10 +101,23 @@ CUDA_VISIBLE_DEVICES="${gpu}" "${python_bin}" -m eval_scripts.benchmark_latency_
   --max_new_tokens "${max_new_tokens}" \
   --seed "${seed}" \
   --temperature 0 \
+  --attn-implementation "${attn_implementation}" \
   --adhh-head-source file \
   --adhh-head-file "${adhh_head_file}" \
   --adhh-topk "${ADHH_TOPK:-20}" \
   --adhh-threshold "${ADHH_THRESHOLD:-0.4}" \
+  --pai-alpha "${pai_alpha}" \
+  --pai-gamma "${pai_gamma}" \
+  --pai-start-layer "${pai_start_layer}" \
+  --pai-end-layer "${pai_end_layer}" \
+  --vaf-enh-para "${vaf_enh_para}" \
+  --vaf-sup-para "${vaf_sup_para}" \
+  --vaf-start-layer "${vaf_start_layer}" \
+  --vaf-end-layer "${vaf_end_layer}" \
+  --tarac-alpha "${tarac_alpha}" \
+  --tarac-beta "${tarac_beta}" \
+  --tarac-start-layer "${tarac_start_layer}" \
+  --tarac-end-layer "${tarac_end_layer}" \
   --deact-head-file "${deact_head_file}" \
   --deact-tau-file "${deact_tau_file}" \
   --deact-topk "${deact_topk}" \

@@ -14,7 +14,13 @@ from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 from transformers import set_seed
 
-from eval_scripts.eval_caption_dynamic import resolve_head_config
+from transformers.generation.logits_process import LogitsProcessorList
+
+from eval_scripts.eval_caption_dynamic import (
+    PAITextCFGLogitsProcessor,
+    build_text_only_input_ids,
+    resolve_head_config,
+)
 from llava.constants import (
     DEFAULT_IMAGE_TOKEN,
     DEFAULT_IM_END_TOKEN,
@@ -134,6 +140,18 @@ def read_auto_tau(tau_file, fallback_hi, fallback_lo):
 def reset_method_config(model):
     cfg = model.config
     cfg.intervention = "none"
+    cfg.baseline_start_layer = 0
+    cfg.baseline_end_layer = getattr(cfg, "num_hidden_layers", 32)
+    cfg.pai_alpha = 0.2
+    cfg.pai_gamma = 1.1
+    cfg.pai_use_cfg = False
+    cfg.pai_cfg_active = False
+    cfg.vaf_enh_para = 1.15
+    cfg.vaf_sup_para = 0.95
+    cfg.tarac_alpha = 0.5
+    cfg.tarac_beta = 0.5
+    cfg.tarac_start_layer = 9
+    cfg.tarac_end_layer = 16
     cfg.enable_txtattn_last_row_trace = False
     cfg.log_dynamic_trace = False
     cfg.log_intervention_stats = False
@@ -178,6 +196,64 @@ def configure_method(model, args, method):
             "head_source": args.adhh_head_source,
             "head_file": args.adhh_head_file,
             "selected_head_count": len(head_cfg["heads"]),
+        }
+
+    if method in ("pai", "pai_cd"):
+        cfg = model.config
+        cfg.intervention = "pai"
+        cfg.img_start_pos = 35
+        cfg.img_length = 576
+        cfg.baseline_start_layer = args.pai_start_layer
+        cfg.baseline_end_layer = args.pai_end_layer
+        cfg.pai_alpha = args.pai_alpha
+        cfg.pai_gamma = args.pai_gamma
+        cfg.pai_use_cfg = method == "pai_cd"
+        cfg.pai_cfg_active = False
+        return {
+            "method": method,
+            "intervention": "pai",
+            "baseline_start_layer": args.pai_start_layer,
+            "baseline_end_layer": args.pai_end_layer,
+            "pai_alpha": args.pai_alpha,
+            "pai_gamma": args.pai_gamma,
+            "pai_use_cfg": method == "pai_cd",
+        }
+
+    if method == "vaf":
+        cfg = model.config
+        cfg.intervention = "vaf"
+        cfg.img_start_pos = 35
+        cfg.img_length = 576
+        cfg.baseline_start_layer = args.vaf_start_layer
+        cfg.baseline_end_layer = args.vaf_end_layer
+        cfg.vaf_enh_para = args.vaf_enh_para
+        cfg.vaf_sup_para = args.vaf_sup_para
+        return {
+            "method": "vaf",
+            "intervention": "vaf",
+            "baseline_start_layer": args.vaf_start_layer,
+            "baseline_end_layer": args.vaf_end_layer,
+            "vaf_enh_para": args.vaf_enh_para,
+            "vaf_sup_para": args.vaf_sup_para,
+        }
+
+    if method == "tarac":
+        cfg = model.config
+        cfg.intervention = "tarac"
+        cfg.img_start_pos = 35
+        cfg.img_length = 576
+        cfg.tarac_alpha = args.tarac_alpha
+        cfg.tarac_beta = args.tarac_beta
+        cfg.tarac_start_layer = args.tarac_start_layer
+        cfg.tarac_end_layer = args.tarac_end_layer
+        cfg._tarac_attn_memory = {}
+        return {
+            "method": "tarac",
+            "intervention": "tarac",
+            "tarac_alpha": args.tarac_alpha,
+            "tarac_beta": args.tarac_beta,
+            "tarac_start_layer": args.tarac_start_layer,
+            "tarac_end_layer": args.tarac_end_layer,
         }
 
     if method == "deact":
@@ -234,6 +310,20 @@ def configure_method(model, args, method):
 
 
 def run_generate(model, tokenizer, args, input_ids, image_tensor, image_sizes):
+    logits_processor = None
+    if getattr(model.config, "intervention", "none") == "tarac":
+        model.config._tarac_attn_memory = {}
+    if getattr(model.config, "intervention", "none") == "pai" and bool(getattr(model.config, "pai_use_cfg", False)):
+        logits_processor = LogitsProcessorList(
+            [
+                PAITextCFGLogitsProcessor(
+                    getattr(model.config, "pai_gamma", args.pai_gamma),
+                    build_text_only_input_ids(input_ids),
+                    model,
+                )
+            ]
+        )
+
     output_dict = model.generate(
         input_ids,
         images=image_tensor,
@@ -248,6 +338,7 @@ def run_generate(model, tokenizer, args, input_ids, image_tensor, image_sizes):
         output_scores=False,
         output_hidden_states=False,
         return_dict_in_generate=True,
+        logits_processor=logits_processor,
     )
     output_ids = output_dict["sequences"]
     generated_ids = extract_generated_ids(output_ids, input_ids)
@@ -404,6 +495,12 @@ def eval_model(args):
     model_path = os.path.expanduser(args.model_path)
     model_name = get_model_name_from_path(model_path)
     tokenizer, model, image_processor, _ = load_pretrained_model(model_path, args.model_base, model_name)
+    actual_attn_impl = getattr(model.config, "_attn_implementation", None)
+    if args.attn_implementation and actual_attn_impl != args.attn_implementation:
+        raise RuntimeError(
+            f"Expected attention implementation {args.attn_implementation!r}, "
+            f"but loaded model uses {actual_attn_impl!r}."
+        )
     if "plain" in model_name and "finetune" not in model_name.lower() and "mmtag" not in args.conv_mode:
         args.conv_mode = args.conv_mode + "_mmtag"
 
@@ -415,6 +512,7 @@ def eval_model(args):
 
     run_config = vars(args).copy()
     run_config["methods"] = args.methods
+    run_config["actual_attn_implementation"] = actual_attn_impl
     with open(os.path.join(args.output_dir, "benchmark_config.json"), "w", encoding="utf-8") as f:
         json.dump(run_config, f, indent=2)
 
@@ -447,6 +545,7 @@ if __name__ == "__main__":
     parser.add_argument("--top_p", type=float, default=None)
     parser.add_argument("--num_beams", type=int, default=1)
     parser.add_argument("--prompt-text", type=str, default="Please describe this image in detail.")
+    parser.add_argument("--attn-implementation", choices=["eager"], default="eager")
     parser.add_argument("--force-output-attentions", action="store_true")
 
     parser.add_argument("--adhh-topk", type=int, default=20)
@@ -457,6 +556,21 @@ if __name__ == "__main__":
     parser.add_argument("--adhh-head-score-key", type=str, default="score")
     parser.add_argument("--adhh-head-score-normalize", choices=["minmax", "raw", "logminmax", "rank_percentile"], default="minmax")
     parser.add_argument("--adhh-use-head-scores", action="store_true")
+
+    parser.add_argument("--pai-alpha", type=float, default=0.5)
+    parser.add_argument("--pai-gamma", type=float, default=1.1)
+    parser.add_argument("--pai-start-layer", type=int, default=2)
+    parser.add_argument("--pai-end-layer", type=int, default=32)
+
+    parser.add_argument("--vaf-enh-para", type=float, default=1.15)
+    parser.add_argument("--vaf-sup-para", type=float, default=0.95)
+    parser.add_argument("--vaf-start-layer", type=int, default=9)
+    parser.add_argument("--vaf-end-layer", type=int, default=15)
+
+    parser.add_argument("--tarac-alpha", type=float, default=0.5)
+    parser.add_argument("--tarac-beta", type=float, default=0.5)
+    parser.add_argument("--tarac-start-layer", type=int, default=9)
+    parser.add_argument("--tarac-end-layer", type=int, default=16)
 
     parser.add_argument("--deact-head-file", type=str, required=True)
     parser.add_argument("--deact-tau-file", type=str, default="")

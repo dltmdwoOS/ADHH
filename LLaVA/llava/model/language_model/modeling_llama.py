@@ -450,6 +450,37 @@ def _heads_for_layer(config, layer_idx):
     return out
 
 
+def _layer_in_half_open_range(layer_idx, start, end):
+    if layer_idx is None:
+        return False
+    layer_idx = int(layer_idx)
+    return layer_idx >= int(start) and layer_idx < int(end)
+
+
+def _sdpa_layer_needs_last_row_intervention(config, layer_idx):
+    mode = getattr(config, "intervention", "none")
+    if mode == "none" or layer_idx is None:
+        return False
+
+    if mode in ("pai", "vaf"):
+        if mode == "pai" and bool(getattr(config, "pai_cfg_active", False)):
+            return False
+        return _layer_in_half_open_range(
+            layer_idx,
+            getattr(config, "baseline_start_layer", 0),
+            getattr(config, "baseline_end_layer", getattr(config, "num_hidden_layers", 0)),
+        )
+
+    if mode == "tarac":
+        return _layer_in_half_open_range(
+            layer_idx,
+            getattr(config, "tarac_start_layer", 9),
+            getattr(config, "tarac_end_layer", 16),
+        )
+
+    return bool(_heads_for_layer(config, layer_idx))
+
+
 def _apply_tarac_intervention(attn_weights, config, layer_idx):
     if getattr(config, "intervention", "none") != "tarac":
         return attn_weights
@@ -1805,7 +1836,7 @@ class LlamaSdpaAttention(LlamaAttention):
             attn_statistics = (None, None, None, None)
 
         last_row_weights = None
-        intervention_active = getattr(self.config, "intervention", "none") != "none"
+        intervention_active = _sdpa_layer_needs_last_row_intervention(self.config, self.layer_idx)
         trace_active = bool(getattr(self.config, "enable_txtattn_last_row_trace", False))
         if intervention_active or trace_active:
             last_row_weights = torch.matmul(query_states[:, :, -1:, :], key_states.transpose(2, 3)) / math.sqrt(self.head_dim)
@@ -1817,6 +1848,8 @@ class LlamaSdpaAttention(LlamaAttention):
                 last_row_weights = _apply_text_intervention(last_row_weights, self.config, self.layer_idx)
             if trace_active:
                 _maybe_trace_txtattn_last_row(last_row_weights, self.config, self.layer_idx)
+        elif getattr(self.config, "intervention", "none") in ("dynamic", "late_boost", "linear", "exp", "threshold_exp", "center_exp", "linear_tail_exp"):
+            _maybe_print_dynamic_trace(self.config, self.layer_idx)
 
         attn_output = torch.nn.functional.scaled_dot_product_attention(
             query_states,

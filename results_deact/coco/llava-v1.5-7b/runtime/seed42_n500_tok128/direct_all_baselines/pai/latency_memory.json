@@ -1,0 +1,3533 @@
+{
+  "method": "pai",
+  "model_name": "llava-v1.5-7b",
+  "num_images": 500,
+  "warmup_samples": 8,
+  "total_seconds": 1614.821499387268,
+  "seconds_per_image": 3.229642998774536,
+  "total_generated_tokens": 58066,
+  "tokens_per_second": 35.958153902479445,
+  "mean_generated_tokens": 116.132,
+  "force_output_attentions": false,
+  "baseline_allocated_gb": 13.792094230651855,
+  "baseline_reserved_gb": 13.8125,
+  "peak_allocated_gb": 14.539240837097168,
+  "peak_reserved_gb": 14.634765625,
+  "peak_generation_delta_allocated_gb": 0.7471466064453125,
+  "peak_generation_delta_reserved_gb": 0.822265625,
+  "method_config": {
+    "method": "pai",
+    "intervention": "pai",
+    "baseline_start_layer": 2,
+    "baseline_end_layer": 32,
+    "pai_alpha": 0.5,
+    "pai_gamma": 1.1,
+    "pai_use_cfg": false
+  },
+  "per_sample": [
+    {
+      "question_id": 230008,
+      "image": "COCO_val2014_000000230008.jpg",
+      "seconds": 3.5619287961162627,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.216333167764255
+    },
+    {
+      "question_id": 519055,
+      "image": "COCO_val2014_000000519055.jpg",
+      "seconds": 3.5679735387675464,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15497665505651
+    },
+    {
+      "question_id": 527447,
+      "image": "COCO_val2014_000000527447.jpg",
+      "seconds": 3.4843713100999594,
+      "generated_tokens": 126,
+      "tokens_per_second": 36.16147327202775
+    },
+    {
+      "question_id": 153976,
+      "image": "COCO_val2014_000000153976.jpg",
+      "seconds": 3.5657685259357095,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.17733430022593
+    },
+    {
+      "question_id": 326317,
+      "image": "COCO_val2014_000000326317.jpg",
+      "seconds": 3.5645747166126966,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.189450426945925
+    },
+    {
+      "question_id": 245447,
+      "image": "COCO_val2014_000000245447.jpg",
+      "seconds": 3.5670463549904525,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16437443251148
+    },
+    {
+      "question_id": 359239,
+      "image": "COCO_val2014_000000359239.jpg",
+      "seconds": 3.5635882699862123,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.19946812780903
+    },
+    {
+      "question_id": 325992,
+      "image": "COCO_val2014_000000325992.jpg",
+      "seconds": 3.567877579946071,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15594905079391
+    },
+    {
+      "question_id": 378098,
+      "image": "COCO_val2014_000000378098.jpg",
+      "seconds": 2.557534385006875,
+      "generated_tokens": 91,
+      "tokens_per_second": 35.58114429798972
+    },
+    {
+      "question_id": 74617,
+      "image": "COCO_val2014_000000074617.jpg",
+      "seconds": 3.5694539328105748,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.139981753014496
+    },
+    {
+      "question_id": 209782,
+      "image": "COCO_val2014_000000209782.jpg",
+      "seconds": 3.565904495306313,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.175954843938925
+    },
+    {
+      "question_id": 438024,
+      "image": "COCO_val2014_000000438024.jpg",
+      "seconds": 3.570441384334117,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.129986775867025
+    },
+    {
+      "question_id": 320180,
+      "image": "COCO_val2014_000000320180.jpg",
+      "seconds": 2.662213901989162,
+      "generated_tokens": 95,
+      "tokens_per_second": 35.684585648440034
+    },
+    {
+      "question_id": 378096,
+      "image": "COCO_val2014_000000378096.jpg",
+      "seconds": 3.570138581097126,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13305116025986
+    },
+    {
+      "question_id": 356424,
+      "image": "COCO_val2014_000000356424.jpg",
+      "seconds": 3.571715629193932,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.117097045912594
+    },
+    {
+      "question_id": 206218,
+      "image": "COCO_val2014_000000206218.jpg",
+      "seconds": 3.5678696278482676,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.156029635476926
+    },
+    {
+      "question_id": 225225,
+      "image": "COCO_val2014_000000225225.jpg",
+      "seconds": 3.565534567926079,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.17970813140478
+    },
+    {
+      "question_id": 7281,
+      "image": "COCO_val2014_000000007281.jpg",
+      "seconds": 3.488555838353932,
+      "generated_tokens": 126,
+      "tokens_per_second": 36.118097527558234
+    },
+    {
+      "question_id": 525211,
+      "image": "COCO_val2014_000000525211.jpg",
+      "seconds": 3.5636143037118018,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.19920367522258
+    },
+    {
+      "question_id": 308555,
+      "image": "COCO_val2014_000000308555.jpg",
+      "seconds": 3.5688878670334816,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14571396081069
+    },
+    {
+      "question_id": 85543,
+      "image": "COCO_val2014_000000085543.jpg",
+      "seconds": 3.5652488698251545,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.18260736068233
+    },
+    {
+      "question_id": 12192,
+      "image": "COCO_val2014_000000012192.jpg",
+      "seconds": 3.568419452290982,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.150458690381804
+    },
+    {
+      "question_id": 482951,
+      "image": "COCO_val2014_000000482951.jpg",
+      "seconds": 3.5647785807959735,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.18738080814989
+    },
+    {
+      "question_id": 27982,
+      "image": "COCO_val2014_000000027982.jpg",
+      "seconds": 3.5690171625465155,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14440450265521
+    },
+    {
+      "question_id": 51028,
+      "image": "COCO_val2014_000000051028.jpg",
+      "seconds": 3.5682832850143313,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.151838207958285
+    },
+    {
+      "question_id": 414236,
+      "image": "COCO_val2014_000000414236.jpg",
+      "seconds": 3.5683876732364297,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.150780636174694
+    },
+    {
+      "question_id": 495578,
+      "image": "COCO_val2014_000000495578.jpg",
+      "seconds": 3.5669974419288337,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16487034267229
+    },
+    {
+      "question_id": 109005,
+      "image": "COCO_val2014_000000109005.jpg",
+      "seconds": 2.3849955359473825,
+      "generated_tokens": 84,
+      "tokens_per_second": 35.22019170850691
+    },
+    {
+      "question_id": 542423,
+      "image": "COCO_val2014_000000542423.jpg",
+      "seconds": 3.5665852930396795,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16904949721746
+    },
+    {
+      "question_id": 540642,
+      "image": "COCO_val2014_000000540642.jpg",
+      "seconds": 3.568744440097362,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14716664790955
+    },
+    {
+      "question_id": 78194,
+      "image": "COCO_val2014_000000078194.jpg",
+      "seconds": 2.4011969259008765,
+      "generated_tokens": 85,
+      "tokens_per_second": 35.39901250211282
+    },
+    {
+      "question_id": 397101,
+      "image": "COCO_val2014_000000397101.jpg",
+      "seconds": 3.0353318648412824,
+      "generated_tokens": 109,
+      "tokens_per_second": 35.910406128095524
+    },
+    {
+      "question_id": 532503,
+      "image": "COCO_val2014_000000532503.jpg",
+      "seconds": 3.5698681990616024,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.135787879762546
+    },
+    {
+      "question_id": 189775,
+      "image": "COCO_val2014_000000189775.jpg",
+      "seconds": 3.5688055683858693,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14654750114203
+    },
+    {
+      "question_id": 480551,
+      "image": "COCO_val2014_000000480551.jpg",
+      "seconds": 2.2429308681748807,
+      "generated_tokens": 79,
+      "tokens_per_second": 35.221772155770424
+    },
+    {
+      "question_id": 381213,
+      "image": "COCO_val2014_000000381213.jpg",
+      "seconds": 3.5720500596798956,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11371561001028
+    },
+    {
+      "question_id": 458073,
+      "image": "COCO_val2014_000000458073.jpg",
+      "seconds": 3.5654166429303586,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.180904763482836
+    },
+    {
+      "question_id": 489743,
+      "image": "COCO_val2014_000000489743.jpg",
+      "seconds": 3.541528425645083,
+      "generated_tokens": 128,
+      "tokens_per_second": 36.14258721548593
+    },
+    {
+      "question_id": 105552,
+      "image": "COCO_val2014_000000105552.jpg",
+      "seconds": 3.5659373812377453,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.175621220590195
+    },
+    {
+      "question_id": 338905,
+      "image": "COCO_val2014_000000338905.jpg",
+      "seconds": 3.5694410032592714,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14011266251762
+    },
+    {
+      "question_id": 369082,
+      "image": "COCO_val2014_000000369082.jpg",
+      "seconds": 3.5671369023621082,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16345644446054
+    },
+    {
+      "question_id": 324155,
+      "image": "COCO_val2014_000000324155.jpg",
+      "seconds": 3.5668314937502146,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16655292688572
+    },
+    {
+      "question_id": 462643,
+      "image": "COCO_val2014_000000462643.jpg",
+      "seconds": 2.002578680869192,
+      "generated_tokens": 70,
+      "tokens_per_second": 34.954931193823285
+    },
+    {
+      "question_id": 416335,
+      "image": "COCO_val2014_000000416335.jpg",
+      "seconds": 3.519377851393074,
+      "generated_tokens": 127,
+      "tokens_per_second": 36.08592352473027
+    },
+    {
+      "question_id": 41633,
+      "image": "COCO_val2014_000000041633.jpg",
+      "seconds": 3.5654332088306546,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.18073665789066
+    },
+    {
+      "question_id": 156372,
+      "image": "COCO_val2014_000000156372.jpg",
+      "seconds": 3.1144256247207522,
+      "generated_tokens": 112,
+      "tokens_per_second": 35.96168716022628
+    },
+    {
+      "question_id": 134133,
+      "image": "COCO_val2014_000000134133.jpg",
+      "seconds": 3.5707638589665294,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.1267238874026
+    },
+    {
+      "question_id": 223554,
+      "image": "COCO_val2014_000000223554.jpg",
+      "seconds": 2.9806644008494914,
+      "generated_tokens": 107,
+      "tokens_per_second": 35.898036682527874
+    },
+    {
+      "question_id": 101636,
+      "image": "COCO_val2014_000000101636.jpg",
+      "seconds": 3.5688834502361715,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14575869421104
+    },
+    {
+      "question_id": 570107,
+      "image": "COCO_val2014_000000570107.jpg",
+      "seconds": 3.222698205150664,
+      "generated_tokens": 116,
+      "tokens_per_second": 35.994682907199774
+    },
+    {
+      "question_id": 51157,
+      "image": "COCO_val2014_000000051157.jpg",
+      "seconds": 3.5693669668398798,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14086228690839
+    },
+    {
+      "question_id": 462756,
+      "image": "COCO_val2014_000000462756.jpg",
+      "seconds": 3.143357061315328,
+      "generated_tokens": 113,
+      "tokens_per_second": 35.94882725563335
+    },
+    {
+      "question_id": 268390,
+      "image": "COCO_val2014_000000268390.jpg",
+      "seconds": 3.5697947670705616,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13653120620705
+    },
+    {
+      "question_id": 10928,
+      "image": "COCO_val2014_000000010928.jpg",
+      "seconds": 3.567120275925845,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16362500322984
+    },
+    {
+      "question_id": 38155,
+      "image": "COCO_val2014_000000038155.jpg",
+      "seconds": 3.566406403668225,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.17086372077987
+    },
+    {
+      "question_id": 414289,
+      "image": "COCO_val2014_000000414289.jpg",
+      "seconds": 2.929237990640104,
+      "generated_tokens": 105,
+      "tokens_per_second": 35.84549986566819
+    },
+    {
+      "question_id": 256973,
+      "image": "COCO_val2014_000000256973.jpg",
+      "seconds": 2.6147310161031783,
+      "generated_tokens": 93,
+      "tokens_per_second": 35.56771210011538
+    },
+    {
+      "question_id": 473994,
+      "image": "COCO_val2014_000000473994.jpg",
+      "seconds": 2.7220004741102457,
+      "generated_tokens": 97,
+      "tokens_per_second": 35.635555879800826
+    },
+    {
+      "question_id": 14321,
+      "image": "COCO_val2014_000000014321.jpg",
+      "seconds": 3.57693055504933,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.06444073058638
+    },
+    {
+      "question_id": 542487,
+      "image": "COCO_val2014_000000542487.jpg",
+      "seconds": 3.434547213371843,
+      "generated_tokens": 124,
+      "tokens_per_second": 36.10374011375545
+    },
+    {
+      "question_id": 96762,
+      "image": "COCO_val2014_000000096762.jpg",
+      "seconds": 3.565907511860132,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.17592424115004
+    },
+    {
+      "question_id": 435922,
+      "image": "COCO_val2014_000000435922.jpg",
+      "seconds": 3.302169267088175,
+      "generated_tokens": 119,
+      "tokens_per_second": 36.036917061169675
+    },
+    {
+      "question_id": 405534,
+      "image": "COCO_val2014_000000405534.jpg",
+      "seconds": 3.246659312862903,
+      "generated_tokens": 117,
+      "tokens_per_second": 36.03704261067954
+    },
+    {
+      "question_id": 540502,
+      "image": "COCO_val2014_000000540502.jpg",
+      "seconds": 3.5737462411634624,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.09657521682429
+    },
+    {
+      "question_id": 38438,
+      "image": "COCO_val2014_000000038438.jpg",
+      "seconds": 2.612027660012245,
+      "generated_tokens": 93,
+      "tokens_per_second": 35.60452342206974
+    },
+    {
+      "question_id": 115749,
+      "image": "COCO_val2014_000000115749.jpg",
+      "seconds": 3.5702485609799623,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13193809805558
+    },
+    {
+      "question_id": 312103,
+      "image": "COCO_val2014_000000312103.jpg",
+      "seconds": 3.5715418909676373,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.118853967872695
+    },
+    {
+      "question_id": 506614,
+      "image": "COCO_val2014_000000506614.jpg",
+      "seconds": 3.5674213990569115,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.160572461134706
+    },
+    {
+      "question_id": 340047,
+      "image": "COCO_val2014_000000340047.jpg",
+      "seconds": 3.3006326500326395,
+      "generated_tokens": 119,
+      "tokens_per_second": 36.053694130070255
+    },
+    {
+      "question_id": 563730,
+      "image": "COCO_val2014_000000563730.jpg",
+      "seconds": 2.853245370090008,
+      "generated_tokens": 102,
+      "tokens_per_second": 35.74876562290972
+    },
+    {
+      "question_id": 439854,
+      "image": "COCO_val2014_000000439854.jpg",
+      "seconds": 3.5666507431305945,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16838577437258
+    },
+    {
+      "question_id": 532963,
+      "image": "COCO_val2014_000000532963.jpg",
+      "seconds": 3.5685104629956186,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.149536715021924
+    },
+    {
+      "question_id": 27935,
+      "image": "COCO_val2014_000000027935.jpg",
+      "seconds": 3.007947023026645,
+      "generated_tokens": 108,
+      "tokens_per_second": 35.90488767695405
+    },
+    {
+      "question_id": 331223,
+      "image": "COCO_val2014_000000331223.jpg",
+      "seconds": 3.5749898171052337,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.08401886427045
+    },
+    {
+      "question_id": 208808,
+      "image": "COCO_val2014_000000208808.jpg",
+      "seconds": 3.5412238826975226,
+      "generated_tokens": 128,
+      "tokens_per_second": 36.145695454447285
+    },
+    {
+      "question_id": 518163,
+      "image": "COCO_val2014_000000518163.jpg",
+      "seconds": 2.982353155966848,
+      "generated_tokens": 107,
+      "tokens_per_second": 35.877709447629684
+    },
+    {
+      "question_id": 465552,
+      "image": "COCO_val2014_000000465552.jpg",
+      "seconds": 3.5714120459742844,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12016713260782
+    },
+    {
+      "question_id": 292188,
+      "image": "COCO_val2014_000000292188.jpg",
+      "seconds": 2.668088070116937,
+      "generated_tokens": 95,
+      "tokens_per_second": 35.60602105455849
+    },
+    {
+      "question_id": 113678,
+      "image": "COCO_val2014_000000113678.jpg",
+      "seconds": 3.30166292283684,
+      "generated_tokens": 119,
+      "tokens_per_second": 36.04244369614611
+    },
+    {
+      "question_id": 557595,
+      "image": "COCO_val2014_000000557595.jpg",
+      "seconds": 3.411680814344436,
+      "generated_tokens": 123,
+      "tokens_per_second": 36.05261063193416
+    },
+    {
+      "question_id": 418854,
+      "image": "COCO_val2014_000000418854.jpg",
+      "seconds": 2.692696330137551,
+      "generated_tokens": 96,
+      "tokens_per_second": 35.65199644888885
+    },
+    {
+      "question_id": 536158,
+      "image": "COCO_val2014_000000536158.jpg",
+      "seconds": 2.587770869024098,
+      "generated_tokens": 92,
+      "tokens_per_second": 35.55183385872765
+    },
+    {
+      "question_id": 550643,
+      "image": "COCO_val2014_000000550643.jpg",
+      "seconds": 3.142933577299118,
+      "generated_tokens": 113,
+      "tokens_per_second": 35.95367105947769
+    },
+    {
+      "question_id": 542782,
+      "image": "COCO_val2014_000000542782.jpg",
+      "seconds": 3.5724098458886147,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.110078508618614
+    },
+    {
+      "question_id": 435937,
+      "image": "COCO_val2014_000000435937.jpg",
+      "seconds": 3.5665390039794147,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.169518924668
+    },
+    {
+      "question_id": 418219,
+      "image": "COCO_val2014_000000418219.jpg",
+      "seconds": 3.568537908606231,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14925868908135
+    },
+    {
+      "question_id": 352234,
+      "image": "COCO_val2014_000000352234.jpg",
+      "seconds": 2.744507214985788,
+      "generated_tokens": 98,
+      "tokens_per_second": 35.70768532321293
+    },
+    {
+      "question_id": 298137,
+      "image": "COCO_val2014_000000298137.jpg",
+      "seconds": 2.8256259323097765,
+      "generated_tokens": 101,
+      "tokens_per_second": 35.744292563679394
+    },
+    {
+      "question_id": 500703,
+      "image": "COCO_val2014_000000500703.jpg",
+      "seconds": 3.570640118326992,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12797586009379
+    },
+    {
+      "question_id": 494182,
+      "image": "COCO_val2014_000000494182.jpg",
+      "seconds": 3.5695722987875342,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.138783361753745
+    },
+    {
+      "question_id": 278032,
+      "image": "COCO_val2014_000000278032.jpg",
+      "seconds": 3.566069968044758,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.17427620769019
+    },
+    {
+      "question_id": 189203,
+      "image": "COCO_val2014_000000189203.jpg",
+      "seconds": 3.569470094051212,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.139818124541264
+    },
+    {
+      "question_id": 338041,
+      "image": "COCO_val2014_000000338041.jpg",
+      "seconds": 3.5676033818162978,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15872791731826
+    },
+    {
+      "question_id": 426852,
+      "image": "COCO_val2014_000000426852.jpg",
+      "seconds": 3.5693235569633543,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14130182968011
+    },
+    {
+      "question_id": 246248,
+      "image": "COCO_val2014_000000246248.jpg",
+      "seconds": 3.168025968130678,
+      "generated_tokens": 114,
+      "tokens_per_second": 35.984553519069394
+    },
+    {
+      "question_id": 475484,
+      "image": "COCO_val2014_000000475484.jpg",
+      "seconds": 3.252494036220014,
+      "generated_tokens": 117,
+      "tokens_per_second": 35.97239493664841
+    },
+    {
+      "question_id": 270556,
+      "image": "COCO_val2014_000000270556.jpg",
+      "seconds": 3.5692607392556965,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.1419379036177
+    },
+    {
+      "question_id": 202622,
+      "image": "COCO_val2014_000000202622.jpg",
+      "seconds": 3.5688766022212803,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.145828051244465
+    },
+    {
+      "question_id": 140231,
+      "image": "COCO_val2014_000000140231.jpg",
+      "seconds": 3.5691977399401367,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14257583895131
+    },
+    {
+      "question_id": 403619,
+      "image": "COCO_val2014_000000403619.jpg",
+      "seconds": 2.585917835123837,
+      "generated_tokens": 92,
+      "tokens_per_second": 35.577309824151556
+    },
+    {
+      "question_id": 451120,
+      "image": "COCO_val2014_000000451120.jpg",
+      "seconds": 3.1696363976225257,
+      "generated_tokens": 114,
+      "tokens_per_second": 35.96627047995438
+    },
+    {
+      "question_id": 376123,
+      "image": "COCO_val2014_000000376123.jpg",
+      "seconds": 3.5713120442815125,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12117854740767
+    },
+    {
+      "question_id": 497555,
+      "image": "COCO_val2014_000000497555.jpg",
+      "seconds": 3.1434302031993866,
+      "generated_tokens": 113,
+      "tokens_per_second": 35.94799079202983
+    },
+    {
+      "question_id": 220732,
+      "image": "COCO_val2014_000000220732.jpg",
+      "seconds": 3.5714336740784347,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11994839391407
+    },
+    {
+      "question_id": 457907,
+      "image": "COCO_val2014_000000457907.jpg",
+      "seconds": 3.567927357275039,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15544462724773
+    },
+    {
+      "question_id": 148910,
+      "image": "COCO_val2014_000000148910.jpg",
+      "seconds": 3.2755901170894504,
+      "generated_tokens": 118,
+      "tokens_per_second": 36.02404323555896
+    },
+    {
+      "question_id": 20147,
+      "image": "COCO_val2014_000000020147.jpg",
+      "seconds": 3.5705253668129444,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12913696091328
+    },
+    {
+      "question_id": 375440,
+      "image": "COCO_val2014_000000375440.jpg",
+      "seconds": 3.223498356062919,
+      "generated_tokens": 116,
+      "tokens_per_second": 35.985748149001324
+    },
+    {
+      "question_id": 400728,
+      "image": "COCO_val2014_000000400728.jpg",
+      "seconds": 3.436621129978448,
+      "generated_tokens": 124,
+      "tokens_per_second": 36.08195239164395
+    },
+    {
+      "question_id": 54750,
+      "image": "COCO_val2014_000000054750.jpg",
+      "seconds": 2.8780302298255265,
+      "generated_tokens": 103,
+      "tokens_per_second": 35.78836626960799
+    },
+    {
+      "question_id": 455225,
+      "image": "COCO_val2014_000000455225.jpg",
+      "seconds": 2.535385570023209,
+      "generated_tokens": 90,
+      "tokens_per_second": 35.49755944977479
+    },
+    {
+      "question_id": 419312,
+      "image": "COCO_val2014_000000419312.jpg",
+      "seconds": 3.5697248722426593,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13723875558972
+    },
+    {
+      "question_id": 453824,
+      "image": "COCO_val2014_000000453824.jpg",
+      "seconds": 3.567302013281733,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.161782635647015
+    },
+    {
+      "question_id": 511844,
+      "image": "COCO_val2014_000000511844.jpg",
+      "seconds": 3.5696490802802145,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.138006033319556
+    },
+    {
+      "question_id": 201190,
+      "image": "COCO_val2014_000000201190.jpg",
+      "seconds": 2.7447924041189253,
+      "generated_tokens": 98,
+      "tokens_per_second": 35.70397522702919
+    },
+    {
+      "question_id": 242301,
+      "image": "COCO_val2014_000000242301.jpg",
+      "seconds": 3.567934861872345,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.155368579880594
+    },
+    {
+      "question_id": 469609,
+      "image": "COCO_val2014_000000469609.jpg",
+      "seconds": 2.399177591316402,
+      "generated_tokens": 85,
+      "tokens_per_second": 35.42880706607527
+    },
+    {
+      "question_id": 137830,
+      "image": "COCO_val2014_000000137830.jpg",
+      "seconds": 3.571020595729351,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12412657442342
+    },
+    {
+      "question_id": 300725,
+      "image": "COCO_val2014_000000300725.jpg",
+      "seconds": 2.214422270655632,
+      "generated_tokens": 78,
+      "tokens_per_second": 35.223634188300615
+    },
+    {
+      "question_id": 520301,
+      "image": "COCO_val2014_000000520301.jpg",
+      "seconds": 2.4577198741026223,
+      "generated_tokens": 87,
+      "tokens_per_second": 35.39866398800473
+    },
+    {
+      "question_id": 424196,
+      "image": "COCO_val2014_000000424196.jpg",
+      "seconds": 3.302398427389562,
+      "generated_tokens": 119,
+      "tokens_per_second": 36.03441638447775
+    },
+    {
+      "question_id": 279994,
+      "image": "COCO_val2014_000000279994.jpg",
+      "seconds": 2.564530599862337,
+      "generated_tokens": 91,
+      "tokens_per_second": 35.48407650307812
+    },
+    {
+      "question_id": 78288,
+      "image": "COCO_val2014_000000078288.jpg",
+      "seconds": 3.5655532185919583,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.17951888289085
+    },
+    {
+      "question_id": 319024,
+      "image": "COCO_val2014_000000319024.jpg",
+      "seconds": 2.453907797113061,
+      "generated_tokens": 87,
+      "tokens_per_second": 35.45365482042664
+    },
+    {
+      "question_id": 303994,
+      "image": "COCO_val2014_000000303994.jpg",
+      "seconds": 2.928798086941242,
+      "generated_tokens": 105,
+      "tokens_per_second": 35.85088383803855
+    },
+    {
+      "question_id": 464006,
+      "image": "COCO_val2014_000000464006.jpg",
+      "seconds": 3.570772001054138,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12664151111231
+    },
+    {
+      "question_id": 10449,
+      "image": "COCO_val2014_000000010449.jpg",
+      "seconds": 3.2494106302037835,
+      "generated_tokens": 117,
+      "tokens_per_second": 36.00652958800177
+    },
+    {
+      "question_id": 224757,
+      "image": "COCO_val2014_000000224757.jpg",
+      "seconds": 3.5706483647227287,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.127892422702125
+    },
+    {
+      "question_id": 575222,
+      "image": "COCO_val2014_000000575222.jpg",
+      "seconds": 3.5667121009901166,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.167763572560204
+    },
+    {
+      "question_id": 264420,
+      "image": "COCO_val2014_000000264420.jpg",
+      "seconds": 3.5696513717994094,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.1379828347139
+    },
+    {
+      "question_id": 192403,
+      "image": "COCO_val2014_000000192403.jpg",
+      "seconds": 3.486198489088565,
+      "generated_tokens": 126,
+      "tokens_per_second": 36.14252039703613
+    },
+    {
+      "question_id": 177375,
+      "image": "COCO_val2014_000000177375.jpg",
+      "seconds": 3.5696439808234572,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.138057658691736
+    },
+    {
+      "question_id": 23369,
+      "image": "COCO_val2014_000000023369.jpg",
+      "seconds": 3.461809506174177,
+      "generated_tokens": 125,
+      "tokens_per_second": 36.10828376808749
+    },
+    {
+      "question_id": 52596,
+      "image": "COCO_val2014_000000052596.jpg",
+      "seconds": 3.570432996377349,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.130071655422924
+    },
+    {
+      "question_id": 18073,
+      "image": "COCO_val2014_000000018073.jpg",
+      "seconds": 2.402110803872347,
+      "generated_tokens": 85,
+      "tokens_per_second": 35.38554502272539
+    },
+    {
+      "question_id": 341006,
+      "image": "COCO_val2014_000000341006.jpg",
+      "seconds": 3.57157443696633,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11852483454655
+    },
+    {
+      "question_id": 196168,
+      "image": "COCO_val2014_000000196168.jpg",
+      "seconds": 3.5668500242754817,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16636503414611
+    },
+    {
+      "question_id": 332654,
+      "image": "COCO_val2014_000000332654.jpg",
+      "seconds": 3.3302774038165808,
+      "generated_tokens": 120,
+      "tokens_per_second": 36.033034323950616
+    },
+    {
+      "question_id": 253263,
+      "image": "COCO_val2014_000000253263.jpg",
+      "seconds": 3.579189426265657,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.041680010938116
+    },
+    {
+      "question_id": 19484,
+      "image": "COCO_val2014_000000019484.jpg",
+      "seconds": 3.570991807151586,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12441779946208
+    },
+    {
+      "question_id": 221390,
+      "image": "COCO_val2014_000000221390.jpg",
+      "seconds": 3.4620051491074264,
+      "generated_tokens": 125,
+      "tokens_per_second": 36.10624323659007
+    },
+    {
+      "question_id": 199918,
+      "image": "COCO_val2014_000000199918.jpg",
+      "seconds": 3.037249659653753,
+      "generated_tokens": 109,
+      "tokens_per_second": 35.887731406454755
+    },
+    {
+      "question_id": 534121,
+      "image": "COCO_val2014_000000534121.jpg",
+      "seconds": 2.694507943931967,
+      "generated_tokens": 96,
+      "tokens_per_second": 35.62802634009376
+    },
+    {
+      "question_id": 96832,
+      "image": "COCO_val2014_000000096832.jpg",
+      "seconds": 3.5682935318909585,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.1517343926688
+    },
+    {
+      "question_id": 421361,
+      "image": "COCO_val2014_000000421361.jpg",
+      "seconds": 2.3481004098430276,
+      "generated_tokens": 83,
+      "tokens_per_second": 35.34772178058119
+    },
+    {
+      "question_id": 286322,
+      "image": "COCO_val2014_000000286322.jpg",
+      "seconds": 3.571754417847842,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11670482029637
+    },
+    {
+      "question_id": 550707,
+      "image": "COCO_val2014_000000550707.jpg",
+      "seconds": 3.569962178822607,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13483660001824
+    },
+    {
+      "question_id": 40821,
+      "image": "COCO_val2014_000000040821.jpg",
+      "seconds": 2.641730275005102,
+      "generated_tokens": 94,
+      "tokens_per_second": 35.58273942248644
+    },
+    {
+      "question_id": 114348,
+      "image": "COCO_val2014_000000114348.jpg",
+      "seconds": 3.569146270863712,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.143097035018066
+    },
+    {
+      "question_id": 344222,
+      "image": "COCO_val2014_000000344222.jpg",
+      "seconds": 3.3041247138753533,
+      "generated_tokens": 119,
+      "tokens_per_second": 36.01558969619729
+    },
+    {
+      "question_id": 57222,
+      "image": "COCO_val2014_000000057222.jpg",
+      "seconds": 2.6428781198337674,
+      "generated_tokens": 94,
+      "tokens_per_second": 35.56728526168753
+    },
+    {
+      "question_id": 542145,
+      "image": "COCO_val2014_000000542145.jpg",
+      "seconds": 2.8248927942477167,
+      "generated_tokens": 101,
+      "tokens_per_second": 35.75356919939215
+    },
+    {
+      "question_id": 498806,
+      "image": "COCO_val2014_000000498806.jpg",
+      "seconds": 3.4629650209099054,
+      "generated_tokens": 125,
+      "tokens_per_second": 36.09623523345778
+    },
+    {
+      "question_id": 465007,
+      "image": "COCO_val2014_000000465007.jpg",
+      "seconds": 3.56977641582489,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13671697424534
+    },
+    {
+      "question_id": 397287,
+      "image": "COCO_val2014_000000397287.jpg",
+      "seconds": 2.269216129090637,
+      "generated_tokens": 80,
+      "tokens_per_second": 35.25446473538821
+    },
+    {
+      "question_id": 59108,
+      "image": "COCO_val2014_000000059108.jpg",
+      "seconds": 3.5718787340447307,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.115447809148534
+    },
+    {
+      "question_id": 18975,
+      "image": "COCO_val2014_000000018975.jpg",
+      "seconds": 3.5704218689352274,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.130184257041435
+    },
+    {
+      "question_id": 89395,
+      "image": "COCO_val2014_000000089395.jpg",
+      "seconds": 3.4898008117452264,
+      "generated_tokens": 126,
+      "tokens_per_second": 36.10521253131013
+    },
+    {
+      "question_id": 497514,
+      "image": "COCO_val2014_000000497514.jpg",
+      "seconds": 2.9551293910481036,
+      "generated_tokens": 106,
+      "tokens_per_second": 35.869833761290806
+    },
+    {
+      "question_id": 125182,
+      "image": "COCO_val2014_000000125182.jpg",
+      "seconds": 2.8280780650675297,
+      "generated_tokens": 101,
+      "tokens_per_second": 35.71329987228916
+    },
+    {
+      "question_id": 233840,
+      "image": "COCO_val2014_000000233840.jpg",
+      "seconds": 2.6379450792446733,
+      "generated_tokens": 94,
+      "tokens_per_second": 35.633797208134126
+    },
+    {
+      "question_id": 65394,
+      "image": "COCO_val2014_000000065394.jpg",
+      "seconds": 2.798085365910083,
+      "generated_tokens": 100,
+      "tokens_per_second": 35.738723778169934
+    },
+    {
+      "question_id": 13333,
+      "image": "COCO_val2014_000000013333.jpg",
+      "seconds": 2.347496320027858,
+      "generated_tokens": 83,
+      "tokens_per_second": 35.35681793912888
+    },
+    {
+      "question_id": 314515,
+      "image": "COCO_val2014_000000314515.jpg",
+      "seconds": 3.5695038246922195,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13947661510715
+    },
+    {
+      "question_id": 428178,
+      "image": "COCO_val2014_000000428178.jpg",
+      "seconds": 3.139560094103217,
+      "generated_tokens": 113,
+      "tokens_per_second": 35.99230357534446
+    },
+    {
+      "question_id": 189376,
+      "image": "COCO_val2014_000000189376.jpg",
+      "seconds": 3.5745686129666865,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.088270772605874
+    },
+    {
+      "question_id": 397518,
+      "image": "COCO_val2014_000000397518.jpg",
+      "seconds": 2.6124824159778655,
+      "generated_tokens": 93,
+      "tokens_per_second": 35.598325726984704
+    },
+    {
+      "question_id": 329614,
+      "image": "COCO_val2014_000000329614.jpg",
+      "seconds": 3.5427428148686886,
+      "generated_tokens": 128,
+      "tokens_per_second": 36.130198179442026
+    },
+    {
+      "question_id": 176778,
+      "image": "COCO_val2014_000000176778.jpg",
+      "seconds": 2.2418312728405,
+      "generated_tokens": 79,
+      "tokens_per_second": 35.23904807514951
+    },
+    {
+      "question_id": 334311,
+      "image": "COCO_val2014_000000334311.jpg",
+      "seconds": 2.351732043083757,
+      "generated_tokens": 83,
+      "tokens_per_second": 35.29313649660721
+    },
+    {
+      "question_id": 266151,
+      "image": "COCO_val2014_000000266151.jpg",
+      "seconds": 2.92893153661862,
+      "generated_tokens": 105,
+      "tokens_per_second": 35.84925037927651
+    },
+    {
+      "question_id": 280710,
+      "image": "COCO_val2014_000000280710.jpg",
+      "seconds": 3.570891538169235,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.125432156401246
+    },
+    {
+      "question_id": 144938,
+      "image": "COCO_val2014_000000144938.jpg",
+      "seconds": 3.566251619718969,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.17243362378496
+    },
+    {
+      "question_id": 22563,
+      "image": "COCO_val2014_000000022563.jpg",
+      "seconds": 3.2227853019721806,
+      "generated_tokens": 116,
+      "tokens_per_second": 35.99371013918113
+    },
+    {
+      "question_id": 471955,
+      "image": "COCO_val2014_000000471955.jpg",
+      "seconds": 2.510388382244855,
+      "generated_tokens": 89,
+      "tokens_per_second": 35.452681596786974
+    },
+    {
+      "question_id": 446209,
+      "image": "COCO_val2014_000000446209.jpg",
+      "seconds": 3.354354275856167,
+      "generated_tokens": 121,
+      "tokens_per_second": 36.07251651112967
+    },
+    {
+      "question_id": 356906,
+      "image": "COCO_val2014_000000356906.jpg",
+      "seconds": 3.568207561969757,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.152605407513946
+    },
+    {
+      "question_id": 146503,
+      "image": "COCO_val2014_000000146503.jpg",
+      "seconds": 3.5683801462873816,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.150856890685915
+    },
+    {
+      "question_id": 48692,
+      "image": "COCO_val2014_000000048692.jpg",
+      "seconds": 3.5682211848907173,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15246738241392
+    },
+    {
+      "question_id": 183387,
+      "image": "COCO_val2014_000000183387.jpg",
+      "seconds": 3.567603347823024,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.158728261850264
+    },
+    {
+      "question_id": 498463,
+      "image": "COCO_val2014_000000498463.jpg",
+      "seconds": 3.569591629318893,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.138587658167005
+    },
+    {
+      "question_id": 7088,
+      "image": "COCO_val2014_000000007088.jpg",
+      "seconds": 3.568510771263391,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.149533592224245
+    },
+    {
+      "question_id": 308295,
+      "image": "COCO_val2014_000000308295.jpg",
+      "seconds": 3.5392902130261064,
+      "generated_tokens": 128,
+      "tokens_per_second": 36.16544343521339
+    },
+    {
+      "question_id": 576650,
+      "image": "COCO_val2014_000000576650.jpg",
+      "seconds": 3.568491857033223,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14972519714482
+    },
+    {
+      "question_id": 407861,
+      "image": "COCO_val2014_000000407861.jpg",
+      "seconds": 2.454757266677916,
+      "generated_tokens": 87,
+      "tokens_per_second": 35.44138607143804
+    },
+    {
+      "question_id": 493720,
+      "image": "COCO_val2014_000000493720.jpg",
+      "seconds": 3.167649387847632,
+      "generated_tokens": 114,
+      "tokens_per_second": 35.9888314777985
+    },
+    {
+      "question_id": 177407,
+      "image": "COCO_val2014_000000177407.jpg",
+      "seconds": 2.5105961253866553,
+      "generated_tokens": 89,
+      "tokens_per_second": 35.44974801006401
+    },
+    {
+      "question_id": 474344,
+      "image": "COCO_val2014_000000474344.jpg",
+      "seconds": 3.5692913867533207,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14162757312461
+    },
+    {
+      "question_id": 180283,
+      "image": "COCO_val2014_000000180283.jpg",
+      "seconds": 3.006814411841333,
+      "generated_tokens": 108,
+      "tokens_per_second": 35.91841238178124
+    },
+    {
+      "question_id": 210032,
+      "image": "COCO_val2014_000000210032.jpg",
+      "seconds": 3.439951005857438,
+      "generated_tokens": 124,
+      "tokens_per_second": 36.04702502705904
+    },
+    {
+      "question_id": 25751,
+      "image": "COCO_val2014_000000025751.jpg",
+      "seconds": 2.8756459690630436,
+      "generated_tokens": 103,
+      "tokens_per_second": 35.81803918427411
+    },
+    {
+      "question_id": 438059,
+      "image": "COCO_val2014_000000438059.jpg",
+      "seconds": 3.5690756887197495,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.143811801949525
+    },
+    {
+      "question_id": 2014,
+      "image": "COCO_val2014_000000002014.jpg",
+      "seconds": 3.5680943513289094,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15375247909432
+    },
+    {
+      "question_id": 269280,
+      "image": "COCO_val2014_000000269280.jpg",
+      "seconds": 2.269297724124044,
+      "generated_tokens": 80,
+      "tokens_per_second": 35.253197123299564
+    },
+    {
+      "question_id": 514254,
+      "image": "COCO_val2014_000000514254.jpg",
+      "seconds": 3.5670734546147287,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16409968600801
+    },
+    {
+      "question_id": 459967,
+      "image": "COCO_val2014_000000459967.jpg",
+      "seconds": 3.1156411138363183,
+      "generated_tokens": 112,
+      "tokens_per_second": 35.94765761133937
+    },
+    {
+      "question_id": 195267,
+      "image": "COCO_val2014_000000195267.jpg",
+      "seconds": 3.332034684251994,
+      "generated_tokens": 120,
+      "tokens_per_second": 36.01403087643391
+    },
+    {
+      "question_id": 139530,
+      "image": "COCO_val2014_000000139530.jpg",
+      "seconds": 3.571103577967733,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.123287152990436
+    },
+    {
+      "question_id": 149284,
+      "image": "COCO_val2014_000000149284.jpg",
+      "seconds": 1.9768172889016569,
+      "generated_tokens": 69,
+      "tokens_per_second": 34.90459153073131
+    },
+    {
+      "question_id": 337498,
+      "image": "COCO_val2014_000000337498.jpg",
+      "seconds": 3.5709222592413425,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12512136497942
+    },
+    {
+      "question_id": 102671,
+      "image": "COCO_val2014_000000102671.jpg",
+      "seconds": 2.295065301004797,
+      "generated_tokens": 81,
+      "tokens_per_second": 35.29311343103727
+    },
+    {
+      "question_id": 137576,
+      "image": "COCO_val2014_000000137576.jpg",
+      "seconds": 3.5681017278693616,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.153677736377325
+    },
+    {
+      "question_id": 509807,
+      "image": "COCO_val2014_000000509807.jpg",
+      "seconds": 3.273354081902653,
+      "generated_tokens": 118,
+      "tokens_per_second": 36.04865133667786
+    },
+    {
+      "question_id": 189103,
+      "image": "COCO_val2014_000000189103.jpg",
+      "seconds": 2.427472921088338,
+      "generated_tokens": 86,
+      "tokens_per_second": 35.4277896378933
+    },
+    {
+      "question_id": 123213,
+      "image": "COCO_val2014_000000123213.jpg",
+      "seconds": 3.564548737835139,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.18971417917705
+    },
+    {
+      "question_id": 154213,
+      "image": "COCO_val2014_000000154213.jpg",
+      "seconds": 3.1948293992318213,
+      "generated_tokens": 115,
+      "tokens_per_second": 35.99566224964973
+    },
+    {
+      "question_id": 490275,
+      "image": "COCO_val2014_000000490275.jpg",
+      "seconds": 2.9831894310191274,
+      "generated_tokens": 107,
+      "tokens_per_second": 35.86765187869625
+    },
+    {
+      "question_id": 126583,
+      "image": "COCO_val2014_000000126583.jpg",
+      "seconds": 3.5722284303046763,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11191235858272
+    },
+    {
+      "question_id": 127496,
+      "image": "COCO_val2014_000000127496.jpg",
+      "seconds": 3.2458852138370275,
+      "generated_tokens": 117,
+      "tokens_per_second": 36.04563695020253
+    },
+    {
+      "question_id": 89781,
+      "image": "COCO_val2014_000000089781.jpg",
+      "seconds": 3.571187780238688,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12243542997843
+    },
+    {
+      "question_id": 534801,
+      "image": "COCO_val2014_000000534801.jpg",
+      "seconds": 3.5651049679145217,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.18406783558496
+    },
+    {
+      "question_id": 511159,
+      "image": "COCO_val2014_000000511159.jpg",
+      "seconds": 2.7447071629576385,
+      "generated_tokens": 98,
+      "tokens_per_second": 35.705084069659826
+    },
+    {
+      "question_id": 94563,
+      "image": "COCO_val2014_000000094563.jpg",
+      "seconds": 3.4331910419277847,
+      "generated_tokens": 124,
+      "tokens_per_second": 36.1180017323977
+    },
+    {
+      "question_id": 22382,
+      "image": "COCO_val2014_000000022382.jpg",
+      "seconds": 2.403803674969822,
+      "generated_tokens": 85,
+      "tokens_per_second": 35.360624865118034
+    },
+    {
+      "question_id": 405574,
+      "image": "COCO_val2014_000000405574.jpg",
+      "seconds": 3.2206011530943215,
+      "generated_tokens": 116,
+      "tokens_per_second": 36.018120371269305
+    },
+    {
+      "question_id": 105220,
+      "image": "COCO_val2014_000000105220.jpg",
+      "seconds": 3.571215818170458,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12215182953771
+    },
+    {
+      "question_id": 578522,
+      "image": "COCO_val2014_000000578522.jpg",
+      "seconds": 2.5323379691690207,
+      "generated_tokens": 90,
+      "tokens_per_second": 35.54027981088687
+    },
+    {
+      "question_id": 383777,
+      "image": "COCO_val2014_000000383777.jpg",
+      "seconds": 3.567399828694761,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16079110683774
+    },
+    {
+      "question_id": 111054,
+      "image": "COCO_val2014_000000111054.jpg",
+      "seconds": 3.142642311286181,
+      "generated_tokens": 113,
+      "tokens_per_second": 35.95700331348011
+    },
+    {
+      "question_id": 192458,
+      "image": "COCO_val2014_000000192458.jpg",
+      "seconds": 3.5734176100231707,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.09989485644348
+    },
+    {
+      "question_id": 388212,
+      "image": "COCO_val2014_000000388212.jpg",
+      "seconds": 3.272954372689128,
+      "generated_tokens": 118,
+      "tokens_per_second": 36.05305377448593
+    },
+    {
+      "question_id": 501062,
+      "image": "COCO_val2014_000000501062.jpg",
+      "seconds": 3.2504311883822083,
+      "generated_tokens": 117,
+      "tokens_per_second": 35.99522439305438
+    },
+    {
+      "question_id": 269037,
+      "image": "COCO_val2014_000000269037.jpg",
+      "seconds": 3.5707741249352694,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12662002314092
+    },
+    {
+      "question_id": 122317,
+      "image": "COCO_val2014_000000122317.jpg",
+      "seconds": 3.5713634570129216,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12065855316088
+    },
+    {
+      "question_id": 476279,
+      "image": "COCO_val2014_000000476279.jpg",
+      "seconds": 3.5688292561098933,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14630758228344
+    },
+    {
+      "question_id": 552672,
+      "image": "COCO_val2014_000000552672.jpg",
+      "seconds": 3.302577900700271,
+      "generated_tokens": 119,
+      "tokens_per_second": 36.03245815178728
+    },
+    {
+      "question_id": 37734,
+      "image": "COCO_val2014_000000037734.jpg",
+      "seconds": 3.568708806298673,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14752757981221
+    },
+    {
+      "question_id": 400975,
+      "image": "COCO_val2014_000000400975.jpg",
+      "seconds": 2.5336064230650663,
+      "generated_tokens": 90,
+      "tokens_per_second": 35.52248651592903
+    },
+    {
+      "question_id": 217957,
+      "image": "COCO_val2014_000000217957.jpg",
+      "seconds": 3.5653397403657436,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.18168516719441
+    },
+    {
+      "question_id": 215897,
+      "image": "COCO_val2014_000000215897.jpg",
+      "seconds": 3.5697858911007643,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13662105662648
+    },
+    {
+      "question_id": 565597,
+      "image": "COCO_val2014_000000565597.jpg",
+      "seconds": 3.5662725679576397,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.17222114738042
+    },
+    {
+      "question_id": 155732,
+      "image": "COCO_val2014_000000155732.jpg",
+      "seconds": 3.5684069129638374,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.150585722539006
+    },
+    {
+      "question_id": 481710,
+      "image": "COCO_val2014_000000481710.jpg",
+      "seconds": 3.5656400150619447,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.17863818419116
+    },
+    {
+      "question_id": 436883,
+      "image": "COCO_val2014_000000436883.jpg",
+      "seconds": 3.1970529770478606,
+      "generated_tokens": 115,
+      "tokens_per_second": 35.970626957264344
+    },
+    {
+      "question_id": 113935,
+      "image": "COCO_val2014_000000113935.jpg",
+      "seconds": 3.569267108105123,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.1418734134707
+    },
+    {
+      "question_id": 405547,
+      "image": "COCO_val2014_000000405547.jpg",
+      "seconds": 3.302924665156752,
+      "generated_tokens": 119,
+      "tokens_per_second": 36.02867520877968
+    },
+    {
+      "question_id": 262162,
+      "image": "COCO_val2014_000000262162.jpg",
+      "seconds": 3.568139672745019,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15329326521529
+    },
+    {
+      "question_id": 494085,
+      "image": "COCO_val2014_000000494085.jpg",
+      "seconds": 2.9564847298897803,
+      "generated_tokens": 106,
+      "tokens_per_second": 35.85338998316144
+    },
+    {
+      "question_id": 210299,
+      "image": "COCO_val2014_000000210299.jpg",
+      "seconds": 2.3513542930595577,
+      "generated_tokens": 83,
+      "tokens_per_second": 35.298806413388796
+    },
+    {
+      "question_id": 120648,
+      "image": "COCO_val2014_000000120648.jpg",
+      "seconds": 3.5672558690421283,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16225040639958
+    },
+    {
+      "question_id": 269450,
+      "image": "COCO_val2014_000000269450.jpg",
+      "seconds": 3.5656269742175937,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.17877050313332
+    },
+    {
+      "question_id": 309940,
+      "image": "COCO_val2014_000000309940.jpg",
+      "seconds": 2.4539583739824593,
+      "generated_tokens": 87,
+      "tokens_per_second": 35.452924109226096
+    },
+    {
+      "question_id": 439630,
+      "image": "COCO_val2014_000000439630.jpg",
+      "seconds": 3.5134951639920473,
+      "generated_tokens": 127,
+      "tokens_per_second": 36.14634262245635
+    },
+    {
+      "question_id": 475917,
+      "image": "COCO_val2014_000000475917.jpg",
+      "seconds": 3.5667654839344323,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16722225810667
+    },
+    {
+      "question_id": 504902,
+      "image": "COCO_val2014_000000504902.jpg",
+      "seconds": 3.567397268023342,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16081706298934
+    },
+    {
+      "question_id": 39811,
+      "image": "COCO_val2014_000000039811.jpg",
+      "seconds": 3.5709071797318757,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12527391700113
+    },
+    {
+      "question_id": 296224,
+      "image": "COCO_val2014_000000296224.jpg",
+      "seconds": 3.357444067951292,
+      "generated_tokens": 121,
+      "tokens_per_second": 36.03931965837157
+    },
+    {
+      "question_id": 534194,
+      "image": "COCO_val2014_000000534194.jpg",
+      "seconds": 3.3333241902291775,
+      "generated_tokens": 120,
+      "tokens_per_second": 36.00009874579574
+    },
+    {
+      "question_id": 246252,
+      "image": "COCO_val2014_000000246252.jpg",
+      "seconds": 3.569225498009473,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14229475608706
+    },
+    {
+      "question_id": 385633,
+      "image": "COCO_val2014_000000385633.jpg",
+      "seconds": 3.571329358033836,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.1210034324641
+    },
+    {
+      "question_id": 191013,
+      "image": "COCO_val2014_000000191013.jpg",
+      "seconds": 3.567427863832563,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16050693213249
+    },
+    {
+      "question_id": 566576,
+      "image": "COCO_val2014_000000566576.jpg",
+      "seconds": 3.5701481723226607,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.1329540885905
+    },
+    {
+      "question_id": 54763,
+      "image": "COCO_val2014_000000054763.jpg",
+      "seconds": 3.564856537617743,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.186589457034856
+    },
+    {
+      "question_id": 372220,
+      "image": "COCO_val2014_000000372220.jpg",
+      "seconds": 3.5713826389983296,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.120464548201085
+    },
+    {
+      "question_id": 465591,
+      "image": "COCO_val2014_000000465591.jpg",
+      "seconds": 3.4620944298803806,
+      "generated_tokens": 125,
+      "tokens_per_second": 36.105312125850624
+    },
+    {
+      "question_id": 345822,
+      "image": "COCO_val2014_000000345822.jpg",
+      "seconds": 3.4115129788406193,
+      "generated_tokens": 123,
+      "tokens_per_second": 36.05438430481972
+    },
+    {
+      "question_id": 80273,
+      "image": "COCO_val2014_000000080273.jpg",
+      "seconds": 2.6425434220582247,
+      "generated_tokens": 94,
+      "tokens_per_second": 35.57179012286022
+    },
+    {
+      "question_id": 464144,
+      "image": "COCO_val2014_000000464144.jpg",
+      "seconds": 2.1373807787895203,
+      "generated_tokens": 75,
+      "tokens_per_second": 35.0896764602119
+    },
+    {
+      "question_id": 70020,
+      "image": "COCO_val2014_000000070020.jpg",
+      "seconds": 2.9346367749385536,
+      "generated_tokens": 105,
+      "tokens_per_second": 35.77955571765727
+    },
+    {
+      "question_id": 75611,
+      "image": "COCO_val2014_000000075611.jpg",
+      "seconds": 3.574641054030508,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.087539434077975
+    },
+    {
+      "question_id": 72052,
+      "image": "COCO_val2014_000000072052.jpg",
+      "seconds": 3.5665435739792883,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16947257876097
+    },
+    {
+      "question_id": 291380,
+      "image": "COCO_val2014_000000291380.jpg",
+      "seconds": 3.3031245968304574,
+      "generated_tokens": 119,
+      "tokens_per_second": 36.026494463511156
+    },
+    {
+      "question_id": 567886,
+      "image": "COCO_val2014_000000567886.jpg",
+      "seconds": 3.5784883718006313,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.04874086403402
+    },
+    {
+      "question_id": 535313,
+      "image": "COCO_val2014_000000535313.jpg",
+      "seconds": 3.5724756699055433,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.10941316877066
+    },
+    {
+      "question_id": 495519,
+      "image": "COCO_val2014_000000495519.jpg",
+      "seconds": 3.567437816876918,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.160406045404294
+    },
+    {
+      "question_id": 302318,
+      "image": "COCO_val2014_000000302318.jpg",
+      "seconds": 3.569373946171254,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14079161931854
+    },
+    {
+      "question_id": 334170,
+      "image": "COCO_val2014_000000334170.jpg",
+      "seconds": 2.6134691378101707,
+      "generated_tokens": 93,
+      "tokens_per_second": 35.584885489761255
+    },
+    {
+      "question_id": 548506,
+      "image": "COCO_val2014_000000548506.jpg",
+      "seconds": 3.011238053906709,
+      "generated_tokens": 108,
+      "tokens_per_second": 35.865646643208215
+    },
+    {
+      "question_id": 574785,
+      "image": "COCO_val2014_000000574785.jpg",
+      "seconds": 2.404946032911539,
+      "generated_tokens": 85,
+      "tokens_per_second": 35.34382844221043
+    },
+    {
+      "question_id": 560463,
+      "image": "COCO_val2014_000000560463.jpg",
+      "seconds": 3.568768210709095,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14692588128843
+    },
+    {
+      "question_id": 510734,
+      "image": "COCO_val2014_000000510734.jpg",
+      "seconds": 2.9021123121492565,
+      "generated_tokens": 104,
+      "tokens_per_second": 35.83596663872024
+    },
+    {
+      "question_id": 486175,
+      "image": "COCO_val2014_000000486175.jpg",
+      "seconds": 3.5715690250508487,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.118579564107236
+    },
+    {
+      "question_id": 552947,
+      "image": "COCO_val2014_000000552947.jpg",
+      "seconds": 3.195559282787144,
+      "generated_tokens": 115,
+      "tokens_per_second": 35.98744063971732
+    },
+    {
+      "question_id": 179500,
+      "image": "COCO_val2014_000000179500.jpg",
+      "seconds": 2.509866009000689,
+      "generated_tokens": 89,
+      "tokens_per_second": 35.460060290403966
+    },
+    {
+      "question_id": 110601,
+      "image": "COCO_val2014_000000110601.jpg",
+      "seconds": 3.5724847121164203,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.109321773298085
+    },
+    {
+      "question_id": 535467,
+      "image": "COCO_val2014_000000535467.jpg",
+      "seconds": 3.9019152177497745,
+      "generated_tokens": 129,
+      "tokens_per_second": 33.06068758572207
+    },
+    {
+      "question_id": 90284,
+      "image": "COCO_val2014_000000090284.jpg",
+      "seconds": 2.7029460701160133,
+      "generated_tokens": 95,
+      "tokens_per_second": 35.146835170086284
+    },
+    {
+      "question_id": 67765,
+      "image": "COCO_val2014_000000067765.jpg",
+      "seconds": 3.3043150450102985,
+      "generated_tokens": 119,
+      "tokens_per_second": 36.01351517001888
+    },
+    {
+      "question_id": 502414,
+      "image": "COCO_val2014_000000502414.jpg",
+      "seconds": 3.5683757248334587,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.150901683992544
+    },
+    {
+      "question_id": 81390,
+      "image": "COCO_val2014_000000081390.jpg",
+      "seconds": 3.567924647126347,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15547209044851
+    },
+    {
+      "question_id": 71357,
+      "image": "COCO_val2014_000000071357.jpg",
+      "seconds": 3.4064711560495198,
+      "generated_tokens": 123,
+      "tokens_per_second": 36.10774739177388
+    },
+    {
+      "question_id": 71215,
+      "image": "COCO_val2014_000000071215.jpg",
+      "seconds": 3.4623757279478014,
+      "generated_tokens": 125,
+      "tokens_per_second": 36.10237877738626
+    },
+    {
+      "question_id": 488573,
+      "image": "COCO_val2014_000000488573.jpg",
+      "seconds": 3.5692344550043344,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14220405698828
+    },
+    {
+      "question_id": 581593,
+      "image": "COCO_val2014_000000581593.jpg",
+      "seconds": 3.572702365927398,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.10712194507541
+    },
+    {
+      "question_id": 79689,
+      "image": "COCO_val2014_000000079689.jpg",
+      "seconds": 3.5689361882396042,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.145224570022336
+    },
+    {
+      "question_id": 469329,
+      "image": "COCO_val2014_000000469329.jpg",
+      "seconds": 2.6430817851796746,
+      "generated_tokens": 94,
+      "tokens_per_second": 35.56454458847173
+    },
+    {
+      "question_id": 82375,
+      "image": "COCO_val2014_000000082375.jpg",
+      "seconds": 2.3780683651566505,
+      "generated_tokens": 84,
+      "tokens_per_second": 35.32278601858726
+    },
+    {
+      "question_id": 322791,
+      "image": "COCO_val2014_000000322791.jpg",
+      "seconds": 2.35140289273113,
+      "generated_tokens": 83,
+      "tokens_per_second": 35.298076844498716
+    },
+    {
+      "question_id": 183332,
+      "image": "COCO_val2014_000000183332.jpg",
+      "seconds": 3.039752113632858,
+      "generated_tokens": 109,
+      "tokens_per_second": 35.85818709070073
+    },
+    {
+      "question_id": 527375,
+      "image": "COCO_val2014_000000527375.jpg",
+      "seconds": 3.576901772990823,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.06473092833544
+    },
+    {
+      "question_id": 428769,
+      "image": "COCO_val2014_000000428769.jpg",
+      "seconds": 2.481014551129192,
+      "generated_tokens": 88,
+      "tokens_per_second": 35.46936069357122
+    },
+    {
+      "question_id": 204536,
+      "image": "COCO_val2014_000000204536.jpg",
+      "seconds": 2.5621847747825086,
+      "generated_tokens": 91,
+      "tokens_per_second": 35.51656418211468
+    },
+    {
+      "question_id": 268831,
+      "image": "COCO_val2014_000000268831.jpg",
+      "seconds": 3.1424340601079166,
+      "generated_tokens": 113,
+      "tokens_per_second": 35.95938620781096
+    },
+    {
+      "question_id": 527578,
+      "image": "COCO_val2014_000000527578.jpg",
+      "seconds": 3.577097143046558,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.06276118353686
+    },
+    {
+      "question_id": 581205,
+      "image": "COCO_val2014_000000581205.jpg",
+      "seconds": 3.5698389620520175,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13608383215363
+    },
+    {
+      "question_id": 315622,
+      "image": "COCO_val2014_000000315622.jpg",
+      "seconds": 2.5087579311802983,
+      "generated_tokens": 89,
+      "tokens_per_second": 35.4757224257695
+    },
+    {
+      "question_id": 248400,
+      "image": "COCO_val2014_000000248400.jpg",
+      "seconds": 3.5698920311406255,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13554664250809
+    },
+    {
+      "question_id": 521197,
+      "image": "COCO_val2014_000000521197.jpg",
+      "seconds": 2.534311017021537,
+      "generated_tokens": 90,
+      "tokens_per_second": 35.512610486842696
+    },
+    {
+      "question_id": 331366,
+      "image": "COCO_val2014_000000331366.jpg",
+      "seconds": 3.5709249009378254,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.125094640360814
+    },
+    {
+      "question_id": 183973,
+      "image": "COCO_val2014_000000183973.jpg",
+      "seconds": 3.580428972840309,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.02920236053892
+    },
+    {
+      "question_id": 176193,
+      "image": "COCO_val2014_000000176193.jpg",
+      "seconds": 2.56014128215611,
+      "generated_tokens": 91,
+      "tokens_per_second": 35.54491333515831
+    },
+    {
+      "question_id": 435208,
+      "image": "COCO_val2014_000000435208.jpg",
+      "seconds": 3.5707959020510316,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12639969870684
+    },
+    {
+      "question_id": 103255,
+      "image": "COCO_val2014_000000103255.jpg",
+      "seconds": 3.383647819980979,
+      "generated_tokens": 122,
+      "tokens_per_second": 36.05576185546575
+    },
+    {
+      "question_id": 34141,
+      "image": "COCO_val2014_000000034141.jpg",
+      "seconds": 2.4039228754118085,
+      "generated_tokens": 85,
+      "tokens_per_second": 35.35887148020043
+    },
+    {
+      "question_id": 431479,
+      "image": "COCO_val2014_000000431479.jpg",
+      "seconds": 3.5704445862211287,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12995437538227
+    },
+    {
+      "question_id": 156195,
+      "image": "COCO_val2014_000000156195.jpg",
+      "seconds": 3.5705665168352425,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12872058026765
+    },
+    {
+      "question_id": 220638,
+      "image": "COCO_val2014_000000220638.jpg",
+      "seconds": 3.5706847617402673,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12752416069585
+    },
+    {
+      "question_id": 137578,
+      "image": "COCO_val2014_000000137578.jpg",
+      "seconds": 2.534289543982595,
+      "generated_tokens": 90,
+      "tokens_per_second": 35.51291138524229
+    },
+    {
+      "question_id": 43613,
+      "image": "COCO_val2014_000000043613.jpg",
+      "seconds": 3.5690416721627116,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14415628883106
+    },
+    {
+      "question_id": 474188,
+      "image": "COCO_val2014_000000474188.jpg",
+      "seconds": 3.2225892432034016,
+      "generated_tokens": 116,
+      "tokens_per_second": 35.995899956735
+    },
+    {
+      "question_id": 466766,
+      "image": "COCO_val2014_000000466766.jpg",
+      "seconds": 3.5726064927875996,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.10809090237786
+    },
+    {
+      "question_id": 11260,
+      "image": "COCO_val2014_000000011260.jpg",
+      "seconds": 3.411025638692081,
+      "generated_tokens": 123,
+      "tokens_per_second": 36.05953546780228
+    },
+    {
+      "question_id": 491764,
+      "image": "COCO_val2014_000000491764.jpg",
+      "seconds": 3.570848007220775,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12587254880163
+    },
+    {
+      "question_id": 21378,
+      "image": "COCO_val2014_000000021378.jpg",
+      "seconds": 3.5734123582951725,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.09994791128561
+    },
+    {
+      "question_id": 216083,
+      "image": "COCO_val2014_000000216083.jpg",
+      "seconds": 2.348096732981503,
+      "generated_tokens": 83,
+      "tokens_per_second": 35.34777713123024
+    },
+    {
+      "question_id": 453330,
+      "image": "COCO_val2014_000000453330.jpg",
+      "seconds": 2.481543384026736,
+      "generated_tokens": 88,
+      "tokens_per_second": 35.46180194408074
+    },
+    {
+      "question_id": 263073,
+      "image": "COCO_val2014_000000263073.jpg",
+      "seconds": 2.5340428138151765,
+      "generated_tokens": 90,
+      "tokens_per_second": 35.5163691431475
+    },
+    {
+      "question_id": 40881,
+      "image": "COCO_val2014_000000040881.jpg",
+      "seconds": 3.43551624706015,
+      "generated_tokens": 124,
+      "tokens_per_second": 36.09355656696709
+    },
+    {
+      "question_id": 488567,
+      "image": "COCO_val2014_000000488567.jpg",
+      "seconds": 2.1344979042187333,
+      "generated_tokens": 75,
+      "tokens_per_second": 35.1370689339943
+    },
+    {
+      "question_id": 122217,
+      "image": "COCO_val2014_000000122217.jpg",
+      "seconds": 3.5741405161097646,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.092593287409045
+    },
+    {
+      "question_id": 218752,
+      "image": "COCO_val2014_000000218752.jpg",
+      "seconds": 3.570951788686216,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12482263376068
+    },
+    {
+      "question_id": 456261,
+      "image": "COCO_val2014_000000456261.jpg",
+      "seconds": 2.350008418317884,
+      "generated_tokens": 83,
+      "tokens_per_second": 35.319022414145515
+    },
+    {
+      "question_id": 292206,
+      "image": "COCO_val2014_000000292206.jpg",
+      "seconds": 3.275574826169759,
+      "generated_tokens": 118,
+      "tokens_per_second": 36.02421140169202
+    },
+    {
+      "question_id": 489313,
+      "image": "COCO_val2014_000000489313.jpg",
+      "seconds": 2.592189528979361,
+      "generated_tokens": 92,
+      "tokens_per_second": 35.49123201505398
+    },
+    {
+      "question_id": 190156,
+      "image": "COCO_val2014_000000190156.jpg",
+      "seconds": 3.5678726751357317,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15599875494225
+    },
+    {
+      "question_id": 561856,
+      "image": "COCO_val2014_000000561856.jpg",
+      "seconds": 3.5708320629782975,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.126033855651535
+    },
+    {
+      "question_id": 92187,
+      "image": "COCO_val2014_000000092187.jpg",
+      "seconds": 3.1962326201610267,
+      "generated_tokens": 115,
+      "tokens_per_second": 35.97985931143093
+    },
+    {
+      "question_id": 306636,
+      "image": "COCO_val2014_000000306636.jpg",
+      "seconds": 2.140166279859841,
+      "generated_tokens": 75,
+      "tokens_per_second": 35.044006022238484
+    },
+    {
+      "question_id": 460461,
+      "image": "COCO_val2014_000000460461.jpg",
+      "seconds": 3.5717878472059965,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11636679398785
+    },
+    {
+      "question_id": 270215,
+      "image": "COCO_val2014_000000270215.jpg",
+      "seconds": 3.569322389084846,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14131365507583
+    },
+    {
+      "question_id": 203299,
+      "image": "COCO_val2014_000000203299.jpg",
+      "seconds": 2.5871276035904884,
+      "generated_tokens": 92,
+      "tokens_per_second": 35.56067349454268
+    },
+    {
+      "question_id": 385473,
+      "image": "COCO_val2014_000000385473.jpg",
+      "seconds": 2.215908613987267,
+      "generated_tokens": 78,
+      "tokens_per_second": 35.20000757596595
+    },
+    {
+      "question_id": 392659,
+      "image": "COCO_val2014_000000392659.jpg",
+      "seconds": 3.4636629461310804,
+      "generated_tokens": 125,
+      "tokens_per_second": 36.088961871889204
+    },
+    {
+      "question_id": 326367,
+      "image": "COCO_val2014_000000326367.jpg",
+      "seconds": 3.5685160257853568,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14948036323019
+    },
+    {
+      "question_id": 79545,
+      "image": "COCO_val2014_000000079545.jpg",
+      "seconds": 2.6395934890024364,
+      "generated_tokens": 94,
+      "tokens_per_second": 35.611544122850816
+    },
+    {
+      "question_id": 130645,
+      "image": "COCO_val2014_000000130645.jpg",
+      "seconds": 3.5716882180422544,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.117374228904175
+    },
+    {
+      "question_id": 545756,
+      "image": "COCO_val2014_000000545756.jpg",
+      "seconds": 2.797104266937822,
+      "generated_tokens": 100,
+      "tokens_per_second": 35.751259322726895
+    },
+    {
+      "question_id": 562261,
+      "image": "COCO_val2014_000000562261.jpg",
+      "seconds": 2.0574703221209347,
+      "generated_tokens": 72,
+      "tokens_per_second": 34.994429433994995
+    },
+    {
+      "question_id": 500211,
+      "image": "COCO_val2014_000000500211.jpg",
+      "seconds": 3.571449839975685,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11978489970288
+    },
+    {
+      "question_id": 166060,
+      "image": "COCO_val2014_000000166060.jpg",
+      "seconds": 3.568767105229199,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.146937078348564
+    },
+    {
+      "question_id": 447364,
+      "image": "COCO_val2014_000000447364.jpg",
+      "seconds": 3.5652762982062995,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.182329000672475
+    },
+    {
+      "question_id": 473215,
+      "image": "COCO_val2014_000000473215.jpg",
+      "seconds": 3.5689950650557876,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14462829132087
+    },
+    {
+      "question_id": 5652,
+      "image": "COCO_val2014_000000005652.jpg",
+      "seconds": 2.5851596700958908,
+      "generated_tokens": 92,
+      "tokens_per_second": 35.58774379169681
+    },
+    {
+      "question_id": 267224,
+      "image": "COCO_val2014_000000267224.jpg",
+      "seconds": 2.6921327067539096,
+      "generated_tokens": 96,
+      "tokens_per_second": 35.65946053073804
+    },
+    {
+      "question_id": 359020,
+      "image": "COCO_val2014_000000359020.jpg",
+      "seconds": 2.215417549945414,
+      "generated_tokens": 78,
+      "tokens_per_second": 35.207809923651574
+    },
+    {
+      "question_id": 397658,
+      "image": "COCO_val2014_000000397658.jpg",
+      "seconds": 3.5751890619285405,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.08200790657331
+    },
+    {
+      "question_id": 562207,
+      "image": "COCO_val2014_000000562207.jpg",
+      "seconds": 3.3290266660042107,
+      "generated_tokens": 120,
+      "tokens_per_second": 36.046572178418295
+    },
+    {
+      "question_id": 308358,
+      "image": "COCO_val2014_000000308358.jpg",
+      "seconds": 3.570961267221719,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.124726746298386
+    },
+    {
+      "question_id": 548703,
+      "image": "COCO_val2014_000000548703.jpg",
+      "seconds": 3.5732110179960728,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.10198204088874
+    },
+    {
+      "question_id": 459195,
+      "image": "COCO_val2014_000000459195.jpg",
+      "seconds": 3.56975213624537,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13696275721847
+    },
+    {
+      "question_id": 329030,
+      "image": "COCO_val2014_000000329030.jpg",
+      "seconds": 2.506949396803975,
+      "generated_tokens": 89,
+      "tokens_per_second": 35.501314910250315
+    },
+    {
+      "question_id": 85390,
+      "image": "COCO_val2014_000000085390.jpg",
+      "seconds": 3.4103488959372044,
+      "generated_tokens": 123,
+      "tokens_per_second": 36.06669104927405
+    },
+    {
+      "question_id": 546717,
+      "image": "COCO_val2014_000000546717.jpg",
+      "seconds": 3.4087732769548893,
+      "generated_tokens": 123,
+      "tokens_per_second": 36.0833619623649
+    },
+    {
+      "question_id": 70460,
+      "image": "COCO_val2014_000000070460.jpg",
+      "seconds": 3.0924223312176764,
+      "generated_tokens": 111,
+      "tokens_per_second": 35.89419170837914
+    },
+    {
+      "question_id": 516984,
+      "image": "COCO_val2014_000000516984.jpg",
+      "seconds": 3.5702996468171477,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13142110214782
+    },
+    {
+      "question_id": 67213,
+      "image": "COCO_val2014_000000067213.jpg",
+      "seconds": 3.571236731018871,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12194030139145
+    },
+    {
+      "question_id": 434693,
+      "image": "COCO_val2014_000000434693.jpg",
+      "seconds": 3.381585163064301,
+      "generated_tokens": 122,
+      "tokens_per_second": 36.07775469698563
+    },
+    {
+      "question_id": 566596,
+      "image": "COCO_val2014_000000566596.jpg",
+      "seconds": 2.549889040645212,
+      "generated_tokens": 90,
+      "tokens_per_second": 35.29565348350484
+    },
+    {
+      "question_id": 391214,
+      "image": "COCO_val2014_000000391214.jpg",
+      "seconds": 2.3827425008639693,
+      "generated_tokens": 84,
+      "tokens_per_second": 35.25349464725713
+    },
+    {
+      "question_id": 293804,
+      "image": "COCO_val2014_000000293804.jpg",
+      "seconds": 3.5721564418636262,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.1126401095411
+    },
+    {
+      "question_id": 158952,
+      "image": "COCO_val2014_000000158952.jpg",
+      "seconds": 2.479901234153658,
+      "generated_tokens": 88,
+      "tokens_per_second": 35.48528416698525
+    },
+    {
+      "question_id": 195367,
+      "image": "COCO_val2014_000000195367.jpg",
+      "seconds": 2.4827021453529596,
+      "generated_tokens": 88,
+      "tokens_per_second": 35.44525071793872
+    },
+    {
+      "question_id": 573622,
+      "image": "COCO_val2014_000000573622.jpg",
+      "seconds": 3.5684575103223324,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15007314136344
+    },
+    {
+      "question_id": 240403,
+      "image": "COCO_val2014_000000240403.jpg",
+      "seconds": 3.4444172070361674,
+      "generated_tokens": 124,
+      "tokens_per_second": 36.00028467709892
+    },
+    {
+      "question_id": 379144,
+      "image": "COCO_val2014_000000379144.jpg",
+      "seconds": 2.2157675586640835,
+      "generated_tokens": 78,
+      "tokens_per_second": 35.202248401464665
+    },
+    {
+      "question_id": 41773,
+      "image": "COCO_val2014_000000041773.jpg",
+      "seconds": 3.199800807982683,
+      "generated_tokens": 115,
+      "tokens_per_second": 35.93973715898329
+    },
+    {
+      "question_id": 82812,
+      "image": "COCO_val2014_000000082812.jpg",
+      "seconds": 3.5836050887592137,
+      "generated_tokens": 129,
+      "tokens_per_second": 35.99727001299268
+    },
+    {
+      "question_id": 36962,
+      "image": "COCO_val2014_000000036962.jpg",
+      "seconds": 3.572220225818455,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11199529851045
+    },
+    {
+      "question_id": 526342,
+      "image": "COCO_val2014_000000526342.jpg",
+      "seconds": 3.572234073653817,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11185530965329
+    },
+    {
+      "question_id": 216228,
+      "image": "COCO_val2014_000000216228.jpg",
+      "seconds": 3.5775099261663854,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.05860016109998
+    },
+    {
+      "question_id": 147729,
+      "image": "COCO_val2014_000000147729.jpg",
+      "seconds": 3.5715494779869914,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11877724082585
+    },
+    {
+      "question_id": 382111,
+      "image": "COCO_val2014_000000382111.jpg",
+      "seconds": 3.544610840268433,
+      "generated_tokens": 128,
+      "tokens_per_second": 36.11115740714334
+    },
+    {
+      "question_id": 321118,
+      "image": "COCO_val2014_000000321118.jpg",
+      "seconds": 2.7984985942021012,
+      "generated_tokens": 100,
+      "tokens_per_second": 35.733446572808326
+    },
+    {
+      "question_id": 460156,
+      "image": "COCO_val2014_000000460156.jpg",
+      "seconds": 3.5716601330786943,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.117658229929276
+    },
+    {
+      "question_id": 496887,
+      "image": "COCO_val2014_000000496887.jpg",
+      "seconds": 3.3018861641176045,
+      "generated_tokens": 119,
+      "tokens_per_second": 36.04000685826234
+    },
+    {
+      "question_id": 409331,
+      "image": "COCO_val2014_000000409331.jpg",
+      "seconds": 3.179677303880453,
+      "generated_tokens": 114,
+      "tokens_per_second": 35.85269481933758
+    },
+    {
+      "question_id": 253624,
+      "image": "COCO_val2014_000000253624.jpg",
+      "seconds": 3.1995785729959607,
+      "generated_tokens": 115,
+      "tokens_per_second": 35.94223344617491
+    },
+    {
+      "question_id": 232085,
+      "image": "COCO_val2014_000000232085.jpg",
+      "seconds": 2.616404205095023,
+      "generated_tokens": 93,
+      "tokens_per_second": 35.54496656858202
+    },
+    {
+      "question_id": 239943,
+      "image": "COCO_val2014_000000239943.jpg",
+      "seconds": 2.98377142008394,
+      "generated_tokens": 107,
+      "tokens_per_second": 35.860655839712365
+    },
+    {
+      "question_id": 109425,
+      "image": "COCO_val2014_000000109425.jpg",
+      "seconds": 3.5746446806006134,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.08750282232956
+    },
+    {
+      "question_id": 67959,
+      "image": "COCO_val2014_000000067959.jpg",
+      "seconds": 3.5680649038404226,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15405085853488
+    },
+    {
+      "question_id": 417023,
+      "image": "COCO_val2014_000000417023.jpg",
+      "seconds": 2.878856087103486,
+      "generated_tokens": 103,
+      "tokens_per_second": 35.778099663061575
+    },
+    {
+      "question_id": 301494,
+      "image": "COCO_val2014_000000301494.jpg",
+      "seconds": 3.361613878980279,
+      "generated_tokens": 121,
+      "tokens_per_second": 35.99461578755275
+    },
+    {
+      "question_id": 413295,
+      "image": "COCO_val2014_000000413295.jpg",
+      "seconds": 2.774733843281865,
+      "generated_tokens": 99,
+      "tokens_per_second": 35.679097741102986
+    },
+    {
+      "question_id": 432234,
+      "image": "COCO_val2014_000000432234.jpg",
+      "seconds": 2.8508187690749764,
+      "generated_tokens": 102,
+      "tokens_per_second": 35.77919477255883
+    },
+    {
+      "question_id": 421072,
+      "image": "COCO_val2014_000000421072.jpg",
+      "seconds": 3.361443147994578,
+      "generated_tokens": 121,
+      "tokens_per_second": 35.99644398929908
+    },
+    {
+      "question_id": 342479,
+      "image": "COCO_val2014_000000342479.jpg",
+      "seconds": 3.5757390749640763,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.07645784425588
+    },
+    {
+      "question_id": 358624,
+      "image": "COCO_val2014_000000358624.jpg",
+      "seconds": 2.719529206864536,
+      "generated_tokens": 97,
+      "tokens_per_second": 35.667938316366
+    },
+    {
+      "question_id": 162067,
+      "image": "COCO_val2014_000000162067.jpg",
+      "seconds": 3.5685491380281746,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14914493549045
+    },
+    {
+      "question_id": 246124,
+      "image": "COCO_val2014_000000246124.jpg",
+      "seconds": 3.1174295558594167,
+      "generated_tokens": 112,
+      "tokens_per_second": 35.92703475512014
+    },
+    {
+      "question_id": 278582,
+      "image": "COCO_val2014_000000278582.jpg",
+      "seconds": 3.57917163008824,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.041859215569296
+    },
+    {
+      "question_id": 256343,
+      "image": "COCO_val2014_000000256343.jpg",
+      "seconds": 3.5704969321377575,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12942468564566
+    },
+    {
+      "question_id": 153445,
+      "image": "COCO_val2014_000000153445.jpg",
+      "seconds": 3.5685865888372064,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.1487655654822
+    },
+    {
+      "question_id": 284286,
+      "image": "COCO_val2014_000000284286.jpg",
+      "seconds": 3.4918406140059233,
+      "generated_tokens": 126,
+      "tokens_per_second": 36.08412122094249
+    },
+    {
+      "question_id": 293022,
+      "image": "COCO_val2014_000000293022.jpg",
+      "seconds": 3.569493622984737,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13957990269019
+    },
+    {
+      "question_id": 378147,
+      "image": "COCO_val2014_000000378147.jpg",
+      "seconds": 2.6934165288694203,
+      "generated_tokens": 96,
+      "tokens_per_second": 35.642463380996865
+    },
+    {
+      "question_id": 118921,
+      "image": "COCO_val2014_000000118921.jpg",
+      "seconds": 3.408349340315908,
+      "generated_tokens": 123,
+      "tokens_per_second": 36.087850076013495
+    },
+    {
+      "question_id": 575357,
+      "image": "COCO_val2014_000000575357.jpg",
+      "seconds": 2.614551492035389,
+      "generated_tokens": 93,
+      "tokens_per_second": 35.570154301149714
+    },
+    {
+      "question_id": 364596,
+      "image": "COCO_val2014_000000364596.jpg",
+      "seconds": 3.5691679189912975,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14287781575079
+    },
+    {
+      "question_id": 577251,
+      "image": "COCO_val2014_000000577251.jpg",
+      "seconds": 3.412380308844149,
+      "generated_tokens": 123,
+      "tokens_per_second": 36.0452203059579
+    },
+    {
+      "question_id": 436183,
+      "image": "COCO_val2014_000000436183.jpg",
+      "seconds": 2.7464237986132503,
+      "generated_tokens": 98,
+      "tokens_per_second": 35.68276682188782
+    },
+    {
+      "question_id": 519815,
+      "image": "COCO_val2014_000000519815.jpg",
+      "seconds": 2.244835449848324,
+      "generated_tokens": 79,
+      "tokens_per_second": 35.191889011436345
+    },
+    {
+      "question_id": 10580,
+      "image": "COCO_val2014_000000010580.jpg",
+      "seconds": 2.5117076016031206,
+      "generated_tokens": 89,
+      "tokens_per_second": 35.434060852941215
+    },
+    {
+      "question_id": 33845,
+      "image": "COCO_val2014_000000033845.jpg",
+      "seconds": 3.570369239896536,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13071683413288
+    },
+    {
+      "question_id": 518836,
+      "image": "COCO_val2014_000000518836.jpg",
+      "seconds": 2.322477926965803,
+      "generated_tokens": 82,
+      "tokens_per_second": 35.30711704422042
+    },
+    {
+      "question_id": 286606,
+      "image": "COCO_val2014_000000286606.jpg",
+      "seconds": 2.8274494418874383,
+      "generated_tokens": 101,
+      "tokens_per_second": 35.72123996409229
+    },
+    {
+      "question_id": 373029,
+      "image": "COCO_val2014_000000373029.jpg",
+      "seconds": 3.570695236325264,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12741818110434
+    },
+    {
+      "question_id": 296907,
+      "image": "COCO_val2014_000000296907.jpg",
+      "seconds": 2.7727487487718463,
+      "generated_tokens": 99,
+      "tokens_per_second": 35.70464148396092
+    },
+    {
+      "question_id": 342819,
+      "image": "COCO_val2014_000000342819.jpg",
+      "seconds": 3.570874137803912,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12560819052979
+    },
+    {
+      "question_id": 160834,
+      "image": "COCO_val2014_000000160834.jpg",
+      "seconds": 3.546020253095776,
+      "generated_tokens": 128,
+      "tokens_per_second": 36.09680454821215
+    },
+    {
+      "question_id": 158999,
+      "image": "COCO_val2014_000000158999.jpg",
+      "seconds": 3.142858908046037,
+      "generated_tokens": 113,
+      "tokens_per_second": 35.954525260649966
+    },
+    {
+      "question_id": 165141,
+      "image": "COCO_val2014_000000165141.jpg",
+      "seconds": 3.470103309955448,
+      "generated_tokens": 125,
+      "tokens_per_second": 36.02198229700684
+    },
+    {
+      "question_id": 421060,
+      "image": "COCO_val2014_000000421060.jpg",
+      "seconds": 3.568620210979134,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14842498597122
+    },
+    {
+      "question_id": 230212,
+      "image": "COCO_val2014_000000230212.jpg",
+      "seconds": 2.53570603299886,
+      "generated_tokens": 90,
+      "tokens_per_second": 35.49307326195113
+    },
+    {
+      "question_id": 427986,
+      "image": "COCO_val2014_000000427986.jpg",
+      "seconds": 3.2506548948585987,
+      "generated_tokens": 117,
+      "tokens_per_second": 35.99274724150298
+    },
+    {
+      "question_id": 442456,
+      "image": "COCO_val2014_000000442456.jpg",
+      "seconds": 3.5712681696750224,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12162231203677
+    },
+    {
+      "question_id": 26363,
+      "image": "COCO_val2014_000000026363.jpg",
+      "seconds": 3.570053534116596,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13391193359817
+    },
+    {
+      "question_id": 386707,
+      "image": "COCO_val2014_000000386707.jpg",
+      "seconds": 2.614159903023392,
+      "generated_tokens": 93,
+      "tokens_per_second": 35.57548254505831
+    },
+    {
+      "question_id": 128058,
+      "image": "COCO_val2014_000000128058.jpg",
+      "seconds": 3.3554614591412246,
+      "generated_tokens": 121,
+      "tokens_per_second": 36.060613859939245
+    },
+    {
+      "question_id": 449856,
+      "image": "COCO_val2014_000000449856.jpg",
+      "seconds": 2.3784717433154583,
+      "generated_tokens": 84,
+      "tokens_per_second": 35.31679543222516
+    },
+    {
+      "question_id": 373768,
+      "image": "COCO_val2014_000000373768.jpg",
+      "seconds": 3.4351662257686257,
+      "generated_tokens": 124,
+      "tokens_per_second": 36.09723426768227
+    },
+    {
+      "question_id": 253575,
+      "image": "COCO_val2014_000000253575.jpg",
+      "seconds": 2.594594124238938,
+      "generated_tokens": 92,
+      "tokens_per_second": 35.458339761324325
+    },
+    {
+      "question_id": 500878,
+      "image": "COCO_val2014_000000500878.jpg",
+      "seconds": 2.7721706847660244,
+      "generated_tokens": 99,
+      "tokens_per_second": 35.71208675715282
+    },
+    {
+      "question_id": 343769,
+      "image": "COCO_val2014_000000343769.jpg",
+      "seconds": 3.280205971095711,
+      "generated_tokens": 118,
+      "tokens_per_second": 35.97335077119673
+    },
+    {
+      "question_id": 410589,
+      "image": "COCO_val2014_000000410589.jpg",
+      "seconds": 2.377624874934554,
+      "generated_tokens": 84,
+      "tokens_per_second": 35.32937465684622
+    },
+    {
+      "question_id": 48196,
+      "image": "COCO_val2014_000000048196.jpg",
+      "seconds": 3.5780167230404913,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.053492754606154
+    },
+    {
+      "question_id": 132067,
+      "image": "COCO_val2014_000000132067.jpg",
+      "seconds": 3.6015967251732945,
+      "generated_tokens": 127,
+      "tokens_per_second": 35.26213779358911
+    },
+    {
+      "question_id": 442223,
+      "image": "COCO_val2014_000000442223.jpg",
+      "seconds": 3.574896387755871,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.08496191437294
+    },
+    {
+      "question_id": 556966,
+      "image": "COCO_val2014_000000556966.jpg",
+      "seconds": 2.958493554033339,
+      "generated_tokens": 106,
+      "tokens_per_second": 35.82904544628442
+    },
+    {
+      "question_id": 324436,
+      "image": "COCO_val2014_000000324436.jpg",
+      "seconds": 2.724658453837037,
+      "generated_tokens": 97,
+      "tokens_per_second": 35.6007924088241
+    },
+    {
+      "question_id": 52386,
+      "image": "COCO_val2014_000000052386.jpg",
+      "seconds": 3.5682596610859036,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.152077553891445
+    },
+    {
+      "question_id": 13220,
+      "image": "COCO_val2014_000000013220.jpg",
+      "seconds": 3.568087065126747,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15382630676295
+    },
+    {
+      "question_id": 163041,
+      "image": "COCO_val2014_000000163041.jpg",
+      "seconds": 2.9597127181477845,
+      "generated_tokens": 106,
+      "tokens_per_second": 35.81428675494417
+    },
+    {
+      "question_id": 399205,
+      "image": "COCO_val2014_000000399205.jpg",
+      "seconds": 3.5762825435958803,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.07097549688932
+    },
+    {
+      "question_id": 471567,
+      "image": "COCO_val2014_000000471567.jpg",
+      "seconds": 3.5684398938901722,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.150251604593876
+    },
+    {
+      "question_id": 545564,
+      "image": "COCO_val2014_000000545564.jpg",
+      "seconds": 2.5611140499822795,
+      "generated_tokens": 91,
+      "tokens_per_second": 35.531412590013176
+    },
+    {
+      "question_id": 109045,
+      "image": "COCO_val2014_000000109045.jpg",
+      "seconds": 2.4797086557373405,
+      "generated_tokens": 88,
+      "tokens_per_second": 35.48804001485942
+    },
+    {
+      "question_id": 88031,
+      "image": "COCO_val2014_000000088031.jpg",
+      "seconds": 3.572444329969585,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.10972994535041
+    },
+    {
+      "question_id": 551963,
+      "image": "COCO_val2014_000000551963.jpg",
+      "seconds": 3.567886392120272,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15585975071918
+    },
+    {
+      "question_id": 419119,
+      "image": "COCO_val2014_000000419119.jpg",
+      "seconds": 3.4898059838451445,
+      "generated_tokens": 126,
+      "tokens_per_second": 36.1051590212389
+    },
+    {
+      "question_id": 34464,
+      "image": "COCO_val2014_000000034464.jpg",
+      "seconds": 3.5688265478238463,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.146335012739684
+    },
+    {
+      "question_id": 195204,
+      "image": "COCO_val2014_000000195204.jpg",
+      "seconds": 3.5414217934012413,
+      "generated_tokens": 128,
+      "tokens_per_second": 36.143675469130336
+    },
+    {
+      "question_id": 222788,
+      "image": "COCO_val2014_000000222788.jpg",
+      "seconds": 3.569572656881064,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.13877973637173
+    },
+    {
+      "question_id": 370013,
+      "image": "COCO_val2014_000000370013.jpg",
+      "seconds": 2.507501437794417,
+      "generated_tokens": 89,
+      "tokens_per_second": 35.4934990897887
+    },
+    {
+      "question_id": 174284,
+      "image": "COCO_val2014_000000174284.jpg",
+      "seconds": 2.982277498114854,
+      "generated_tokens": 107,
+      "tokens_per_second": 35.87861963470416
+    },
+    {
+      "question_id": 210221,
+      "image": "COCO_val2014_000000210221.jpg",
+      "seconds": 3.572200521826744,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.112194489583764
+    },
+    {
+      "question_id": 369533,
+      "image": "COCO_val2014_000000369533.jpg",
+      "seconds": 3.5711329537443817,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.122990006502484
+    },
+    {
+      "question_id": 191577,
+      "image": "COCO_val2014_000000191577.jpg",
+      "seconds": 2.457815792877227,
+      "generated_tokens": 87,
+      "tokens_per_second": 35.39728251894499
+    },
+    {
+      "question_id": 559665,
+      "image": "COCO_val2014_000000559665.jpg",
+      "seconds": 3.488779184874147,
+      "generated_tokens": 126,
+      "tokens_per_second": 36.115785299993206
+    },
+    {
+      "question_id": 533378,
+      "image": "COCO_val2014_000000533378.jpg",
+      "seconds": 3.568227875046432,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15239959928887
+    },
+    {
+      "question_id": 64889,
+      "image": "COCO_val2014_000000064889.jpg",
+      "seconds": 3.5691407448612154,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.143152994381595
+    },
+    {
+      "question_id": 297676,
+      "image": "COCO_val2014_000000297676.jpg",
+      "seconds": 3.5739474180154502,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.09454334715182
+    },
+    {
+      "question_id": 412094,
+      "image": "COCO_val2014_000000412094.jpg",
+      "seconds": 3.566869494970888,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.16616761052899
+    },
+    {
+      "question_id": 557357,
+      "image": "COCO_val2014_000000557357.jpg",
+      "seconds": 3.1712283571250737,
+      "generated_tokens": 114,
+      "tokens_per_second": 35.948215379654485
+    },
+    {
+      "question_id": 344314,
+      "image": "COCO_val2014_000000344314.jpg",
+      "seconds": 2.6167806470766664,
+      "generated_tokens": 93,
+      "tokens_per_second": 35.53985317947641
+    },
+    {
+      "question_id": 430546,
+      "image": "COCO_val2014_000000430546.jpg",
+      "seconds": 3.574695782735944,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.08698693270845
+    },
+    {
+      "question_id": 373140,
+      "image": "COCO_val2014_000000373140.jpg",
+      "seconds": 3.8764690910466015,
+      "generated_tokens": 129,
+      "tokens_per_second": 33.27770632763423
+    },
+    {
+      "question_id": 38666,
+      "image": "COCO_val2014_000000038666.jpg",
+      "seconds": 3.2835576948709786,
+      "generated_tokens": 117,
+      "tokens_per_second": 35.632082902870174
+    },
+    {
+      "question_id": 227845,
+      "image": "COCO_val2014_000000227845.jpg",
+      "seconds": 3.5812556338496506,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.02088574205806
+    },
+    {
+      "question_id": 248069,
+      "image": "COCO_val2014_000000248069.jpg",
+      "seconds": 3.438649392221123,
+      "generated_tokens": 124,
+      "tokens_per_second": 36.06066971541545
+    },
+    {
+      "question_id": 313811,
+      "image": "COCO_val2014_000000313811.jpg",
+      "seconds": 2.878115494735539,
+      "generated_tokens": 103,
+      "tokens_per_second": 35.7873060300745
+    },
+    {
+      "question_id": 163155,
+      "image": "COCO_val2014_000000163155.jpg",
+      "seconds": 2.2461206703446805,
+      "generated_tokens": 79,
+      "tokens_per_second": 35.1717523653246
+    },
+    {
+      "question_id": 351463,
+      "image": "COCO_val2014_000000351463.jpg",
+      "seconds": 2.405473446007818,
+      "generated_tokens": 85,
+      "tokens_per_second": 35.33607911617901
+    },
+    {
+      "question_id": 135604,
+      "image": "COCO_val2014_000000135604.jpg",
+      "seconds": 3.492045066319406,
+      "generated_tokens": 126,
+      "tokens_per_second": 36.08200856720421
+    },
+    {
+      "question_id": 336628,
+      "image": "COCO_val2014_000000336628.jpg",
+      "seconds": 3.5712092383764684,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12221838299387
+    },
+    {
+      "question_id": 130839,
+      "image": "COCO_val2014_000000130839.jpg",
+      "seconds": 2.932414952199906,
+      "generated_tokens": 105,
+      "tokens_per_second": 35.80666505646778
+    },
+    {
+      "question_id": 469652,
+      "image": "COCO_val2014_000000469652.jpg",
+      "seconds": 3.2784661683253944,
+      "generated_tokens": 118,
+      "tokens_per_second": 35.992440959143146
+    },
+    {
+      "question_id": 35940,
+      "image": "COCO_val2014_000000035940.jpg",
+      "seconds": 3.5720154559239745,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11406546017633
+    },
+    {
+      "question_id": 404738,
+      "image": "COCO_val2014_000000404738.jpg",
+      "seconds": 2.3497459441423416,
+      "generated_tokens": 83,
+      "tokens_per_second": 35.32296766248704
+    },
+    {
+      "question_id": 261665,
+      "image": "COCO_val2014_000000261665.jpg",
+      "seconds": 3.570262423250824,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.131797808448454
+    },
+    {
+      "question_id": 346759,
+      "image": "COCO_val2014_000000346759.jpg",
+      "seconds": 3.566330590751022,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.17163263959618
+    },
+    {
+      "question_id": 389197,
+      "image": "COCO_val2014_000000389197.jpg",
+      "seconds": 3.116203600075096,
+      "generated_tokens": 112,
+      "tokens_per_second": 35.941168926607034
+    },
+    {
+      "question_id": 141508,
+      "image": "COCO_val2014_000000141508.jpg",
+      "seconds": 2.2473920178599656,
+      "generated_tokens": 79,
+      "tokens_per_second": 35.15185573864687
+    },
+    {
+      "question_id": 110138,
+      "image": "COCO_val2014_000000110138.jpg",
+      "seconds": 3.5731174191460013,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.10292774280892
+    },
+    {
+      "question_id": 208748,
+      "image": "COCO_val2014_000000208748.jpg",
+      "seconds": 3.5689038643613458,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.145551940521244
+    },
+    {
+      "question_id": 509811,
+      "image": "COCO_val2014_000000509811.jpg",
+      "seconds": 3.5691694621928036,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.142862188657695
+    },
+    {
+      "question_id": 113588,
+      "image": "COCO_val2014_000000113588.jpg",
+      "seconds": 3.568892132025212,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14567076500498
+    },
+    {
+      "question_id": 121633,
+      "image": "COCO_val2014_000000121633.jpg",
+      "seconds": 3.5701806186698377,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.1326257067807
+    },
+    {
+      "question_id": 190690,
+      "image": "COCO_val2014_000000190690.jpg",
+      "seconds": 2.18953670701012,
+      "generated_tokens": 77,
+      "tokens_per_second": 35.167256960558504
+    },
+    {
+      "question_id": 340508,
+      "image": "COCO_val2014_000000340508.jpg",
+      "seconds": 3.576232139021158,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.071483892907544
+    },
+    {
+      "question_id": 528011,
+      "image": "COCO_val2014_000000528011.jpg",
+      "seconds": 3.301176814828068,
+      "generated_tokens": 119,
+      "tokens_per_second": 36.047751052134345
+    },
+    {
+      "question_id": 432309,
+      "image": "COCO_val2014_000000432309.jpg",
+      "seconds": 3.57124784309417,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.12182790658206
+    },
+    {
+      "question_id": 368510,
+      "image": "COCO_val2014_000000368510.jpg",
+      "seconds": 3.248524975962937,
+      "generated_tokens": 117,
+      "tokens_per_second": 36.0163461465518
+    },
+    {
+      "question_id": 61658,
+      "image": "COCO_val2014_000000061658.jpg",
+      "seconds": 2.960910113994032,
+      "generated_tokens": 106,
+      "tokens_per_second": 35.79980341146339
+    },
+    {
+      "question_id": 449594,
+      "image": "COCO_val2014_000000449594.jpg",
+      "seconds": 3.570460028015077,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.129798117839414
+    },
+    {
+      "question_id": 183204,
+      "image": "COCO_val2014_000000183204.jpg",
+      "seconds": 3.5689270277507603,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14531734522448
+    },
+    {
+      "question_id": 448211,
+      "image": "COCO_val2014_000000448211.jpg",
+      "seconds": 2.691694051027298,
+      "generated_tokens": 96,
+      "tokens_per_second": 35.66527182513969
+    },
+    {
+      "question_id": 459645,
+      "image": "COCO_val2014_000000459645.jpg",
+      "seconds": 3.567994683049619,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.15476239716303
+    },
+    {
+      "question_id": 510864,
+      "image": "COCO_val2014_000000510864.jpg",
+      "seconds": 2.2936808858066797,
+      "generated_tokens": 81,
+      "tokens_per_second": 35.31441557595427
+    },
+    {
+      "question_id": 157955,
+      "image": "COCO_val2014_000000157955.jpg",
+      "seconds": 3.5716345910914242,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11791651972438
+    },
+    {
+      "question_id": 458632,
+      "image": "COCO_val2014_000000458632.jpg",
+      "seconds": 3.5686432579532266,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.148191532595824
+    },
+    {
+      "question_id": 309424,
+      "image": "COCO_val2014_000000309424.jpg",
+      "seconds": 3.3308351086452603,
+      "generated_tokens": 120,
+      "tokens_per_second": 36.027001063047884
+    },
+    {
+      "question_id": 299573,
+      "image": "COCO_val2014_000000299573.jpg",
+      "seconds": 2.324930879753083,
+      "generated_tokens": 82,
+      "tokens_per_second": 35.269865747023296
+    },
+    {
+      "question_id": 340594,
+      "image": "COCO_val2014_000000340594.jpg",
+      "seconds": 3.5723712337203324,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.11046880636116
+    },
+    {
+      "question_id": 377155,
+      "image": "COCO_val2014_000000377155.jpg",
+      "seconds": 3.568543767090887,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.149199342779006
+    },
+    {
+      "question_id": 48281,
+      "image": "COCO_val2014_000000048281.jpg",
+      "seconds": 3.5688514090143144,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.146083211581136
+    },
+    {
+      "question_id": 366406,
+      "image": "COCO_val2014_000000366406.jpg",
+      "seconds": 3.5693327002227306,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.14120924954691
+    },
+    {
+      "question_id": 553669,
+      "image": "COCO_val2014_000000553669.jpg",
+      "seconds": 3.1421646322123706,
+      "generated_tokens": 113,
+      "tokens_per_second": 35.96246957958969
+    },
+    {
+      "question_id": 335340,
+      "image": "COCO_val2014_000000335340.jpg",
+      "seconds": 3.572864699177444,
+      "generated_tokens": 129,
+      "tokens_per_second": 36.10548141655036
+    },
+    {
+      "question_id": 14029,
+      "image": "COCO_val2014_000000014029.jpg",
+      "seconds": 2.1914177872240543,
+      "generated_tokens": 77,
+      "tokens_per_second": 35.13706991378335
+    }
+  ],
+  "final_allocated_gb": 13.792095184326172,
+  "final_reserved_gb": 14.634765625,
+  "final_max_allocated_gb": 14.539240837097168,
+  "final_max_reserved_gb": 14.634765625
+}
